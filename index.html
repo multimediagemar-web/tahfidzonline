@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setoran Hafalan - Admin Panel</title>
+    <title>Setoran Hafalan - Peserta</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -11,138 +11,143 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#0ea5e9', // Sky blue 500 for Admin distinction
-                        secondary: '#0369a1', // Sky blue 700
+                        primary: '#10b981', // Emerald 500
+                        secondary: '#047857', // Emerald 700
                     }
                 }
             }
         }
     </script>
     <style>
+        /* Custom scrollbar for better appearance */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #0ea5e9; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #047857; }
+        
+        /* Pulse animation for recording */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .recording-pulse {
+            animation: pulse-ring 2s infinite;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen pb-20 md:pb-0">
 
-    <!-- Navbar -->
-    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+    <!-- Header Desktop / Mobile Top -->
+    <header class="bg-primary text-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <i class="fas fa-shield-alt text-2xl text-primary"></i>
-                <h1 class="text-xl font-bold">Admin Hafalan</h1>
+                <i class="fas fa-book-quran text-2xl"></i>
+                <h1 class="text-xl font-bold">Ruang Hafalan</h1>
             </div>
-            
-            <!-- Navigation Tabs -->
-            <div class="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 hide-scrollbar">
-                <button onclick="switchTab('review')" id="nav-review" class="whitespace-nowrap px-4 py-2 rounded-lg bg-primary font-medium transition text-sm">Review Setoran</button>
-                <button onclick="switchTab('jadwal')" id="nav-jadwal" class="whitespace-nowrap px-4 py-2 rounded-lg hover:bg-slate-800 font-medium transition text-sm">Kelola Jadwal</button>
-                <button onclick="switchTab('video')" id="nav-video" class="whitespace-nowrap px-4 py-2 rounded-lg hover:bg-slate-800 font-medium transition text-sm">Kelola Kajian</button>
+            <div class="hidden md:flex gap-6">
+                <button onclick="switchTab('dashboard')" id="nav-desktop-dashboard" class="font-medium hover:text-green-200 transition border-b-2 border-white">Dashboard</button>
+                <button onclick="switchTab('setoran')" id="nav-desktop-setoran" class="font-medium hover:text-green-200 transition border-b-2 border-transparent">Setor Hafalan</button>
+                <button onclick="switchTab('kajian')" id="nav-desktop-kajian" class="font-medium hover:text-green-200 transition border-b-2 border-transparent">Kajian</button>
+            </div>
+            <div class="flex items-center gap-2 bg-secondary px-3 py-1 rounded-full text-sm">
+                <i class="fas fa-user-circle"></i> Peserta
             </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8 max-w-5xl">
-
-        <!-- Tab: Review Setoran -->
-        <section id="tab-review" class="block animate-fade-in">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-slate-800">Daftar Setoran Masuk</h2>
-                <button onclick="loadSetoran()" class="text-primary hover:text-secondary"><i class="fas fa-sync-alt"></i> Refresh</button>
-            </div>
-            
-            <div id="admin-setoran-container" class="grid gap-4">
-                <!-- Data setoran dimuat via JS -->
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-4 py-6 max-w-4xl">
+        
+        <!-- Tab: Dashboard (Jadwal) -->
+        <section id="tab-dashboard" class="block animate-fade-in">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Jadwal Kajian & Bimbingan</h2>
+            <div id="schedule-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Data akan dimuat melalui JS -->
             </div>
         </section>
 
-        <!-- Tab: Kelola Jadwal -->
-        <section id="tab-jadwal" class="hidden animate-fade-in">
-            <h2 class="text-2xl font-bold mb-6 text-slate-800">Kelola Jadwal Zoom</h2>
+        <!-- Tab: Setoran Hafalan -->
+        <section id="tab-setoran" class="hidden animate-fade-in">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Setor Hafalan Baru</h2>
             
-            <!-- Form Tambah Jadwal -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border mb-8">
-                <h3 class="font-bold mb-4 text-lg border-b pb-2">Tambah Jadwal Baru</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Judul Agenda</label>
-                        <input type="text" id="j-judul" class="w-full border px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Cth: Bimbingan Tajwid">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Tipe</label>
-                        <select id="j-tipe" class="w-full border px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary outline-none">
-                            <option value="Bimbingan">Bimbingan Hafalan</option>
-                            <option value="Kajian">Kajian Umum</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Tanggal</label>
-                        <input type="date" id="j-tanggal" class="w-full border px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Waktu (WIB)</label>
-                        <input type="time" id="j-waktu" class="w-full border px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary outline-none">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium mb-1">Link Zoom</label>
-                        <input type="url" id="j-link" class="w-full border px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="https://zoom.us/...">
-                    </div>
+            <div class="bg-white rounded-xl shadow-sm border p-6 text-center">
+                <div class="mb-6 text-left">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Surah / Juz</label>
+                    <input type="text" id="surah-input" placeholder="Contoh: Surah Al-Mulk Ayat 1-10" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none">
                 </div>
-                <button onclick="addJadwal()" class="mt-4 bg-slate-900 hover:bg-slate-800 text-white font-medium py-2 px-6 rounded-lg transition">
-                    <i class="fas fa-plus mr-1"></i> Simpan Jadwal
-                </button>
+
+                <div class="py-8">
+                    <button id="record-btn" onclick="toggleRecording()" class="w-24 h-24 rounded-full bg-red-500 text-white shadow-lg flex items-center justify-center mx-auto transition-transform transform hover:scale-105">
+                        <i id="record-icon" class="fas fa-microphone text-4xl"></i>
+                    </button>
+                    <p id="record-status" class="mt-4 text-gray-500 font-medium">Tekan ikon mic untuk mulai merekam</p>
+                    <p id="record-timer" class="text-2xl font-bold text-red-500 hidden mt-2">00:00</p>
+                </div>
+
+                <div id="audio-preview-container" class="hidden mt-4 p-4 bg-gray-50 rounded-lg border">
+                    <p class="text-sm text-gray-600 mb-2 font-medium">Pratinjau Rekaman:</p>
+                    <audio id="audio-preview" controls class="w-full h-10"></audio>
+                    <button onclick="submitSetoran()" class="mt-4 w-full bg-primary hover:bg-secondary text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                        <i class="fas fa-paper-plane mr-2"></i> Kirim Setoran
+                    </button>
+                </div>
             </div>
 
-            <!-- List Jadwal -->
-            <div id="admin-jadwal-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Data jadwal dimuat via JS -->
+            <h3 class="text-xl font-bold mt-10 mb-4 text-gray-800">Riwayat Setoran Saya</h3>
+            <div id="riwayat-container" class="space-y-3">
+                <!-- Data akan dimuat melalui JS -->
             </div>
         </section>
 
-        <!-- Tab: Kelola Video Kajian -->
-        <section id="tab-video" class="hidden animate-fade-in">
-            <h2 class="text-2xl font-bold mb-6 text-slate-800">Kelola Video Kajian</h2>
-            
-            <!-- Form Tambah Video -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border mb-8">
-                <h3 class="font-bold mb-4 text-lg border-b pb-2">Tambah Video (YouTube)</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Judul Video</label>
-                        <input type="text" id="v-judul" class="w-full border px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Cth: Kajian Tematik">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">URL Embed YouTube</label>
-                        <input type="url" id="v-url" class="w-full border px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Cth: https://www.youtube.com/embed/xyz">
-                        <p class="text-xs text-gray-500 mt-1">Pastikan menggunakan link format /embed/</p>
-                    </div>
-                </div>
-                <button onclick="addVideo()" class="mt-4 bg-slate-900 hover:bg-slate-800 text-white font-medium py-2 px-6 rounded-lg transition">
-                    <i class="fas fa-plus mr-1"></i> Tambah Video
-                </button>
-            </div>
-
-            <!-- List Video -->
-            <div id="admin-video-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Data video dimuat via JS -->
+        <!-- Tab: Kajian (Video) -->
+        <section id="tab-kajian" class="hidden animate-fade-in">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Video Kajian</h2>
+            <div id="video-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Data akan dimuat melalui JS -->
             </div>
         </section>
 
     </main>
 
+    <!-- Bottom Navigation (Mobile Only) -->
+    <nav class="md:hidden fixed bottom-0 w-full bg-white border-t flex justify-around items-center pb-safe z-50">
+        <button onclick="switchTab('dashboard')" id="nav-mobile-dashboard" class="flex flex-col items-center p-3 text-primary w-full transition">
+            <i class="fas fa-calendar-alt text-xl mb-1"></i>
+            <span class="text-xs font-medium">Jadwal</span>
+        </button>
+        <button onclick="switchTab('setoran')" id="nav-mobile-setoran" class="flex flex-col items-center p-3 text-gray-400 hover:text-primary w-full transition">
+            <i class="fas fa-microphone-alt text-xl mb-1"></i>
+            <span class="text-xs font-medium">Setor</span>
+        </button>
+        <button onclick="switchTab('kajian')" id="nav-mobile-kajian" class="flex flex-col items-center p-3 text-gray-400 hover:text-primary w-full transition">
+            <i class="fas fa-play-circle text-xl mb-1"></i>
+            <span class="text-xs font-medium">Kajian</span>
+        </button>
+    </nav>
+
     <!-- Notification Toast -->
-    <div id="toast" class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 translate-y-24 z-50">
-        <span id="toast-message">Notifikasi</span>
+    <div id="toast" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 translate-x-full z-50">
+        <span id="toast-message">Pesan notifikasi</span>
     </div>
 
     <script type="module">
+        window.USER_NAME = "Peserta Fulan"; // Nama akun untuk identifikasi
+        
+        // --- Setup Firebase Cloud Storage ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'app-hafalan-123';
+        const firebaseConfig = {
+            apiKey: "AIzaSyBgcwQR00n6uHSv1yypRqrpP6I7b1YwjIk",
+            authDomain: "tahfidzonline-4d5bc.firebaseapp.com",
+            projectId: "tahfidzonline-4d5bc",
+            storageBucket: "tahfidzonline-4d5bc.firebasestorage.app",
+            messagingSenderId: "752501441915",
+            appId: "1:752501441915:web:5fd129d1d2661c31db69de"
+        };
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'tahfidz-app';
         
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -151,17 +156,20 @@
         let currentUser = null;
         let state = { setoran: [], schedules: [], videos: [] };
 
-        // Autentikasi terlebih dahulu
         const initAuth = async () => {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
+                    try {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } catch (tokenError) {
+                        console.warn("Gagal menggunakan token sistem (config berbeda), beralih ke Anonim...", tokenError);
+                        await signInAnonymously(auth);
+                    }
                 } else {
                     await signInAnonymously(auth);
                 }
             } catch (e) {
                 console.error("Auth error", e);
-                window.showToast("Gagal terhubung ke database", "error");
             }
         };
 
@@ -172,224 +180,238 @@
 
         initAuth();
 
-        // Mengambil data secara real-time
         function setupListeners() {
             if (!currentUser) return;
             
+            // Mendengarkan pembaruan data secara langsung (Live Sync)
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'setoran'), (snap) => {
                 state.setoran = snap.docs.map(d => ({id: d.id, ...d.data()}));
-                if(document.getElementById('tab-review').classList.contains('block')) renderSetoran();
+                if(!document.getElementById('tab-setoran').classList.contains('hidden')) renderRiwayat();
             }, (e) => console.error(e));
 
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'schedules'), (snap) => {
                 state.schedules = snap.docs.map(d => ({id: d.id, ...d.data()}));
-                if(document.getElementById('tab-jadwal').classList.contains('block')) renderJadwal();
+                if(!document.getElementById('tab-dashboard').classList.contains('hidden')) renderSchedules();
             }, (e) => console.error(e));
 
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'videos'), (snap) => {
                 state.videos = snap.docs.map(d => ({id: d.id, ...d.data()}));
-                if(document.getElementById('tab-video').classList.contains('block')) renderVideo();
+                if(!document.getElementById('tab-kajian').classList.contains('hidden')) renderVideos();
             }, (e) => console.error(e));
         }
 
-        // --- Navigasi & Fungsionalitas UI ---
+        // --- Navigasi ---
         window.switchTab = function(tabId) {
-            document.querySelectorAll('section').forEach(sec => {
-                sec.classList.remove('block');
-                sec.classList.add('hidden');
-            });
+            document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-            document.getElementById(`tab-${tabId}`).classList.add('block');
 
-            const navs = ['review', 'jadwal', 'video'];
-            navs.forEach(nav => {
-                const el = document.getElementById(`nav-${nav}`);
-                if(nav === tabId) {
-                    el.classList.add('bg-primary'); el.classList.remove('hover:bg-slate-800');
-                } else {
-                    el.classList.remove('bg-primary'); el.classList.add('hover:bg-slate-800');
+            const mobileNavs = ['dashboard', 'setoran', 'kajian'];
+            mobileNavs.forEach(nav => {
+                const elMobile = document.getElementById(`nav-mobile-${nav}`);
+                const elDesktop = document.getElementById(`nav-desktop-${nav}`);
+                if(elMobile) {
+                    if(nav === tabId) {
+                        elMobile.classList.add('text-primary'); elMobile.classList.remove('text-gray-400');
+                    } else {
+                        elMobile.classList.remove('text-primary'); elMobile.classList.add('text-gray-400');
+                    }
+                }
+                if(elDesktop) {
+                    if(nav === tabId) {
+                        elDesktop.classList.add('border-white'); elDesktop.classList.remove('border-transparent');
+                    } else {
+                        elDesktop.classList.remove('border-white'); elDesktop.classList.add('border-transparent');
+                    }
                 }
             });
 
-            if(tabId === 'review') renderSetoran();
-            if(tabId === 'jadwal') renderJadwal();
-            if(tabId === 'video') renderVideo();
+            if(tabId === 'dashboard') renderSchedules();
+            if(tabId === 'kajian') renderVideos();
+            if(tabId === 'setoran') renderRiwayat();
         };
 
-        window.loadSetoran = function() { renderSetoran(); };
-
-        // --- Render Data & Aksi Firebase ---
-        function renderSetoran() {
-            const container = document.getElementById('admin-setoran-container');
-            const sortedSetoran = [...state.setoran].sort((a,b) => Number(b.id) - Number(a.id));
-
-            if(sortedSetoran.length === 0) {
-                container.innerHTML = `<div class="p-8 text-center bg-white rounded-xl shadow-sm border text-gray-500">Belum ada setoran masuk.</div>`;
-                return;
-            }
-
-            container.innerHTML = sortedSetoran.map(s => `
-                <div class="bg-white p-5 rounded-xl shadow-sm border flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="font-bold text-lg text-slate-800">${s.user}</h3>
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold text-white
-                                ${s.status === 'Menunggu Review' ? 'bg-yellow-500' : 
-                                  s.status === 'Diterima' ? 'bg-green-500' : 'bg-red-500'}">
-                                ${s.status}
-                            </span>
-                        </div>
-                        <p class="text-slate-600 font-medium">${s.surah}</p>
-                        <p class="text-xs text-slate-400 mt-1"><i class="far fa-clock"></i> Dikirim: ${s.date}</p>
-                    </div>
-                    
-                    <div class="w-full md:w-auto flex flex-col sm:flex-row gap-3 items-center">
-                        <audio src="${s.audioBase64}" controls class="w-full sm:w-64 h-10"></audio>
-                        
-                        ${s.status === 'Menunggu Review' ? `
-                            <div class="flex gap-2 w-full sm:w-auto">
-                                <button onclick="updateSetoranStatus('${s.id}', 'Diterima')" class="flex-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded shadow transition text-sm font-medium">
-                                    <i class="fas fa-check"></i> Terima
-                                </button>
-                                <button onclick="updateSetoranStatus('${s.id}', 'Perlu Perbaikan')" class="flex-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded shadow transition text-sm font-medium">
-                                    <i class="fas fa-times"></i> Tolak
-                                </button>
-                            </div>
-                        ` : `
-                            <button onclick="deleteSetoran('${s.id}')" class="text-red-500 hover:bg-red-50 px-3 py-2 rounded transition text-sm font-medium border border-red-200">
-                                <i class="fas fa-trash"></i> Hapus
-                            </button>
-                        `}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        window.updateSetoranStatus = async function(id, newStatus) {
-            if (!currentUser) return;
-            try {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'setoran', id), { status: newStatus }, { merge: true });
-                window.showToast(`Status diubah menjadi: ${newStatus}`);
-            } catch (e) {
-                window.showToast("Gagal mengubah status", "error");
-            }
-        };
-
-        window.deleteSetoran = async function(id) {
-            if (!currentUser) return;
-            if(confirm("Yakin ingin menghapus rekaman ini?")) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'setoran', id));
-                    window.showToast("Setoran dihapus");
-                } catch (e) {
-                    window.showToast("Gagal menghapus", "error");
-                }
-            }
-        };
-
-        function renderJadwal() {
-            const container = document.getElementById('admin-jadwal-container');
+        // --- Render Data ke UI ---
+        function renderSchedules() {
+            const container = document.getElementById('schedule-container');
             if(state.schedules.length === 0) {
-                container.innerHTML = `<div class="col-span-full p-6 text-center bg-white border rounded-xl text-gray-500">Jadwal masih kosong.</div>`;
+                container.innerHTML = `<div class="col-span-full p-6 text-center text-gray-500 bg-white rounded-xl shadow-sm">Belum ada jadwal saat ini.</div>`;
                 return;
             }
-            container.innerHTML = state.schedules.map(j => `
-                <div class="bg-white p-4 rounded-xl shadow-sm border relative group">
-                    <button onclick="deleteJadwal('${j.id}')" class="absolute top-3 right-3 text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg opacity-0 group-hover:opacity-100 transition">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                    <span class="text-xs font-bold text-slate-500 mb-1 block">${j.type}</span>
-                    <h4 class="font-bold text-lg mb-2 pr-8">${j.title}</h4>
-                    <p class="text-sm text-slate-600"><i class="far fa-calendar-alt w-5"></i> ${j.date}</p>
-                    <p class="text-sm text-slate-600"><i class="far fa-clock w-5"></i> ${j.time} WIB</p>
-                    <p class="text-sm text-blue-500 mt-2 truncate"><i class="fas fa-link w-5"></i> ${j.link}</p>
+            container.innerHTML = state.schedules.map(sched => `
+                <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold ${sched.type === 'Kajian' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}">${sched.type}</span>
+                        <div class="text-right">
+                            <p class="text-sm font-bold text-gray-800"><i class="far fa-calendar text-primary mr-1"></i> ${sched.date}</p>
+                            <p class="text-xs text-gray-500"><i class="far fa-clock text-primary mr-1"></i> ${sched.time} WIB</p>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800 mb-4">${sched.title}</h3>
+                    <a href="${sched.link}" target="_blank" class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">
+                        <i class="fas fa-video mr-1"></i> Gabung Zoom
+                    </a>
                 </div>
             `).join('');
         }
 
-        window.addJadwal = async function() {
-            if (!currentUser) return;
-            const title = document.getElementById('j-judul').value;
-            const type = document.getElementById('j-tipe').value;
-            const date = document.getElementById('j-tanggal').value;
-            const time = document.getElementById('j-waktu').value;
-            const link = document.getElementById('j-link').value;
-
-            if(!title || !date || !time || !link) return window.showToast("Harap isi semua kolom jadwal!", "error");
-
-            try {
-                const id = Date.now().toString();
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'schedules', id), { title, type, date, time, link });
-                
-                document.getElementById('j-judul').value = '';
-                document.getElementById('j-tanggal').value = '';
-                document.getElementById('j-waktu').value = '';
-                document.getElementById('j-link').value = '';
-                window.showToast("Jadwal berhasil ditambahkan");
-            } catch (e) {
-                window.showToast("Gagal menyimpan jadwal", "error");
-            }
-        };
-
-        window.deleteJadwal = async function(id) {
-            if (!currentUser) return;
-            if(confirm("Hapus jadwal ini?")) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'schedules', id));
-                    window.showToast("Jadwal dihapus");
-                } catch (e) {
-                    window.showToast("Gagal menghapus", "error");
-                }
-            }
-        };
-
-        function renderVideo() {
-            const container = document.getElementById('admin-video-container');
+        function renderVideos() {
+            const container = document.getElementById('video-container');
             if(state.videos.length === 0) {
-                container.innerHTML = `<div class="col-span-full p-6 text-center bg-white border rounded-xl text-gray-500">Video kajian masih kosong.</div>`;
+                container.innerHTML = `<div class="col-span-full p-6 text-center text-gray-500 bg-white rounded-xl shadow-sm">Belum ada video kajian.</div>`;
                 return;
             }
-            container.innerHTML = state.videos.map(v => `
-                <div class="bg-white rounded-xl overflow-hidden shadow-sm border">
-                    <iframe class="w-full aspect-video" src="${v.url}" frameborder="0" allowfullscreen></iframe>
-                    <div class="p-3 flex justify-between items-start gap-2">
-                        <h4 class="font-bold text-sm line-clamp-2">${v.title}</h4>
-                        <button onclick="deleteVideo('${v.id}')" class="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg transition shrink-0">
-                            <i class="fas fa-trash text-sm"></i>
-                        </button>
+            container.innerHTML = state.videos.map(vid => `
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                    <div class="aspect-video">
+                        <iframe class="w-full h-full" src="${vid.url}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-gray-800 line-clamp-2">${vid.title}</h3>
                     </div>
                 </div>
             `).join('');
         }
 
-        window.addVideo = async function() {
-            if (!currentUser) return;
-            const title = document.getElementById('v-judul').value;
-            const url = document.getElementById('v-url').value;
+        function renderRiwayat() {
+            const container = document.getElementById('riwayat-container');
+            // Menampilkan milik peserta ini saja dan urut dari terbaru
+            const mySetoran = state.setoran.filter(s => s.user === window.USER_NAME).sort((a,b) => Number(b.id) - Number(a.id));
+            
+            if(mySetoran.length === 0) {
+                container.innerHTML = `<div class="p-6 text-center text-gray-500 bg-white rounded-xl shadow-sm border">Belum ada riwayat setoran.</div>`;
+                return;
+            }
 
-            if(!title || !url) return window.showToast("Harap isi judul dan URL video!", "error");
-            if(!url.includes('embed')) return window.showToast("Gunakan URL YouTube format embed!", "error");
+            container.innerHTML = mySetoran.map(s => `
+                <div class="bg-white p-4 rounded-xl shadow-sm border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h4 class="font-bold text-gray-800">${s.surah}</h4>
+                        <p class="text-xs text-gray-500">${s.date}</p>
+                    </div>
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <audio src="${s.audioBase64}" controls class="h-8 w-full sm:w-48"></audio>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap
+                            ${s.status === 'Menunggu Review' ? 'bg-yellow-100 text-yellow-700' : 
+                              s.status === 'Diterima' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                            ${s.status}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-            try {
-                const id = Date.now().toString();
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'videos', id), { title, url });
-                document.getElementById('v-judul').value = '';
-                document.getElementById('v-url').value = '';
-                window.showToast("Video berhasil ditambahkan");
-            } catch (e) {
-                window.showToast("Gagal menyimpan video", "error");
+        // --- Logika Merekam ---
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+        let currentAudioBase64 = null;
+        let timerInterval;
+        let seconds = 0;
+
+        window.toggleRecording = async function() {
+            const btn = document.getElementById('record-btn');
+            const icon = document.getElementById('record-icon');
+            const status = document.getElementById('record-status');
+            const timer = document.getElementById('record-timer');
+            const previewContainer = document.getElementById('audio-preview-container');
+
+            if (!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = e => {
+                        if (e.data.size > 0) audioChunks.push(e.data);
+                    };
+
+                    mediaRecorder.onstop = async () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                        const reader = new FileReader();
+                        reader.readAsDataURL(audioBlob);
+                        reader.onloadend = () => {
+                            currentAudioBase64 = reader.result;
+                            document.getElementById('audio-preview').src = currentAudioBase64;
+                            previewContainer.classList.remove('hidden');
+                        };
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    
+                    btn.classList.add('recording-pulse');
+                    btn.classList.replace('bg-red-500', 'bg-red-600');
+                    icon.classList.replace('fa-microphone', 'fa-stop');
+                    status.innerText = "Sedang merekam...";
+                    status.classList.add('text-red-500');
+                    
+                    seconds = 0;
+                    timer.classList.remove('hidden');
+                    timerInterval = setInterval(() => {
+                        seconds++;
+                        const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+                        const s = (seconds % 60).toString().padStart(2, '0');
+                        timer.innerText = `${m}:${s}`;
+                    }, 1000);
+
+                } catch (err) {
+                    alert("Akses mikrofon ditolak atau tidak didukung di browser ini.");
+                    console.error(err);
+                }
+            } else {
+                mediaRecorder.stop();
+                isRecording = false;
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+
+                btn.classList.remove('recording-pulse');
+                btn.classList.replace('bg-red-600', 'bg-red-500');
+                icon.classList.replace('fa-stop', 'fa-microphone');
+                status.innerText = "Rekaman selesai. Cek pratinjau di bawah.";
+                status.classList.remove('text-red-500');
+                
+                clearInterval(timerInterval);
+                timer.classList.add('hidden');
             }
         };
 
-        window.deleteVideo = async function(id) {
-            if (!currentUser) return;
-            if(confirm("Hapus video ini?")) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'videos', id));
-                    window.showToast("Video dihapus");
-                } catch (e) {
-                    window.showToast("Gagal menghapus", "error");
-                }
+        // --- Logika Mengirim Data Ke Cloud ---
+        window.submitSetoran = async function() {
+            if (!currentUser) return window.showToast("Menunggu koneksi database...", "error");
+            
+            const surah = document.getElementById('surah-input').value.trim();
+            if(!surah) return window.showToast("Nama Surah / Juz tidak boleh kosong!", "error");
+            if(!currentAudioBase64) return window.showToast("Silakan rekam hafalan terlebih dahulu!", "error");
+
+            // Info Penting: Karena firebase cloud tidak direkomendasikan untuk menampung string base64 yang sangat masif,
+            // usahakan durasi rekaman tidak berlebihan (~kurang dari 2 menit per hafalan) agar tidak ditolak Firestore (Max limit = 1MB/Doc).
+            if(currentAudioBase64.length > 1000000) {
+                return window.showToast("Rekaman terlalu panjang! Coba bagikan per beberapa ayat.", "error");
+            }
+
+            try {
+                const id = Date.now().toString();
+                const newSetoran = {
+                    user: window.USER_NAME,
+                    surah: surah,
+                    audioBase64: currentAudioBase64,
+                    status: 'Menunggu Review',
+                    date: new Date().toLocaleString('id-ID')
+                };
+
+                // Push langsung ke cloud db
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'setoran', id), newSetoran);
+
+                window.showToast("Alhamdulillah, setoran berhasil dikirim!");
+                
+                // Reset Form UI
+                document.getElementById('surah-input').value = '';
+                document.getElementById('audio-preview-container').classList.add('hidden');
+                document.getElementById('record-status').innerText = "Tekan ikon mic untuk mulai merekam";
+                currentAudioBase64 = null;
+
+            } catch (e) {
+                console.error(e);
+                window.showToast("Gagal mengirim! Dokumen terlalu besar atau koneksi terputus.", "error");
             }
         };
 
@@ -403,8 +425,10 @@
                 toast.classList.replace('bg-red-500', 'bg-green-500');
             }
 
-            toast.classList.remove('translate-y-24');
-            setTimeout(() => toast.classList.add('translate-y-24'), 3000);
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+            }, 3000);
         };
     </script>
 </body>
