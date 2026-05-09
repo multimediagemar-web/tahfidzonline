@@ -1,7 +1,6 @@
 const CACHE_NAME = 'hafalan-cache-v1';
 const urlsToCache = [
-  './peserta.html',
-  './admin.html',
+  './index.html',
   './manifest.json',
   './icon-192x192.png',
   './icon-512x512.png'
