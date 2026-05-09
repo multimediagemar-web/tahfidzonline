@@ -83,6 +83,11 @@
                     <p class="text-sm text-slate-500 mt-1">Jadwal kajian dan bimbinganmu.</p>
                 </div>
                 
+                <!-- Jadwal Terdekat Card -->
+                <div id="next-schedule-container" class="animate-fade-in">
+                    <!-- Dimuat via JS -->
+                </div>
+                
                 <!-- Widget Kalender -->
                 <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5">
                     <div class="flex flex-col sm:flex-row justify-between items-center mb-5 gap-4">
@@ -238,9 +243,9 @@
         <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col transform scale-95 transition-all duration-300" id="modal-panel">
             <div class="p-6 border-b border-slate-100 flex justify-between items-center">
                 <h3 class="font-bold text-lg text-slate-800" id="modal-date-title">Jadwal Kajian</h3>
-                <button onclick="closeModal()" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-600 transition"><i class="fas fa-times"></i></button>
+                <button onclick="closeModal()" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-600 transition shrink-0"><i class="fas fa-times"></i></button>
             </div>
-            <div id="modal-content" class="p-5 overflow-y-auto space-y-4 hide-scrollbar">
+            <div id="modal-content" class="p-5 overflow-y-auto space-y-4 hide-scrollbar flex-1">
                 <!-- Konten Pop-up dimuat via JS -->
             </div>
         </div>
@@ -385,6 +390,7 @@
                 state.schedules = snap.docs.map(d => ({id: d.id, ...d.data()}));
                 if(!document.getElementById('tab-dashboard').classList.contains('hidden')) {
                     renderSchedules();
+                    renderNextSchedule();
                     renderCalendar();
                 }
             }, (e) => console.error(e));
@@ -394,6 +400,14 @@
                 if(!document.getElementById('tab-kajian').classList.contains('hidden')) renderVideos();
             }, (e) => console.error(e));
         }
+
+        // Loop untuk mengecek status ketersediaan zoom per menit
+        setInterval(() => {
+            if(!document.getElementById('tab-dashboard').classList.contains('hidden')) {
+                renderSchedules();
+                renderNextSchedule();
+            }
+        }, 60000);
 
         // --- Navigasi ---
         window.switchTab = function(tabId) {
@@ -426,11 +440,36 @@
 
             if(tabId === 'dashboard') {
                 renderSchedules();
+                renderNextSchedule();
                 renderCalendar();
             }
             if(tabId === 'kajian') renderVideos();
             if(tabId === 'setoran') renderRiwayat();
         };
+
+        // --- Fitur Zoom Button Logic ---
+        function getZoomButtonHTML(sched, customClasses = "") {
+            const now = new Date();
+            const start = new Date(`${sched.date}T${sched.time}:00`);
+            // Jika jam selesai tidak diisi, default durasi 2 jam
+            const end = sched.timeEnd ? new Date(`${sched.date}T${sched.timeEnd}:00`) : new Date(start.getTime() + 2 * 60 * 60 * 1000); 
+            
+            const diffStartMins = (start - now) / 60000;
+            
+            if (now > end) {
+                return `<button disabled class="mt-4 block w-full text-center bg-slate-200 text-slate-500 py-3 rounded-xl text-sm font-bold border border-slate-300 cursor-not-allowed ${customClasses}">
+                            <i class="fas fa-calendar-check mr-1"></i> Sesi Berakhir
+                        </button>`;
+            } else if (diffStartMins <= 15) {
+                return `<a href="${sched.link}" target="_blank" class="mt-4 block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-sm font-bold transition shadow-lg shadow-blue-500/30 ${customClasses}">
+                            <i class="fas fa-video mr-1"></i> Gabung Ruang Zoom
+                        </a>`;
+            } else {
+                return `<button disabled class="mt-4 block w-full text-center bg-slate-100 text-slate-400 py-3 rounded-xl text-sm font-bold border border-slate-200 cursor-not-allowed ${customClasses}">
+                            <i class="fas fa-lock mr-1"></i> Buka 15 mnt sebelum mulai
+                        </button>`;
+            }
+        }
 
         // --- Fitur Kalender & Pop-up Modal ---
         let currentDate = new Date();
@@ -514,17 +553,15 @@
                     </div>`;
             } else {
                 content.innerHTML = daySchedules.map(sched => `
-                    <div class="border border-slate-100 rounded-3xl overflow-hidden shadow-sm flex flex-col bg-white">
-                        ${sched.pamflet ? `<img src="${sched.pamflet}" class="w-full h-40 object-cover bg-slate-50" alt="Pamflet">` : ''}
+                    <div class="border border-slate-100 rounded-3xl overflow-hidden shadow-sm flex flex-col bg-white shrink-0">
+                        ${sched.pamflet ? `<img src="${sched.pamflet}" class="w-full max-h-48 object-contain bg-slate-100" alt="Pamflet">` : ''}
                         <div class="p-5 relative">
                             <span class="absolute -top-3 left-5 px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-md ${sched.type === 'Kajian' ? 'bg-blue-500 shadow-blue-500/30' : 'bg-primary shadow-primary/30'}">${sched.type}</span>
                             <h4 class="font-bold text-slate-800 text-lg mt-2 leading-tight">${sched.title}</h4>
                             <div class="flex items-center gap-2 mt-3 text-sm text-slate-500 bg-slate-50 p-2 rounded-xl border border-slate-100 w-fit">
-                                <i class="far fa-clock text-primary"></i> <span class="font-semibold">${sched.time} WIB</span>
+                                <i class="far fa-clock text-primary"></i> <span class="font-semibold">${sched.time} ${sched.timeEnd ? '- ' + sched.timeEnd : ''} WIB</span>
                             </div>
-                            <a href="${sched.link}" target="_blank" class="mt-5 block w-full text-center bg-slate-900 hover:bg-slate-800 text-white py-3 rounded-xl text-sm font-bold transition shadow-lg shadow-slate-900/20">
-                                <i class="fas fa-video mr-1"></i> Buka Ruang Zoom
-                            </a>
+                            ${getZoomButtonHTML(sched)}
                         </div>
                     </div>
                 `).join('');
@@ -555,6 +592,45 @@
 
 
         // --- Render Data ke UI ---
+        function renderNextSchedule() {
+            const container = document.getElementById('next-schedule-container');
+            const now = new Date();
+            
+            // Filter jadwal yang masih akan datang atau sedang berlangsung
+            const upcoming = state.schedules.filter(s => {
+                const end = s.timeEnd ? new Date(`${s.date}T${s.timeEnd}:00`) : new Date(new Date(`${s.date}T${s.time}:00`).getTime() + 2*3600*1000);
+                return end >= now;
+            }).sort((a,b) => new Date(`${a.date}T${a.time}:00`) - new Date(`${b.date}T${b.time}:00`));
+
+            if(upcoming.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const next = upcoming[0];
+            const btnHtml = getZoomButtonHTML(next, "bg-white/10 border-white/20 text-white/90 shadow-none hover:bg-white hover:text-primary");
+            
+            container.innerHTML = `
+                <div class="bg-gradient-to-br from-primary to-secondary rounded-3xl p-5 text-white shadow-lg shadow-primary/30 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 opacity-10 transform translate-x-4 -translate-y-4">
+                        <i class="fas fa-clock text-9xl"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <span class="bg-white/20 px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-wider backdrop-blur-md">Jadwal Terdekat</span>
+                        <h3 class="text-xl font-bold mt-3 leading-tight pr-8">${next.title}</h3>
+                        <p class="text-sm text-emerald-50 mt-1 font-medium flex items-center gap-2">
+                            <i class="far fa-calendar-alt"></i> ${new Date(next.date).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}
+                        </p>
+                        <p class="text-sm text-emerald-50 font-medium flex items-center gap-2 mt-0.5">
+                            <i class="far fa-clock"></i> ${next.time} ${next.timeEnd ? '- ' + next.timeEnd : ''} WIB
+                        </p>
+                        <!-- Mengganti class button logic agar selaras dengan desain card -->
+                        ${btnHtml.replace('bg-slate-100 text-slate-400 border-slate-200', 'bg-white/10 border-white/20 text-white/70')}
+                    </div>
+                </div>
+            `;
+        }
+
         function renderSchedules() {
             const container = document.getElementById('schedule-container');
             const sortedSchedules = [...state.schedules].sort((a,b) => new Date(a.date) - new Date(b.date));
@@ -585,12 +661,10 @@
                     
                     <div class="p-5 flex-1 flex flex-col">
                         <h3 class="font-bold text-slate-800 text-lg line-clamp-2 leading-snug">${sched.title}</h3>
-                        <p class="text-sm text-slate-500 mt-2 font-medium flex items-center gap-2"><i class="far fa-clock text-primary"></i> ${sched.time} WIB</p>
+                        <p class="text-sm text-slate-500 mt-2 font-medium flex items-center gap-2"><i class="far fa-clock text-primary"></i> ${sched.time} ${sched.timeEnd ? '- ' + sched.timeEnd : ''} WIB</p>
                         
-                        <div class="mt-5 pt-4 border-t border-slate-100">
-                            <a href="${sched.link}" target="_blank" class="block w-full text-center bg-slate-50 hover:bg-slate-900 hover:text-white text-slate-700 py-3 rounded-xl text-sm font-bold transition-all border border-slate-200 hover:border-transparent">
-                                Gabung Ruang Zoom
-                            </a>
+                        <div class="mt-auto pt-4 border-t border-slate-100">
+                            ${getZoomButtonHTML(sched, "shadow-none hover:shadow-lg border border-transparent")}
                         </div>
                     </div>
                 </div>
