@@ -268,6 +268,21 @@
         </div>
     </div>
 
+    <!-- Modal Popup Video In-App Player -->
+    <div id="video-modal" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md hidden z-[120] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="w-full max-w-md relative transform scale-95 transition-all duration-300" id="video-modal-panel">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="font-bold text-white text-sm" id="video-modal-title">Memutar Video...</h3>
+                <button onclick="closeVideoModal()" class="w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center hover:bg-white/40 transition backdrop-blur-sm"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="bg-black w-full rounded-2xl overflow-hidden shadow-2xl aspect-video relative">
+                <div id="video-modal-content" class="absolute inset-0 w-full h-full">
+                    <!-- iframe dimuat via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         window.USER_NAME = "Peserta Fulan"; // Nama akun untuk identifikasi
         
@@ -608,6 +623,57 @@
         });
 
 
+        // --- Fitur In-App Video Player ---
+        window.openVideoModal = function(url, title) {
+            const modal = document.getElementById('video-modal');
+            const panel = document.getElementById('video-modal-panel');
+            const content = document.getElementById('video-modal-content');
+            const titleEl = document.getElementById('video-modal-title');
+            
+            titleEl.innerText = title || "Kajian";
+            
+            // Format URL YouTube / Drive yang lebih stabil (Tahan Error)
+            let embedUrl = url;
+            const ytRegExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const ytMatch = url.match(ytRegExp);
+            
+            if (ytMatch && ytMatch[2].length === 11) {
+                embedUrl = `https://www.youtube.com/embed/${ytMatch[2]}?autoplay=1&rel=0`;
+            } else if (url.includes('drive.google.com')) {
+                embedUrl = url.replace(/\/view.*$/, '/preview');
+            }
+
+            // Memuat iFrame video
+            content.innerHTML = `<iframe class="w-full h-full" src="${embedUrl}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                panel.classList.remove('scale-95');
+            }, 10);
+        };
+
+        window.closeVideoModal = function() {
+            const modal = document.getElementById('video-modal');
+            const panel = document.getElementById('video-modal-panel');
+            const content = document.getElementById('video-modal-content');
+            
+            modal.classList.add('opacity-0');
+            panel.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                // Mengosongkan iFrame agar video berhenti diputar (tidak bocor suaranya)
+                content.innerHTML = '';
+            }, 300);
+        };
+
+        // Tutup modal video jika klik area luar
+        document.getElementById('video-modal').addEventListener('click', function(e) {
+            if(e.target === this) window.closeVideoModal();
+        });
+
+
         // --- Render Data ke UI ---
         let currentVideoCategory = 'Semua';
         
@@ -657,10 +723,22 @@
                 if(vid.kategori === 'Tahsin') badgeColor = 'bg-blue-500 shadow-blue-500/30';
                 if(vid.kategori === 'Kajian') badgeColor = 'bg-primary shadow-primary/30';
 
+                // Otomatis mengambil thumbnail YouTube yang diperbaiki
+                let thumbUrl = vid.thumbnail;
+                if (!thumbUrl && vid.url) {
+                    const ytRegExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                    const ytMatch = vid.url.match(ytRegExp);
+                    if (ytMatch && ytMatch[2].length === 11) {
+                        thumbUrl = `https://img.youtube.com/vi/${ytMatch[2]}/hqdefault.jpg`;
+                    }
+                }
+                const finalThumb = thumbUrl || 'https://images.unsplash.com/photo-1609599006353-e629aaab31f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+
+                // Diubah menjadi onClick untuk memanggil modal
                 return `
-                <a href="${vid.url}" target="_blank" class="block bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition group">
+                <div onclick="openVideoModal('${vid.url}', '${vid.title.replace(/'/g, "\\'")}')" class="block bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition group cursor-pointer">
                     <div class="h-44 w-full relative bg-slate-100 overflow-hidden">
-                        <img src="${vid.thumbnail || 'https://images.unsplash.com/photo-1609599006353-e629aaab31f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}" alt="${vid.title}" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-700">
+                        <img src="${finalThumb}" alt="${vid.title}" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-700">
                         <div class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition duration-300"></div>
                         <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
                             <div class="w-12 h-12 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white pl-1 border border-white/40 shadow-lg">
@@ -676,7 +754,7 @@
                         <h3 class="font-bold text-slate-800 leading-snug line-clamp-2">${vid.title}</h3>
                         <p class="text-xs text-slate-500 mt-2 font-medium flex items-center gap-1.5"><i class="far fa-calendar-alt"></i> Ditambahkan: ${vid.tanggal ? new Date(vid.tanggal).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}) : '-'}</p>
                     </div>
-                </a>
+                </div>
                 `
             }).join('');
         }
