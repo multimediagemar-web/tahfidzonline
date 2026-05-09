@@ -681,6 +681,21 @@
             }).join('');
         }
 
+        function renderNextSchedule() {
+            const container = document.getElementById('next-schedule-container');
+            const now = new Date();
+            
+            // Filter jadwal yang masih akan datang atau sedang berlangsung
+            const upcoming = state.schedules.filter(s => {
+                const end = s.timeEnd ? new Date(`${s.date}T${s.timeEnd}:00`) : new Date(new Date(`${s.date}T${s.time}:00`).getTime() + 2*3600*1000);
+                return end >= now;
+            }).sort((a,b) => new Date(`${a.date}T${a.time}:00`) - new Date(`${b.date}T${b.time}:00`));
+
+            if(upcoming.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
             const next = upcoming[0];
             const btnHtml = getZoomButtonHTML(next, "bg-white/10 border-white/20 text-white/90 shadow-none hover:bg-white hover:text-primary");
             
@@ -698,7 +713,6 @@
                         <p class="text-sm text-emerald-50 font-medium flex items-center gap-2 mt-0.5">
                             <i class="far fa-clock"></i> ${next.time} ${next.timeEnd ? '- ' + next.timeEnd : ''} WIB
                         </p>
-                        <!-- Mengganti class button logic agar selaras dengan desain card -->
                         ${btnHtml.replace('bg-slate-100 text-slate-400 border-slate-200', 'bg-white/10 border-white/20 text-white/70')}
                     </div>
                 </div>
@@ -740,28 +754,6 @@
                         <div class="mt-auto pt-4 border-t border-slate-100">
                             ${getZoomButtonHTML(sched, "shadow-none hover:shadow-lg border border-transparent")}
                         </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderVideos() {
-            const container = document.getElementById('video-container');
-            if(state.videos.length === 0) {
-                container.innerHTML = `
-                    <div class="p-8 text-center text-slate-400 bg-white rounded-3xl shadow-sm border border-slate-100">
-                        <i class="fas fa-video-slash text-4xl text-slate-200 mb-3 block"></i>
-                        <span class="font-medium">Belum ada video kajian.</span>
-                    </div>`;
-                return;
-            }
-            container.innerHTML = state.videos.map(vid => `
-                <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100">
-                    <div class="aspect-video bg-slate-900">
-                        <iframe class="w-full h-full" src="${vid.url}" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-slate-800 leading-snug">${vid.title}</h3>
                     </div>
                 </div>
             `).join('');
