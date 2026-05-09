@@ -1,0 +1,24 @@
+{
+  "name": "Ruang Hafalan - Peserta",
+  "short_name": "Hafalan",
+  "description": "Aplikasi setoran hafalan Al-Quran",
+  "start_url": "./peserta.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#10b981",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
