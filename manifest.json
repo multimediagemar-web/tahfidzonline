@@ -2,7 +2,7 @@
   "name": "Ruang Hafalan - Peserta",
   "short_name": "Hafalan",
   "description": "Aplikasi setoran hafalan Al-Quran",
-  "start_url": "./peserta.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f8fafc",
   "theme_color": "#10b981",
