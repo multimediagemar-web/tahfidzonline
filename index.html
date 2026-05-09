@@ -34,6 +34,9 @@
             animation: pulse-ring 2s infinite;
         }
         
+        /* Base font size 15px */
+        html { font-size: 15px; }
+
         /* Menyembunyikan scrollbar bawaan agar lebih mirip aplikasi HP asli */
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
@@ -116,8 +119,8 @@
                 </div>
 
                 <div>
-                    <h3 class="text-lg font-bold mb-4 text-slate-800 flex items-center gap-2"><i class="fas fa-calendar-alt text-primary"></i> Semua Jadwal</h3>
-                    <div id="schedule-container" class="space-y-4">
+                    <h3 class="text-lg font-bold mb-4 text-slate-800 flex items-center gap-2"><i class="fas fa-chart-pie text-primary"></i> Hafalan Saya</h3>
+                    <div id="progress-hafalan-container">
                         <!-- Data akan dimuat melalui JS -->
                     </div>
                 </div>
@@ -416,12 +419,12 @@
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'setoran'), (snap) => {
                 state.setoran = snap.docs.map(d => ({id: d.id, ...d.data()}));
                 if(!document.getElementById('tab-setoran').classList.contains('hidden')) renderRiwayat();
+                if(!document.getElementById('tab-dashboard').classList.contains('hidden')) renderProgressHafalan();
             }, (e) => console.error(e));
 
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'schedules'), (snap) => {
                 state.schedules = snap.docs.map(d => ({id: d.id, ...d.data()}));
                 if(!document.getElementById('tab-dashboard').classList.contains('hidden')) {
-                    renderSchedules();
                     renderNextSchedule();
                     renderCalendar();
                 }
@@ -436,7 +439,6 @@
         // Loop untuk mengecek status ketersediaan zoom per menit
         setInterval(() => {
             if(!document.getElementById('tab-dashboard').classList.contains('hidden')) {
-                renderSchedules();
                 renderNextSchedule();
             }
         }, 60000);
@@ -471,9 +473,9 @@
             });
 
             if(tabId === 'dashboard') {
-                renderSchedules();
                 renderNextSchedule();
                 renderCalendar();
+                renderProgressHafalan();
             }
             if(tabId === 'kajian') renderVideos();
             if(tabId === 'setoran') renderRiwayat();
@@ -586,7 +588,7 @@
             } else {
                 content.innerHTML = daySchedules.map(sched => `
                     <div class="border border-slate-100 rounded-3xl overflow-hidden shadow-sm flex flex-col bg-white shrink-0">
-                        ${sched.pamflet ? `<img src="${sched.pamflet}" class="w-full max-h-48 object-contain bg-slate-100" alt="Pamflet">` : ''}
+                        <img src="${sched.pamflet || 'https://brdsg.com/img/400/bq6rjfudbq7gvxva2d_1/LRa1FGRf9e5xfLcLRalHIayeLQhE5rRDMJEs7Knab8Q.webp'}" class="w-full max-h-48 object-cover bg-slate-100" alt="Pamflet">
                         <div class="p-5 relative">
                             <span class="absolute -top-3 left-5 px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-md ${sched.type === 'Kajian' ? 'bg-blue-500 shadow-blue-500/30' : 'bg-primary shadow-primary/30'}">${sched.type}</span>
                             <h4 class="font-bold text-slate-800 text-lg mt-2 leading-tight">${sched.title}</h4>
@@ -775,66 +777,104 @@
             }
 
             const next = upcoming[0];
-            const btnHtml = getZoomButtonHTML(next, "bg-white/10 border-white/20 text-white/90 shadow-none hover:bg-white hover:text-primary");
+            const btnHtml = getZoomButtonHTML(next, "bg-white/10 border-white/20 text-white/90 shadow-none hover:bg-white hover:text-primary relative z-10");
             
             container.innerHTML = `
-                <div class="bg-gradient-to-br from-primary to-secondary rounded-3xl p-5 text-white shadow-lg shadow-primary/30 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 opacity-10 transform translate-x-4 -translate-y-4">
-                        <i class="fas fa-clock text-9xl"></i>
-                    </div>
-                    <div class="relative z-10">
-                        <span class="bg-white/20 px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-wider backdrop-blur-md">Jadwal Terdekat</span>
-                        <h3 class="text-xl font-bold mt-3 leading-tight pr-8">${next.title}</h3>
-                        <p class="text-sm text-emerald-50 mt-1 font-medium flex items-center gap-2">
+                <div class="rounded-3xl shadow-lg shadow-slate-300/50 relative overflow-hidden group">
+                    <img src="${next.pamflet || 'https://brdsg.com/img/400/bq6rjfudbq7gvxva2d_1/LRa1FGRf9e5xfLcLRalHIayeLQhE5rRDMJEs7Knab8Q.webp'}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/60 to-slate-900/30"></div>
+                    
+                    <div class="relative z-10 p-5 text-white">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="bg-white/20 px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-wider backdrop-blur-md border border-white/20">Jadwal Terdekat</span>
+                            <span class="text-[10px] font-bold text-white px-2 py-1 rounded-lg backdrop-blur-md border border-white/10 ${next.type === 'Kajian' ? 'bg-blue-500/80' : 'bg-primary/80'}">${next.type}</span>
+                        </div>
+                        <h3 class="text-xl font-bold mt-2 leading-tight">${next.title}</h3>
+                        <p class="text-sm text-slate-200 mt-2 font-medium flex items-center gap-2">
                             <i class="far fa-calendar-alt"></i> ${new Date(next.date).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}
                         </p>
-                        <p class="text-sm text-emerald-50 font-medium flex items-center gap-2 mt-0.5">
+                        <p class="text-sm text-slate-200 font-medium flex items-center gap-2 mt-1 mb-4">
                             <i class="far fa-clock"></i> ${next.time} ${next.timeEnd ? '- ' + next.timeEnd : ''} WIB
                         </p>
-                        ${btnHtml.replace('bg-slate-100 text-slate-400 border-slate-200', 'bg-white/10 border-white/20 text-white/70')}
+                        ${btnHtml}
                     </div>
                 </div>
             `;
         }
 
-        function renderSchedules() {
-            const container = document.getElementById('schedule-container');
-            const sortedSchedules = [...state.schedules].sort((a,b) => new Date(a.date) - new Date(b.date));
+        function renderProgressHafalan() {
+            const container = document.getElementById('progress-hafalan-container');
+            const mySetoran = state.setoran.filter(s => s.user === window.USER_NAME);
+            
+            // Inisialisasi penyimpanan ayat unik yang disetor
+            let ayatTersimpan = {};
+            daftarSurah.forEach(s => ayatTersimpan[s.nama] = new Set());
 
-            if(sortedSchedules.length === 0) {
-                container.innerHTML = `
-                    <div class="p-8 text-center text-slate-400 bg-white rounded-3xl shadow-sm border border-slate-100">
-                        <i class="fas fa-box-open text-4xl text-slate-200 mb-3 block"></i>
-                        <span class="font-medium">Belum ada jadwal saat ini.</span>
-                    </div>`;
-                return;
-            }
+            // Ekstrak data dari string "Surah [Nama] Ayat [Awal]-[Akhir]"
+            mySetoran.forEach(setoran => {
+                const match = setoran.surah.match(/Surah (.+) Ayat (\d+)-(\d+)/);
+                if(match) {
+                    const namaSurah = match[1];
+                    const start = parseInt(match[2]);
+                    const end = parseInt(match[3]);
+                    if(ayatTersimpan[namaSurah]) {
+                        for(let i = start; i <= end; i++) {
+                            ayatTersimpan[namaSurah].add(i); // Set hanya menyimpan ayat yang unik (tidak dobel)
+                        }
+                    }
+                }
+            });
 
-            container.innerHTML = sortedSchedules.map(sched => `
-                <div class="bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition overflow-hidden flex flex-col group">
-                    <div class="h-40 sm:h-48 w-full bg-slate-100 relative overflow-hidden">
-                        <img src="${sched.pamflet || 'https://images.unsplash.com/photo-1609599006353-e629aaab31f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}" alt="Pamflet" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent"></div>
-                        <span class="absolute top-4 right-4 px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold shadow-lg ${sched.type === 'Kajian' ? 'bg-blue-500 text-white shadow-blue-500/30' : 'bg-primary text-white shadow-primary/30'}">${sched.type}</span>
-                        
-                        <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
-                            <div class="bg-white/20 backdrop-blur-md text-white px-3 py-1.5 rounded-xl border border-white/20 text-center shadow-lg">
-                                <p class="text-sm font-bold block">${sched.date.split('-')[2]}</p>
-                                <p class="text-[10px] uppercase font-medium block">${new Date(sched.date).toLocaleString('id-ID', { month: 'short' })}</p>
+            let totalAyatSelesai = 0;
+            let totalSurahSelesai = 0;
+
+            daftarSurah.forEach(s => {
+                const count = ayatTersimpan[s.nama].size;
+                totalAyatSelesai += count;
+                // Jika jumlah ayat yang disetor sama dengan total ayat pada surah tersebut
+                if(count === s.ayat && s.ayat > 0) {
+                    totalSurahSelesai++;
+                }
+            });
+
+            const totalSemuaAyat = 6236;
+            const totalSemuaSurah = 114;
+            const persentase = ((totalAyatSelesai / totalSemuaAyat) * 100).toFixed(2);
+
+            container.innerHTML = `
+                <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden">
+                    <i class="fas fa-quran absolute -right-4 -bottom-4 text-[8rem] opacity-5"></i>
+                    
+                    <div class="flex justify-between items-end mb-6 relative z-10">
+                        <div>
+                            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Total Progres</p>
+                            <div class="flex items-baseline gap-1">
+                                <h3 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">${persentase}</h3>
+                                <span class="text-xl font-bold text-emerald-400">%</span>
                             </div>
+                        </div>
+                        <div class="bg-white/10 border border-white/10 backdrop-blur-md p-2 rounded-2xl">
+                            <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 relative z-10">
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm">
+                            <p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider mb-1">Ayat Disetor</p>
+                            <p class="text-xl font-bold text-white">${totalAyatSelesai} <span class="text-xs text-slate-500 font-medium">/ 6236</span></p>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm">
+                            <p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider mb-1">Surah Tuntas</p>
+                            <p class="text-xl font-bold text-white">${totalSurahSelesai} <span class="text-xs text-slate-500 font-medium">/ 114</span></p>
                         </div>
                     </div>
                     
-                    <div class="p-5 flex-1 flex flex-col">
-                        <h3 class="font-bold text-slate-800 text-lg line-clamp-2 leading-snug">${sched.title}</h3>
-                        <p class="text-sm text-slate-500 mt-2 font-medium flex items-center gap-2"><i class="far fa-clock text-primary"></i> ${sched.time} ${sched.timeEnd ? '- ' + sched.timeEnd : ''} WIB</p>
-                        
-                        <div class="mt-auto pt-4 border-t border-slate-100">
-                            ${getZoomButtonHTML(sched, "shadow-none hover:shadow-lg border border-transparent")}
-                        </div>
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-slate-700/50 rounded-full h-1.5 mt-5 relative z-10">
+                        <div class="bg-gradient-to-r from-emerald-400 to-teal-400 h-1.5 rounded-full" style="width: ${persentase}%"></div>
                     </div>
                 </div>
-            `).join('');
+            `;
         }
 
         function renderRiwayat() {
