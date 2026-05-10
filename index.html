@@ -346,6 +346,17 @@
                 </button>
             </nav>
         </div>
+
+        <!-- TAMPILAN FULL SCREEN LOADING (Splash Screen) -->
+        <div id="full-screen-loader" class="absolute inset-0 z-[500] bg-surface flex flex-col items-center justify-center transition-opacity duration-500">
+            <div class="relative w-20 h-20 mb-4">
+                <div class="absolute inset-0 border-4 border-sky-100 rounded-full"></div>
+                <div class="absolute inset-0 border-4 border-primary rounded-full border-t-transparent animate-spin"></div>
+                <div class="absolute inset-0 flex items-center justify-center text-primary text-2xl"><i class="fas fa-book-quran"></i></div>
+            </div>
+            <h2 class="text-xl font-extrabold text-slate-800 tracking-tight">GEMAR</h2>
+            <p id="loader-text" class="text-xs text-slate-500 mt-2 font-medium animate-pulse">Menyiapkan ruang hafalanmu...</p>
+        </div>
     </div>
 
     <!-- Modals & Toasts -->
@@ -417,6 +428,21 @@
         let isLoginMode = true;
         let adminWaNumber = "6281234567890"; 
 
+        window.showFullScreenLoader = function(msg = "Memuat data aplikasi...") {
+            const loader = document.getElementById('full-screen-loader');
+            const loaderText = document.getElementById('loader-text');
+            if(loaderText) loaderText.innerText = msg;
+            if(loader) loader.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+        };
+
+        window.hideFullScreenLoader = function() {
+            const loader = document.getElementById('full-screen-loader');
+            if(loader) {
+                loader.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => { loader.classList.add('hidden'); }, 500);
+            }
+        };
+
         onSnapshot(doc(db, 'artifacts', appIdGlobal, 'public', 'data', 'settings', 'admin_profile'), (docSnap) => {
             if(docSnap?.exists() && docSnap.data().wa_number) { 
                 adminWaNumber = docSnap.data().wa_number; 
@@ -454,6 +480,9 @@
                 setTimeout(() => { 
                     if(authPage) authPage.classList.remove('-translate-x-full'); 
                 }, 10);
+                
+                // Sembunyikan loader jika tidak ada user yang ter-autentikasi (tampilkan menu login)
+                hideFullScreenLoader();
             }
         });
 
@@ -486,10 +515,11 @@
             if(!email || !pass) return showToast("Email dan password wajib diisi", "error");
             
             try { 
-                showToast("Memverifikasi...");
+                showFullScreenLoader("Memverifikasi kredensial...");
                 await signInWithEmailAndPassword(auth, email, pass); 
                 showToast("Berhasil login!"); 
             } catch(e) { 
+                hideFullScreenLoader();
                 showToast("Gagal login! Periksa email dan password", "error"); 
             }
         };
@@ -622,10 +652,14 @@
                     if(document.getElementById('profile-tgl-lahir')) document.getElementById('profile-tgl-lahir').value = '';
                     if(greeting) greeting.innerText = `Selamat datang, ${currentUser.email}`;
                 }
+                
+                // Menutup layar loading ketika data profil selesai dimuat
+                hideFullScreenLoader();
             }, (error) => {
                 console.error("Error Load Peserta:", error.message);
                 const greeting = document.getElementById('user-greeting');
                 if(greeting) greeting.innerText = `Selamat datang, ${currentUser.email}`;
+                hideFullScreenLoader();
             });
         }
 
