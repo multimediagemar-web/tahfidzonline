@@ -17,7 +17,7 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'], },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: { primary: '#10b981', secondary: '#0f766e', surface: '#f8fafc' }
                 }
             }
@@ -25,49 +25,66 @@
     </script>
     <style>
         html { font-size: 15px; }
-        @keyframes pulse-ring { 0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
+        @keyframes pulse-ring { 
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7); } 
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } 
+        }
         .recording-pulse { animation: pulse-ring 2s infinite; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .animate-fade-in { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-slate-800 font-sans min-h-screen flex justify-center selection:bg-primary selection:text-white">
 
+    <!-- Wrapper Keseluruhan (Maksimal seukuran HP) -->
     <div class="w-full max-w-md bg-surface min-h-screen relative shadow-2xl flex flex-col sm:border-x border-gray-200 overflow-hidden">
 
-        <!-- HALAMAN DEPAN : LOGIN & PENGIRIMAN WA -->
+        <!-- ============================================== -->
+        <!-- HALAMAN DEPAN : LOGIN & REGISTER & PWA INSTALL -->
+        <!-- ============================================== -->
         <div id="auth-page" class="absolute inset-0 z-[200] bg-surface flex flex-col justify-center px-8 transition-transform duration-500 overflow-y-auto hide-scrollbar">
             
+            <!-- Notifikasi Install Aplikasi (Otomatis Muncul Jika Didukung) -->
             <div id="pwa-install-card" class="hidden bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl p-4 text-white shadow-lg mb-6 mt-6 items-center justify-between border border-white/20 shrink-0">
                 <div class="flex items-center gap-3">
                     <div class="bg-white text-primary w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-md"><i class="fas fa-download"></i></div>
-                    <div><h4 class="font-bold text-sm">Install Aplikasi</h4><p class="text-[10px] text-emerald-50">Pasang di layar utama HP</p></div>
+                    <div>
+                        <h4 class="font-bold text-sm">Install Aplikasi</h4>
+                        <p class="text-[10px] text-emerald-50">Pasang di layar utama HP</p>
+                    </div>
                 </div>
                 <button id="btn-install-pwa" class="bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-xl text-xs font-bold transition shadow-md">Install</button>
             </div>
 
             <div class="text-center mb-6 shrink-0 mt-6">
-                <div class="bg-emerald-100 text-primary w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-inner border border-emerald-200"><i class="fas fa-book-quran"></i></div>
+                <div class="bg-emerald-100 text-primary w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-inner border border-emerald-200">
+                    <i class="fas fa-book-quran"></i>
+                </div>
                 <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight">Ruang Hafalan</h1>
                 <p id="auth-subtitle" class="text-slate-500 text-xs mt-2 font-medium">Masuk untuk melanjutkan setoran hafalanmu.</p>
             </div>
 
-            <!-- Form Login -->
             <div id="form-login" class="space-y-4 bg-white p-6 rounded-3xl shadow-sm border border-slate-100 shrink-0">
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email</label>
-                    <input type="email" id="auth-email" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="email@contoh.com">
+                    <input type="email" id="auth-email" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition" placeholder="email@contoh.com">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Password</label>
-                    <input type="password" id="auth-password" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="********">
+                    <input type="password" id="auth-password" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition" placeholder="********">
                 </div>
-                <button onclick="handleLogin()" class="w-full bg-primary hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-primary/30 mt-2">Masuk Sekarang</button>
+                
+                <button id="btn-login" onclick="handleLogin()" class="w-full bg-primary hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-primary/30 mt-2 flex justify-center items-center gap-2">
+                    Masuk Sekarang
+                </button>
             </div>
 
-            <!-- Form Pendaftaran via WA -->
             <div id="form-register" class="hidden space-y-3 bg-white p-6 rounded-3xl shadow-sm border border-slate-100 shrink-0">
                 <div class="flex gap-2">
                     <div class="w-1/3">
@@ -98,32 +115,62 @@
             <div class="mt-6 text-center pb-6 shrink-0">
                 <p id="auth-toggle-text" class="text-sm text-slate-500">Belum punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Daftar di sini</button></p>
             </div>
+
+            <!-- Tambahan: Tombol WA & Keterangan Masjid Ashqaf -->
+            <div class="mt-2 flex flex-col gap-2 items-center justify-center shrink-0 w-full max-w-[280px] mx-auto pb-8">
+                <button onclick="hubungiAdmin()" class="w-full bg-green-50 text-green-600 hover:bg-green-100 font-bold py-2.5 rounded-xl transition shadow-sm flex items-center justify-center gap-2 border border-green-200 text-xs">
+                    <i class="fab fa-whatsapp text-base"></i> Hubungi Mudabbir
+                </button>
+                <p class="text-[10px] text-slate-400 mt-2">Aplikasi ini dibuat untuk <span class="font-bold text-primary">Masjid Ashqaf</span></p>
+            </div>
+            
         </div>
 
-        <!-- HALAMAN UTAMA APLIKASI -->
+
+        <!-- ============================================== -->
+        <!-- HALAMAN UTAMA APLIKASI (Disembunyikan jika belum login) -->
+        <!-- ============================================== -->
         <div id="app-content" class="hidden flex-col h-full w-full relative">
+            <!-- Header -->
             <header class="bg-gradient-to-r from-emerald-500 to-secondary text-white shadow-lg sticky top-0 z-50 rounded-b-[2rem]">
-                <div class="px-5 py-4 flex justify-between items-center">
-                    <div class="flex items-center gap-2">
-                        <div class="bg-white/20 p-1.5 rounded-xl backdrop-blur-sm"><i class="fas fa-book-open text-lg"></i></div>
-                        <h1 class="text-lg font-bold tracking-tight truncate max-w-[150px]">Ruang Hafalan</h1>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="handleLogout()" class="bg-rose-500 hover:bg-rose-600 w-8 h-8 rounded-full text-white shadow-md transition flex items-center justify-center">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
+                <div class="px-6 py-4 flex justify-between items-center w-full">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white/20 p-2 rounded-xl backdrop-blur-sm shadow-inner border border-white/10"><i class="fas fa-book-open text-xl"></i></div>
+                        <h1 class="text-lg font-bold tracking-tight">Ruang Hafalan</h1>
                     </div>
                 </div>
             </header>
 
+            <!-- Main Menu -->
             <main class="flex-1 p-5 overflow-y-auto hide-scrollbar pb-28">
+                
                 <!-- Tab: Dashboard -->
                 <section id="tab-dashboard" class="block animate-fade-in space-y-6">
-                    <div><h2 class="text-2xl font-bold text-slate-800 tracking-tight">Dashboard</h2><p class="text-sm text-slate-500 mt-1" id="user-greeting">Selamat datang.</p></div>
-                    <div id="next-schedule-container" class="animate-fade-in"></div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Dashboard</h2>
+                        <p class="text-sm text-slate-500 mt-1 flex items-center gap-2" id="user-greeting">
+                            <i class="fas fa-spinner fa-spin text-primary"></i> Memuat profil...
+                        </p>
+                    </div>
+                    
+                    <div id="next-schedule-container" class="animate-fade-in">
+                        <div class="flex flex-col items-center justify-center py-8 gap-3 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                            <i class="fas fa-spinner fa-spin text-3xl text-primary"></i>
+                            <span class="text-xs text-slate-400 font-medium">Memuat jadwal terdekat...</span>
+                        </div>
+                    </div>
+                    
                     <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5">
-                        <div class="flex flex-col sm:flex-row justify-between items-center mb-5 gap-4"><div class="flex items-center gap-4 w-full justify-between"><button onclick="changeMonth(-1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-400"><i class="fas fa-chevron-left"></i></button><h3 id="calendar-month-year" class="font-bold text-lg text-slate-700 text-center min-w-[120px]">Bulan Tahun</h3><button onclick="changeMonth(1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-400"><i class="fas fa-chevron-right"></i></button></div></div>
-                        <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-slate-400 mb-3 uppercase"><div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div></div>
+                        <div class="flex flex-col sm:flex-row justify-between items-center mb-5 gap-4">
+                            <div class="flex items-center gap-4 w-full justify-between">
+                                <button onclick="changeMonth(-1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-400"><i class="fas fa-chevron-left"></i></button>
+                                <h3 id="calendar-month-year" class="font-bold text-lg text-slate-700 text-center min-w-[120px]">Bulan Tahun</h3>
+                                <button onclick="changeMonth(1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-400"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-slate-400 mb-3 uppercase">
+                            <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+                        </div>
                         <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-sm font-medium"></div>
                     </div>
                 </section>
@@ -135,22 +182,35 @@
                         <div class="mb-8 text-left space-y-5">
                             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Pilih Surah</label>
-                                <select id="surah-select" onchange="handleSurahChange()" class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none outline-none cursor-pointer appearance-none"><option value="">-- Pilih Surah --</option></select>
+                                <select id="surah-select" onchange="handleSurahChange()" class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none outline-none cursor-pointer appearance-none">
+                                    <option value="">-- Pilih Surah --</option>
+                                </select>
                             </div>
                             <div class="flex gap-4 items-center">
-                                <div class="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-100"><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dari Ayat</label><select id="ayat-start" onchange="updateAyatEnd()" disabled class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none cursor-pointer appearance-none disabled:opacity-50"><option value="">-</option></select></div>
+                                <div class="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dari Ayat</label>
+                                    <select id="ayat-start" onchange="updateAyatEnd()" disabled class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none cursor-pointer appearance-none disabled:opacity-50"><option value="">-</option></select>
+                                </div>
                                 <div class="text-slate-300 font-bold"><i class="fas fa-arrow-right"></i></div>
-                                <div class="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-100"><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Sampai</label><select id="ayat-end" disabled class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none cursor-pointer appearance-none disabled:opacity-50"><option value="">-</option></select></div>
+                                <div class="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Sampai</label>
+                                    <select id="ayat-end" disabled class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none cursor-pointer appearance-none disabled:opacity-50"><option value="">-</option></select>
+                                </div>
                             </div>
                         </div>
+
                         <div class="py-6 flex flex-col items-center">
                             <div class="relative w-28 h-28 flex items-center justify-center">
-                                <div class="absolute inset-0 bg-rose-100 rounded-full scale-110"></div><div class="absolute inset-2 bg-rose-200 rounded-full"></div>
-                                <button id="record-btn" onclick="toggleRecording()" class="relative z-10 w-20 h-20 rounded-full bg-rose-500 text-white shadow-xl shadow-rose-500/40 flex items-center justify-center transition-transform transform hover:scale-105"><i id="record-icon" class="fas fa-microphone text-3xl"></i></button>
+                                <div class="absolute inset-0 bg-rose-100 rounded-full scale-110"></div>
+                                <div class="absolute inset-2 bg-rose-200 rounded-full"></div>
+                                <button id="record-btn" onclick="toggleRecording()" class="relative z-10 w-20 h-20 rounded-full bg-rose-500 text-white shadow-xl shadow-rose-500/40 flex items-center justify-center transition-transform transform hover:scale-105">
+                                    <i id="record-icon" class="fas fa-microphone text-3xl"></i>
+                                </button>
                             </div>
                             <p id="record-status" class="mt-6 text-sm text-slate-500 font-medium">Sentuh mic untuk merekam</p>
                             <p id="record-timer" class="text-3xl font-bold text-rose-500 hidden mt-2 tracking-tight">00:00</p>
                         </div>
+
                         <div id="audio-preview-container" class="hidden mt-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
                             <audio id="audio-preview" controls class="w-full h-10 rounded-full mb-4"></audio>
                             <div class="flex gap-2">
@@ -159,13 +219,24 @@
                             </div>
                         </div>
                     </div>
+
                     <div>
                         <h3 class="text-lg font-bold mb-4 text-slate-800 flex items-center gap-2"><i class="fas fa-history text-primary"></i> Riwayat Saya</h3>
                         <div class="flex gap-2 mb-4">
-                            <div class="relative flex-1"><i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs"></i><input type="text" id="riwayat-search" onkeyup="handleRiwayatFilter()" placeholder="Cari surah..." class="w-full bg-white border border-slate-100 rounded-xl py-2.5 pl-8 pr-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm"></div>
-                            <select id="riwayat-status" onchange="handleRiwayatFilter()" class="bg-white border border-slate-100 rounded-xl py-2 px-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm text-slate-600"><option value="Semua">Semua Status</option><option value="Menunggu Review">Menunggu</option><option value="Diterima">Diterima</option><option value="Perlu Perbaikan">Revisi</option></select>
+                            <div class="relative flex-1">
+                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs"></i>
+                                <input type="text" id="riwayat-search" onkeyup="handleRiwayatFilter()" placeholder="Cari surah..." class="w-full bg-white border border-slate-100 rounded-xl py-2.5 pl-8 pr-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm">
+                            </div>
+                            <select id="riwayat-status" onchange="handleRiwayatFilter()" class="bg-white border border-slate-100 rounded-xl py-2 px-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm text-slate-600">
+                                <option value="Semua">Semua Status</option>
+                                <option value="Menunggu Review">Menunggu</option>
+                                <option value="Diterima">Diterima</option>
+                                <option value="Perlu Perbaikan">Revisi</option>
+                            </select>
                         </div>
-                        <div id="riwayat-container" class="space-y-3"></div>
+                        <div id="riwayat-container" class="space-y-3">
+                            <div class="flex flex-col items-center justify-center py-8 gap-3"><i class="fas fa-spinner fa-spin text-3xl text-primary"></i><span class="text-xs text-slate-400 font-medium">Memuat riwayat...</span></div>
+                        </div>
                     </div>
                 </section>
 
@@ -173,10 +244,21 @@
                 <section id="tab-kajian" class="hidden animate-fade-in space-y-6">
                     <div><h2 class="text-2xl font-bold text-slate-800 tracking-tight">Pustaka Video</h2></div>
                     <div class="space-y-3">
-                        <div class="relative"><i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i><input type="text" id="video-search" onkeyup="handleVideoFilter()" placeholder="Cari judul video..." class="w-full bg-white border border-slate-100 rounded-2xl py-3 pl-11 pr-4 text-sm outline-none focus:ring-1 focus:ring-primary shadow-sm"></div>
-                        <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1 pt-1" id="video-categories"><button onclick="setVideoCategory('Semua')" class="cat-btn active px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-slate-800 text-white shadow-md">Semua</button><button onclick="setVideoCategory('Tahfidz')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Tahfidz</button><button onclick="setVideoCategory('Tahsin')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Tahsin</button><button onclick="setVideoCategory('Kajian')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Kajian</button><button onclick="setVideoCategory('Lainnya')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Lainnya</button></div>
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" id="video-search" onkeyup="handleVideoFilter()" placeholder="Cari judul video..." class="w-full bg-white border border-slate-100 rounded-2xl py-3 pl-11 pr-4 text-sm outline-none focus:ring-1 focus:ring-primary shadow-sm">
+                        </div>
+                        <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1 pt-1" id="video-categories">
+                            <button onclick="setVideoCategory('Semua')" class="cat-btn active px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-slate-800 text-white shadow-md">Semua</button>
+                            <button onclick="setVideoCategory('Tahfidz')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Tahfidz</button>
+                            <button onclick="setVideoCategory('Tahsin')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Tahsin</button>
+                            <button onclick="setVideoCategory('Kajian')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Kajian</button>
+                            <button onclick="setVideoCategory('Lainnya')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Lainnya</button>
+                        </div>
                     </div>
-                    <div id="video-container" class="space-y-4"></div>
+                    <div id="video-container" class="space-y-4">
+                        <div class="flex flex-col items-center justify-center py-8 gap-3"><i class="fas fa-spinner fa-spin text-3xl text-primary"></i><span class="text-xs text-slate-400 font-medium">Memuat pustaka...</span></div>
+                    </div>
                 </section>
 
                 <!-- Tab: Akun -->
@@ -185,7 +267,9 @@
 
                     <div>
                         <h3 class="text-lg font-bold mb-4 text-slate-800 flex items-center gap-2"><i class="fas fa-chart-pie text-primary"></i> Hafalan Saya</h3>
-                        <div id="progress-hafalan-container"></div>
+                        <div id="progress-hafalan-container">
+                            <div class="flex flex-col items-center justify-center py-8 gap-3 bg-white rounded-3xl border border-slate-100 shadow-sm"><i class="fas fa-spinner fa-spin text-3xl text-primary"></i><span class="text-xs text-slate-400 font-medium">Memuat progres hafalan...</span></div>
+                        </div>
                     </div>
 
                     <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 text-center">
@@ -240,24 +324,79 @@
                             Chat Admin Sekarang
                         </button>
                     </div>
+
+                    <!-- Tombol Keluar Refresh -->
+                    <button onclick="handleLogout()" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-4 rounded-2xl transition shadow-lg flex items-center justify-center gap-2 mt-4 border border-rose-600">
+                        <i class="fas fa-sign-out-alt text-lg"></i> Keluar Akun
+                    </button>
                 </section>
             </main>
 
             <!-- Bottom Navigation -->
-            <nav class="fixed bottom-0 w-full max-w-md left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-xl border-t border-slate-100 flex justify-around items-end pb-safe z-50 rounded-t-[2rem] px-2 pt-3 pb-3 shadow-[0_-10px_40px_rgba(0,0,0,0.06)]">
-                <button onclick="switchTab('dashboard')" id="nav-mobile-dashboard" class="flex flex-col items-center justify-end p-2 text-primary w-1/4 transition-all"><div class="bg-emerald-50 text-primary w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-dashboard"><i class="fas fa-calendar-alt text-lg"></i></div><span class="text-[10px] font-bold tracking-wide">Jadwal</span></button>
-                <button onclick="switchTab('setoran')" id="nav-mobile-setoran" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition relative"><div class="absolute bottom-6 bg-gradient-to-br from-emerald-400 to-primary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 border-[3px] border-white transform hover:scale-105 transition-transform z-10" id="fab-setor"><i class="fas fa-microphone-alt text-xl"></i></div><span class="text-[10px] font-bold tracking-wide">Setor</span></button>
-                <button onclick="switchTab('kajian')" id="nav-mobile-kajian" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition-all"><div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-kajian"><i class="fas fa-play-circle text-lg"></i></div><span class="text-[10px] font-bold tracking-wide">Kajian</span></button>
-                <button onclick="switchTab('akun')" id="nav-mobile-akun" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition-all"><div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-akun"><i class="fas fa-user text-lg"></i></div><span class="text-[10px] font-bold tracking-wide">Akun</span></button>
+            <nav class="fixed bottom-0 w-full max-w-md left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-xl border-t border-slate-100 flex justify-around items-end pb-safe z-50 rounded-t-[2rem] px-4 pt-3 pb-3 shadow-[0_-10px_40px_rgba(0,0,0,0.06)]">
+                <button onclick="switchTab('dashboard')" id="nav-mobile-dashboard" class="flex flex-col items-center justify-end p-2 text-primary w-1/4 transition-all">
+                    <div class="bg-emerald-50 text-primary w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-dashboard"><i class="fas fa-calendar-alt text-lg"></i></div>
+                    <span class="text-[10px] font-bold tracking-wide">Jadwal</span>
+                </button>
+                <button onclick="switchTab('setoran')" id="nav-mobile-setoran" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition relative">
+                    <div class="absolute bottom-6 bg-gradient-to-br from-emerald-400 to-primary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 border-[3px] border-white transform hover:scale-105 transition-transform z-10" id="fab-setor"><i class="fas fa-microphone-alt text-xl"></i></div>
+                    <span class="text-[10px] font-bold tracking-wide">Setor</span>
+                </button>
+                <button onclick="switchTab('kajian')" id="nav-mobile-kajian" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition-all">
+                    <div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-kajian"><i class="fas fa-play-circle text-lg"></i></div>
+                    <span class="text-[10px] font-bold tracking-wide">Kajian</span>
+                </button>
+                <button onclick="switchTab('akun')" id="nav-mobile-akun" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition-all">
+                    <div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-akun"><i class="fas fa-user text-lg"></i></div>
+                    <span class="text-[10px] font-bold tracking-wide">Akun</span>
+                </button>
             </nav>
         </div>
     </div>
 
     <!-- Modals & Toasts -->
-    <div id="toast" class="fixed top-12 left-1/2 transform -translate-x-1/2 w-[85%] max-w-[350px] bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl transition-all duration-400 -translate-y-[200%] opacity-0 z-[300] flex items-center gap-3"><div id="toast-icon-bg" class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center shrink-0"><i id="toast-icon" class="fas fa-check text-white text-sm"></i></div><span id="toast-message" class="font-medium text-sm leading-tight flex-1">Notifikasi</span></div>
-    <div id="schedule-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity"><div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col transform scale-95 transition-all" id="modal-panel"><div class="p-6 border-b border-slate-100 flex justify-between items-center"><h3 class="font-bold text-lg text-slate-800" id="modal-date-title">Jadwal Kajian</h3><button onclick="closeModal()" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-600 transition shrink-0"><i class="fas fa-times"></i></button></div><div id="modal-content" class="p-5 overflow-y-auto space-y-4 hide-scrollbar flex-1"></div></div></div>
-    <div id="video-modal" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity"><div class="w-full max-w-md relative transform scale-95 transition-all" id="video-modal-panel"><div class="flex justify-between items-center mb-3"><h3 class="font-bold text-white text-sm" id="video-modal-title">Memutar Video...</h3><button onclick="closeVideoModal()" class="w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center hover:bg-white/40 transition backdrop-blur-sm"><i class="fas fa-times"></i></button></div><div class="bg-black w-full rounded-2xl overflow-hidden shadow-2xl aspect-video relative"><div id="video-modal-content" class="absolute inset-0 w-full h-full"></div></div></div></div>
-    <div id="hafalan-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity"><div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col transform scale-95 transition-all" id="hafalan-modal-panel"><div class="p-6 border-b border-slate-100 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-t-[2rem] text-white flex justify-between items-center"><h3 class="font-bold text-lg"><i class="fas fa-chart-pie mr-2"></i>Rincian Hafalan</h3><button onclick="closeHafalanModal()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition shrink-0"><i class="fas fa-times"></i></button></div><div class="p-4 border-b border-slate-100 bg-slate-50"><div class="relative"><i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs"></i><input type="text" id="hafalan-search" onkeyup="renderHafalanDetailList()" placeholder="Cari nama surah..." class="w-full bg-white border border-slate-200 rounded-xl py-2 pl-8 pr-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm"></div></div><div id="hafalan-modal-content" class="p-5 overflow-y-auto space-y-3 hide-scrollbar flex-1 bg-slate-50"></div></div></div>
+    <div id="toast" class="fixed top-12 left-1/2 transform -translate-x-1/2 w-[85%] max-w-[350px] bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl transition-all duration-400 -translate-y-[200%] opacity-0 z-[300] flex items-center gap-3">
+        <div id="toast-icon-bg" class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center shrink-0"><i id="toast-icon" class="fas fa-check text-white text-sm"></i></div>
+        <span id="toast-message" class="font-medium text-sm leading-tight flex-1">Notifikasi</span>
+    </div>
+
+    <div id="schedule-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col transform scale-95 transition-all" id="modal-panel">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                <h3 class="font-bold text-lg text-slate-800" id="modal-date-title">Jadwal Kajian</h3>
+                <button onclick="closeModal()" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-600 transition shrink-0"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="modal-content" class="p-5 overflow-y-auto space-y-4 hide-scrollbar flex-1"></div>
+        </div>
+    </div>
+
+    <div id="video-modal" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="w-full max-w-md relative transform scale-95 transition-all" id="video-modal-panel">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="font-bold text-white text-sm" id="video-modal-title">Memutar Video...</h3>
+                <button onclick="closeVideoModal()" class="w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center hover:bg-white/40 transition backdrop-blur-sm"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="bg-black w-full rounded-2xl overflow-hidden shadow-2xl aspect-video relative">
+                <div id="video-modal-content" class="absolute inset-0 w-full h-full"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="hafalan-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col transform scale-95 transition-all" id="hafalan-modal-panel">
+            <div class="p-6 border-b border-slate-100 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-t-[2rem] text-white flex justify-between items-center">
+                <h3 class="font-bold text-lg"><i class="fas fa-chart-pie mr-2"></i>Rincian Hafalan</h3>
+                <button onclick="closeHafalanModal()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition shrink-0"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-4 border-b border-slate-100 bg-slate-50">
+                <div class="relative">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" id="hafalan-search" onkeyup="renderHafalanDetailList()" placeholder="Cari nama surah..." class="w-full bg-white border border-slate-200 rounded-xl py-2 pl-8 pr-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm">
+                </div>
+            </div>
+            <div id="hafalan-modal-content" class="p-5 overflow-y-auto space-y-3 hide-scrollbar flex-1 bg-slate-50"></div>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -265,8 +404,12 @@
         import { getFirestore, collection, onSnapshot, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyBgcwQR00n6uHSv1yypRqrpP6I7b1YwjIk", authDomain: "tahfidzonline-4d5bc.firebaseapp.com", projectId: "tahfidzonline-4d5bc",
-            storageBucket: "tahfidzonline-4d5bc.firebasestorage.app", messagingSenderId: "752501441915", appId: "1:752501441915:web:5fd129d1d2661c31db69de"
+            apiKey: "AIzaSyBgcwQR00n6uHSv1yypRqrpP6I7b1YwjIk",
+            authDomain: "tahfidzonline-4d5bc.firebaseapp.com",
+            projectId: "tahfidzonline-4d5bc",
+            storageBucket: "tahfidzonline-4d5bc.firebasestorage.app",
+            messagingSenderId: "752501441915",
+            appId: "1:752501441915:web:5fd129d1d2661c31db69de"
         };
         const appIdGlobal = 'tahfidz-app-global-v1';
         
@@ -281,51 +424,90 @@
         let adminWaNumber = "6281234567890"; 
 
         onSnapshot(doc(db, 'artifacts', appIdGlobal, 'public', 'data', 'settings', 'admin_profile'), (docSnap) => {
-            if(docSnap.exists() && docSnap.data().wa_number) { adminWaNumber = docSnap.data().wa_number; }
-        }, (error) => { console.warn("Gagal membaca pengaturan admin.", error.message); });
+            if(docSnap?.exists() && docSnap.data().wa_number) { 
+                adminWaNumber = docSnap.data().wa_number; 
+            }
+        }, (error) => { 
+            console.warn("Gagal membaca pengaturan admin.", error.message); 
+        });
 
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
+            const authPage = document.getElementById('auth-page');
+            const appContent = document.getElementById('app-content');
+
             if(user) {
-                document.getElementById('auth-page').classList.add('-translate-x-full');
+                if(authPage) authPage.classList.add('-translate-x-full');
                 setTimeout(() => {
-                    document.getElementById('auth-page').classList.add('hidden');
-                    document.getElementById('app-content').classList.remove('hidden');
-                    document.getElementById('app-content').classList.add('flex');
-                    document.getElementById('user-greeting').innerText = `Memuat data profil...`;
-                    document.getElementById('profile-email').value = user.email; // Set default disabled email
+                    if(authPage) authPage.classList.add('hidden');
+                    if(appContent) { 
+                        appContent.classList.remove('hidden'); 
+                        appContent.classList.add('flex'); 
+                    }
+                    const greeting = document.getElementById('user-greeting');
+                    if(greeting) greeting.innerHTML = `<i class="fas fa-spinner fa-spin text-primary mr-1"></i> Memuat data profil...`;
+                    
+                    const profileEmail = document.getElementById('profile-email');
+                    if(profileEmail) profileEmail.value = user.email;
                 }, 500);
                 setupListeners();
             } else {
-                document.getElementById('app-content').classList.add('hidden');
-                document.getElementById('app-content').classList.remove('flex');
-                document.getElementById('auth-page').classList.remove('hidden');
-                setTimeout(() => { document.getElementById('auth-page').classList.remove('-translate-x-full'); }, 10);
+                if(appContent) { 
+                    appContent.classList.add('hidden'); 
+                    appContent.classList.remove('flex'); 
+                }
+                if(authPage) authPage.classList.remove('hidden');
+                setTimeout(() => { 
+                    if(authPage) authPage.classList.remove('-translate-x-full'); 
+                }, 10);
             }
         });
 
         window.toggleAuthMode = function() {
             isLoginMode = !isLoginMode;
+            const formLogin = document.getElementById('form-login');
+            const formReg = document.getElementById('form-register');
+            const authSub = document.getElementById('auth-subtitle');
+            const authToggle = document.getElementById('auth-toggle-text');
+
             if(isLoginMode) {
-                document.getElementById('form-login').classList.remove('hidden'); document.getElementById('form-register').classList.add('hidden');
-                document.getElementById('auth-subtitle').innerText = "Masuk untuk melanjutkan setoran hafalanmu.";
-                document.getElementById('auth-toggle-text').innerHTML = `Belum punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Daftar di sini</button>`;
+                if(formLogin) formLogin.classList.remove('hidden'); 
+                if(formReg) formReg.classList.add('hidden');
+                if(authSub) authSub.innerText = "Masuk untuk melanjutkan setoran hafalanmu.";
+                if(authToggle) authToggle.innerHTML = `Belum punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Daftar di sini</button>`;
             } else {
-                document.getElementById('form-login').classList.add('hidden'); document.getElementById('form-register').classList.remove('hidden');
-                document.getElementById('auth-subtitle').innerText = "Lengkapi data untuk mendaftar via WhatsApp.";
-                document.getElementById('auth-toggle-text').innerHTML = `Sudah punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Masuk di sini</button>`;
+                if(formLogin) formLogin.classList.add('hidden'); 
+                if(formReg) formReg.classList.remove('hidden');
+                if(authSub) authSub.innerText = "Lengkapi data untuk mendaftar via WhatsApp.";
+                if(authToggle) authToggle.innerHTML = `Sudah punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Masuk di sini</button>`;
             }
         };
 
         window.handleLogin = async function() {
-            const email = document.getElementById('auth-email').value; const pass = document.getElementById('auth-password').value;
+            const emailEl = document.getElementById('auth-email');
+            const passEl = document.getElementById('auth-password');
+            const email = emailEl ? emailEl.value : ''; 
+            const pass = passEl ? passEl.value : '';
+            
             if(!email || !pass) return showToast("Email dan password wajib diisi", "error");
-            try { await signInWithEmailAndPassword(auth, email, pass); showToast("Berhasil login!"); } catch(e) { showToast("Gagal login! Periksa email dan password", "error"); }
+            
+            try { 
+                showToast("Memverifikasi...");
+                await signInWithEmailAndPassword(auth, email, pass); 
+                showToast("Berhasil login!"); 
+            } catch(e) { 
+                showToast("Gagal login! Periksa email dan password", "error"); 
+            }
         };
 
         window.handleRegisterWA = function() {
-            const sapaan = document.getElementById('reg-sapaan').value; const nama = document.getElementById('reg-nama').value; const wa = document.getElementById('reg-wa').value; const niat = document.getElementById('reg-niat').value;
+            const sapaan = document.getElementById('reg-sapaan')?.value || ''; 
+            const nama = document.getElementById('reg-nama')?.value || ''; 
+            const wa = document.getElementById('reg-wa')?.value || ''; 
+            const niat = document.getElementById('reg-niat')?.value || '';
+            
             if(!nama || !wa || !niat) return showToast("Harap isi semua data formulir pendaftaran!", "error");
+            
             const pesan = `Assalamu'alaikum Admin/Mudabbir,\nSaya ingin mendaftar program Ruang Hafalan.\n\n*DATA PENDAFTAR:*\n- Sapaan: ${sapaan}\n- Nama Lengkap: ${nama}\n- No. WhatsApp: ${wa}\n- Doa/Niat: ${niat}\n\nMohon bantuannya untuk dibuatkan akun dan informasi detail (Email & Sandi) agar bisa masuk ke dalam aplikasi. Terima kasih.`;
             window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent(pesan)}`, '_blank');
         };
@@ -334,22 +516,71 @@
             window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent("Assalamu'alaikum Admin/Mudabbir, saya butuh bantuan terkait aplikasi Ruang Hafalan...")}`, '_blank');
         };
 
-        window.handleLogout = async function() { try { await signOut(auth); document.getElementById('auth-email').value = ''; document.getElementById('auth-password').value = ''; showToast("Berhasil keluar."); } catch(e) {} };
-
-        const daftarSurah = [{nama:"Al-Fatihah",ayat:7},{nama:"Al-Baqarah",ayat:286},{nama:"Ali 'Imran",ayat:200},{nama:"An-Nisa'",ayat:176},{nama:"Al-Ma'idah",ayat:120},{nama:"Al-An'am",ayat:165},{nama:"Al-A'raf",ayat:206},{nama:"Al-Anfal",ayat:75},{nama:"At-Taubah",ayat:129},{nama:"Yunus",ayat:109},{nama:"Hud",ayat:123},{nama:"Yusuf",ayat:111},{nama:"Ar-Ra'd",ayat:43},{nama:"Ibrahim",ayat:52},{nama:"Al-Hijr",ayat:99},{nama:"An-Nahl",ayat:128},{nama:"Al-Isra'",ayat:111},{nama:"Al-Kahf",ayat:110},{nama:"Maryam",ayat:98},{nama:"Taha",ayat:135},{nama:"Al-Anbiya'",ayat:112},{nama:"Al-Hajj",ayat:78},{nama:"Al-Mu'minun",ayat:118},{nama:"An-Nur",ayat:64},{nama:"Al-Furqan",ayat:77},{nama:"Asy-Syu'ara'",ayat:227},{nama:"An-Naml",ayat:93},{nama:"Al-Qasas",ayat:88},{nama:"Al-'Ankabut",ayat:69},{nama:"Ar-Rum",ayat:60},{nama:"Luqman",ayat:34},{nama:"As-Sajdah",ayat:30},{nama:"Al-Ahzab",ayat:73},{nama:"Saba'",ayat:54},{nama:"Fatir",ayat:45},{nama:"Yasin",ayat:83},{nama:"As-Saffat",ayat:182},{nama:"Sad",ayat:88},{nama:"Az-Zumar",ayat:75},{nama:"Gafir",ayat:85},{nama:"Fussilat",ayat:54},{nama:"Asy-Syura",ayat:53},{nama:"Az-Zukhruf",ayat:89},{nama:"Ad-Dukhan",ayat:59},{nama:"Al-Jasiyah",ayat:37},{nama:"Al-Ahqaf",ayat:35},{nama:"Muhammad",ayat:38},{nama:"Al-Fath",ayat:29},{nama:"Al-Hujurat",ayat:18},{nama:"Qaf",ayat:45},{nama:"Az-Zariyat",ayat:60},{nama:"At-Tur",ayat:49},{nama:"An-Najm",ayat:62},{nama:"Al-Qamar",ayat:55},{nama:"Ar-Rahman",ayat:78},{nama:"Al-Waqi'ah",ayat:96},{nama:"Al-Hadid",ayat:29},{nama:"Al-Mujadilah",ayat:22},{nama:"Al-Hasyr",ayat:24},{nama:"Al-Mumtahanah",ayat:13},{nama:"As-Saff",ayat:14},{nama:"Al-Jumu'ah",ayat:11},{nama:"Al-Munafiqun",ayat:11},{nama:"At-Tagabun",ayat:18},{nama:"At-Talaq",ayat:12},{nama:"At-Tahrim",ayat:12},{nama:"Al-Mulk",ayat:30},{nama:"Al-Qalam",ayat:52},{nama:"Al-Haqqah",ayat:52},{nama:"Al-Ma'arij",ayat:44},{nama:"Nuh",ayat:28},{nama:"Al-Jinn",ayat:28},{nama:"Al-Muzzammil",ayat:20},{nama:"Al-Muddassir",ayat:56},{nama:"Al-Qiyamah",ayat:40},{nama:"Al-Insan",ayat:31},{nama:"Al-Mursalat",ayat:50},{nama:"An-Naba'",ayat:40},{nama:"An-Nazi'at",ayat:46},{nama:"'Abasa",ayat:42},{nama:"At-Takwir",ayat:29},{nama:"Al-Infitar",ayat:19},{nama:"Al-Mutaffifin",ayat:36},{nama:"Al-Insyiqaq",ayat:25},{nama:"Al-Buruj",ayat:22},{nama:"At-Tariq",ayat:17},{nama:"Al-A'la",ayat:19},{nama:"Al-Gasyiyah",ayat:26},{nama:"Al-Fajr",ayat:30},{nama:"Al-Balad",ayat:20},{nama:"Asy-Syams",ayat:15},{nama:"Al-Lail",ayat:21},{nama:"Ad-Duha",ayat:11},{nama:"Asy-Syarh",ayat:8},{nama:"At-Tin",ayat:8},{nama:"Al-'Alaq",ayat:19},{nama:"Al-Qadr",ayat:5},{nama:"Al-Bayyinah",ayat:8},{nama:"Az-Zalzalah",ayat:8},{nama:"Al-'Adiyat",ayat:11},{nama:"Al-Qari'ah",ayat:11},{nama:"At-Takasur",ayat:8},{nama:"Al-'Asr",ayat:3},{nama:"Al-Humazah",ayat:9},{nama:"Al-Fil",ayat:5},{nama:"Quraisy",ayat:4},{nama:"Al-Ma'un",ayat:7},{nama:"Al-Kausar",ayat:3},{nama:"Al-Kafirun",ayat:6},{nama:"An-Nasr",ayat:3},{nama:"Al-Lahab",ayat:5},{nama:"Al-Ikhlas",ayat:4},{nama:"Al-Falaq",ayat:5},{nama:"An-Nas",ayat:6}];
-
-        function initSurahDropdown() { const select = document.getElementById('surah-select'); if(select) daftarSurah.forEach((s, i) => select.add(new Option(s.nama, i))); } initSurahDropdown(); 
-        window.handleSurahChange = function() {
-            const idx = document.getElementById('surah-select').value; const aStart = document.getElementById('ayat-start'); const aEnd = document.getElementById('ayat-end');
-            if (idx === "") { aStart.innerHTML = '<option value="">-</option>'; aEnd.innerHTML = '<option value="">-</option>'; aStart.disabled = true; aEnd.disabled = true; return; }
-            aStart.innerHTML = ''; for (let i = 1; i <= daftarSurah[idx].ayat; i++) aStart.add(new Option(i, i));
-            aStart.disabled = false; window.updateAyatEnd();
+        window.handleLogout = async function() { 
+            try { 
+                await signOut(auth); 
+                window.location.reload(); 
+            } catch(e) {} 
         };
+
+        const daftarSurah = [
+            {nama:"Al-Fatihah",ayat:7},{nama:"Al-Baqarah",ayat:286},{nama:"Ali 'Imran",ayat:200},{nama:"An-Nisa'",ayat:176},{nama:"Al-Ma'idah",ayat:120},{nama:"Al-An'am",ayat:165},{nama:"Al-A'raf",ayat:206},{nama:"Al-Anfal",ayat:75},{nama:"At-Taubah",ayat:129},{nama:"Yunus",ayat:109},{nama:"Hud",ayat:123},{nama:"Yusuf",ayat:111},{nama:"Ar-Ra'd",ayat:43},{nama:"Ibrahim",ayat:52},{nama:"Al-Hijr",ayat:99},{nama:"An-Nahl",ayat:128},{nama:"Al-Isra'",ayat:111},{nama:"Al-Kahf",ayat:110},{nama:"Maryam",ayat:98},{nama:"Taha",ayat:135},{nama:"Al-Anbiya'",ayat:112},{nama:"Al-Hajj",ayat:78},{nama:"Al-Mu'minun",ayat:118},{nama:"An-Nur",ayat:64},{nama:"Al-Furqan",ayat:77},{nama:"Asy-Syu'ara'",ayat:227},{nama:"An-Naml",ayat:93},{nama:"Al-Qasas",ayat:88},{nama:"Al-'Ankabut",ayat:69},{nama:"Ar-Rum",ayat:60},{nama:"Luqman",ayat:34},{nama:"As-Sajdah",ayat:30},{nama:"Al-Ahzab",ayat:73},{nama:"Saba'",ayat:54},{nama:"Fatir",ayat:45},{nama:"Yasin",ayat:83},{nama:"As-Saffat",ayat:182},{nama:"Sad",ayat:88},{nama:"Az-Zumar",ayat:75},{nama:"Gafir",ayat:85},{nama:"Fussilat",ayat:54},{nama:"Asy-Syura",ayat:53},{nama:"Az-Zukhruf",ayat:89},{nama:"Ad-Dukhan",ayat:59},{nama:"Al-Jasiyah",ayat:37},{nama:"Al-Ahqaf",ayat:35},{nama:"Muhammad",ayat:38},{nama:"Al-Fath",ayat:29},{nama:"Al-Hujurat",ayat:18},{nama:"Qaf",ayat:45},{nama:"Az-Zariyat",ayat:60},{nama:"At-Tur",ayat:49},{nama:"An-Najm",ayat:62},{nama:"Al-Qamar",ayat:55},{nama:"Ar-Rahman",ayat:78},{nama:"Al-Waqi'ah",ayat:96},{nama:"Al-Hadid",ayat:29},{nama:"Al-Mujadilah",ayat:22},{nama:"Al-Hasyr",ayat:24},{nama:"Al-Mumtahanah",ayat:13},{nama:"As-Saff",ayat:14},{nama:"Al-Jumu'ah",ayat:11},{nama:"Al-Munafiqun",ayat:11},{nama:"At-Tagabun",ayat:18},{nama:"At-Talaq",ayat:12},{nama:"At-Tahrim",ayat:12},{nama:"Al-Mulk",ayat:30},{nama:"Al-Qalam",ayat:52},{nama:"Al-Haqqah",ayat:52},{nama:"Al-Ma'arij",ayat:44},{nama:"Nuh",ayat:28},{nama:"Al-Jinn",ayat:28},{nama:"Al-Muzzammil",ayat:20},{nama:"Al-Muddassir",ayat:56},{nama:"Al-Qiyamah",ayat:40},{nama:"Al-Insan",ayat:31},{nama:"Al-Mursalat",ayat:50},{nama:"An-Naba'",ayat:40},{nama:"An-Nazi'at",ayat:46},{nama:"'Abasa",ayat:42},{nama:"At-Takwir",ayat:29},{nama:"Al-Infitar",ayat:19},{nama:"Al-Mutaffifin",ayat:36},{nama:"Al-Insyiqaq",ayat:25},{nama:"Al-Buruj",ayat:22},{nama:"At-Tariq",ayat:17},{nama:"Al-A'la",ayat:19},{nama:"Al-Gasyiyah",ayat:26},{nama:"Al-Fajr",ayat:30},{nama:"Al-Balad",ayat:20},{nama:"Asy-Syams",ayat:15},{nama:"Al-Lail",ayat:21},{nama:"Ad-Duha",ayat:11},{nama:"Asy-Syarh",ayat:8},{nama:"At-Tin",ayat:8},{nama:"Al-'Alaq",ayat:19},{nama:"Al-Qadr",ayat:5},{nama:"Al-Bayyinah",ayat:8},{nama:"Az-Zalzalah",ayat:8},{nama:"Al-'Adiyat",ayat:11},{nama:"Al-Qari'ah",ayat:11},{nama:"At-Takasur",ayat:8},{nama:"Al-'Asr",ayat:3},{nama:"Al-Humazah",ayat:9},{nama:"Al-Fil",ayat:5},{nama:"Quraisy",ayat:4},{nama:"Al-Ma'un",ayat:7},{nama:"Al-Kausar",ayat:3},{nama:"Al-Kafirun",ayat:6},{nama:"An-Nasr",ayat:3},{nama:"Al-Lahab",ayat:5},{nama:"Al-Ikhlas",ayat:4},{nama:"Al-Falaq",ayat:5},{nama:"An-Nas",ayat:6}
+        ];
+
+        function initSurahDropdown() { 
+            const select = document.getElementById('surah-select'); 
+            if(select) {
+                daftarSurah.forEach((s, i) => select.add(new Option(s.nama, i))); 
+            }
+        } 
+        initSurahDropdown(); 
+
+        window.handleSurahChange = function() {
+            const selectEl = document.getElementById('surah-select'); 
+            const aStart = document.getElementById('ayat-start'); 
+            const aEnd = document.getElementById('ayat-end');
+            
+            if(!selectEl || !aStart || !aEnd) return;
+            const idx = selectEl.value; 
+            
+            if (idx === "") { 
+                aStart.innerHTML = '<option value="">-</option>'; 
+                aEnd.innerHTML = '<option value="">-</option>'; 
+                aStart.disabled = true; 
+                aEnd.disabled = true; 
+                return; 
+            }
+            
+            aStart.innerHTML = ''; 
+            for (let i = 1; i <= daftarSurah[idx].ayat; i++) {
+                aStart.add(new Option(i, i));
+            }
+            aStart.disabled = false; 
+            window.updateAyatEnd();
+        };
+
         window.updateAyatEnd = function() {
-            const idx = document.getElementById('surah-select').value; const aStart = document.getElementById('ayat-start'); const aEnd = document.getElementById('ayat-end');
-            if (idx === "") return; const startVal = parseInt(aStart.value) || 1; const currentEndVal = parseInt(aEnd.value);
-            aEnd.innerHTML = ''; for (let i = startVal; i <= daftarSurah[idx].ayat; i++) aEnd.add(new Option(i, i));
-            if (!isNaN(currentEndVal) && currentEndVal >= startVal && currentEndVal <= daftarSurah[idx].ayat) { aEnd.value = currentEndVal; } else { aEnd.value = startVal; }
+            const selectEl = document.getElementById('surah-select'); 
+            const aStart = document.getElementById('ayat-start'); 
+            const aEnd = document.getElementById('ayat-end');
+            
+            if(!selectEl || !aStart || !aEnd) return;
+            const idx = selectEl.value; 
+            
+            if (idx === "") return; 
+            const startVal = parseInt(aStart.value) || 1; 
+            const currentEndVal = parseInt(aEnd.value);
+            
+            aEnd.innerHTML = ''; 
+            for (let i = startVal; i <= daftarSurah[idx].ayat; i++) {
+                aEnd.add(new Option(i, i));
+            }
+            
+            if (!isNaN(currentEndVal) && currentEndVal >= startVal && currentEndVal <= daftarSurah[idx].ayat) { 
+                aEnd.value = currentEndVal; 
+            } else { 
+                aEnd.value = startVal; 
+            }
             aEnd.disabled = false;
         };
 
@@ -358,82 +589,129 @@
             
             onSnapshot(collection(db, 'artifacts', appIdGlobal, 'public', 'data', 'setoran'), (snap) => {
                 state.setoran = snap.docs.map(d => ({id: d.id, ...d.data()}));
-                if(!document.getElementById('tab-setoran').classList.contains('hidden')) renderRiwayat();
-                if(!document.getElementById('tab-akun').classList.contains('hidden')) renderProgressHafalan();
+                const tSetoran = document.getElementById('tab-setoran');
+                const tAkun = document.getElementById('tab-akun');
+                if(tSetoran && !tSetoran.classList.contains('hidden')) renderRiwayat();
+                if(tAkun && !tAkun.classList.contains('hidden')) renderProgressHafalan();
             }, (error) => console.error("Error Load Setoran:", error.message));
 
             onSnapshot(collection(db, 'artifacts', appIdGlobal, 'public', 'data', 'schedules'), (snap) => {
                 state.schedules = snap.docs.map(d => ({id: d.id, ...d.data()}));
-                if(!document.getElementById('tab-dashboard').classList.contains('hidden')) { renderNextSchedule(); renderCalendar(); }
+                const tDash = document.getElementById('tab-dashboard');
+                if(tDash && !tDash.classList.contains('hidden')) { renderNextSchedule(); renderCalendar(); }
             }, (error) => console.error("Error Load Schedules:", error.message));
 
             onSnapshot(collection(db, 'artifacts', appIdGlobal, 'public', 'data', 'videos'), (snap) => {
                 state.videos = snap.docs.map(d => ({id: d.id, ...d.data()}));
-                if(!document.getElementById('tab-kajian').classList.contains('hidden')) renderVideos();
+                const tKajian = document.getElementById('tab-kajian');
+                if(tKajian && !tKajian.classList.contains('hidden')) renderVideos();
             }, (error) => console.error("Error Load Videos:", error.message));
 
             onSnapshot(collection(db, 'artifacts', appIdGlobal, 'public', 'data', 'peserta'), (snap) => {
                 const allPeserta = snap.docs.map(d => ({id: d.id, ...d.data()}));
                 const myProfile = allPeserta.find(p => p.email === currentUser.email);
+                const greeting = document.getElementById('user-greeting');
+                
                 if(myProfile) {
                     userProfileId = myProfile.id;
-                    document.getElementById('profile-sapaan').value = myProfile.sapaan || 'Kak';
-                    document.getElementById('profile-nama').value = myProfile.nama || '';
-                    document.getElementById('profile-alamat').value = myProfile.alamat || '';
-                    document.getElementById('profile-tgl-lahir').value = myProfile.tanggal_lahir || '';
-                    document.getElementById('user-greeting').innerText = `Selamat datang, ${myProfile.sapaan || ''} ${myProfile.nama || ''}`;
+                    if(document.getElementById('profile-sapaan')) document.getElementById('profile-sapaan').value = myProfile.sapaan || 'Kak';
+                    if(document.getElementById('profile-nama')) document.getElementById('profile-nama').value = myProfile.nama || '';
+                    if(document.getElementById('profile-alamat')) document.getElementById('profile-alamat').value = myProfile.alamat || '';
+                    if(document.getElementById('profile-tgl-lahir')) document.getElementById('profile-tgl-lahir').value = myProfile.tanggal_lahir || '';
+                    if(greeting) greeting.innerText = `Selamat datang, ${myProfile.sapaan || ''} ${myProfile.nama || ''}`;
+                } else {
+                    // Fallback: Jika data profil belum ada sama sekali
+                    userProfileId = null;
+                    if(document.getElementById('profile-sapaan')) document.getElementById('profile-sapaan').value = 'Kak';
+                    if(document.getElementById('profile-nama')) document.getElementById('profile-nama').value = '';
+                    if(document.getElementById('profile-alamat')) document.getElementById('profile-alamat').value = '';
+                    if(document.getElementById('profile-tgl-lahir')) document.getElementById('profile-tgl-lahir').value = '';
+                    if(greeting) greeting.innerText = `Selamat datang, ${currentUser.email}`;
                 }
-            }, (error) => console.error("Error Load Peserta:", error.message));
+            }, (error) => {
+                console.error("Error Load Peserta:", error.message);
+                const greeting = document.getElementById('user-greeting');
+                if(greeting) greeting.innerText = `Selamat datang, ${currentUser.email}`;
+            });
         }
 
-        setInterval(() => { if(!document.getElementById('tab-dashboard').classList.contains('hidden')) renderNextSchedule(); }, 60000);
+        setInterval(() => { 
+            const dash = document.getElementById('tab-dashboard');
+            if(dash && !dash.classList.contains('hidden')) renderNextSchedule(); 
+        }, 60000);
 
         window.switchTab = function(tabId) {
-            document.querySelectorAll('section').forEach(sec => { sec.classList.remove('block'); sec.classList.add('hidden'); });
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden'); document.getElementById(`tab-${tabId}`).classList.add('block');
+            document.querySelectorAll('section').forEach(sec => { 
+                sec.classList.remove('block'); 
+                sec.classList.add('hidden'); 
+            });
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if(activeTab) { 
+                activeTab.classList.remove('hidden'); 
+                activeTab.classList.add('block'); 
+            }
+            
             ['dashboard', 'setoran', 'kajian', 'akun'].forEach(nav => {
-                const elBtn = document.getElementById(`nav-mobile-${nav}`); const elBg = document.getElementById(`icon-bg-${nav}`);
+                const elBtn = document.getElementById(`nav-mobile-${nav}`); 
+                const elBg = document.getElementById(`icon-bg-${nav}`);
                 if(elBtn) {
-                    if(nav === tabId) { elBtn.classList.add('text-primary'); elBtn.classList.remove('text-slate-400'); if(elBg) { elBg.classList.add('bg-emerald-50', 'text-primary'); elBg.classList.remove('text-slate-400'); } } 
-                    else { elBtn.classList.remove('text-primary'); elBtn.classList.add('text-slate-400'); if(elBg) { elBg.classList.remove('bg-emerald-50', 'text-primary'); elBg.classList.add('text-slate-400'); } }
+                    if(nav === tabId) { 
+                        elBtn.classList.add('text-primary'); 
+                        elBtn.classList.remove('text-slate-400'); 
+                        if(elBg) { elBg.classList.add('bg-emerald-50', 'text-primary'); elBg.classList.remove('text-slate-400'); } 
+                    } else { 
+                        elBtn.classList.remove('text-primary'); 
+                        elBtn.classList.add('text-slate-400'); 
+                        if(elBg) { elBg.classList.remove('bg-emerald-50', 'text-primary'); elBg.classList.add('text-slate-400'); } 
+                    }
                 }
             });
+            
             if(tabId === 'dashboard') { renderNextSchedule(); renderCalendar(); } 
             if(tabId === 'akun') renderProgressHafalan(); 
             if(tabId === 'kajian') renderVideos(); 
             if(tabId === 'setoran') renderRiwayat();
         };
 
-        // --- Profil Update & Security ---
+        // --- Profil Update ---
         window.saveProfile = async function() {
             if (!currentUser) return window.showToast("Anda harus login!", "error");
-            if (!userProfileId) return window.showToast("Data profil belum termuat. Silakan tunggu atau hubungi Admin.", "error");
             
-            const sapaan = document.getElementById('profile-sapaan').value;
-            const nama = document.getElementById('profile-nama').value;
-            const alamat = document.getElementById('profile-alamat').value;
-            const tanggal_lahir = document.getElementById('profile-tgl-lahir').value;
+            const sapaan = document.getElementById('profile-sapaan')?.value || 'Kak';
+            const nama = document.getElementById('profile-nama')?.value || '';
+            const alamat = document.getElementById('profile-alamat')?.value || '';
+            const tanggal_lahir = document.getElementById('profile-tgl-lahir')?.value || '';
 
             if(!nama) return window.showToast("Nama tidak boleh kosong!", "error");
 
             try {
-                await setDoc(doc(db, 'artifacts', appIdGlobal, 'public', 'data', 'peserta', userProfileId), { 
-                    sapaan, nama, alamat, tanggal_lahir 
+                // Gunakan id lama jika ada, atau buat yang baru
+                const docId = userProfileId || Date.now().toString();
+                
+                await setDoc(doc(db, 'artifacts', appIdGlobal, 'public', 'data', 'peserta', docId), { 
+                    email: currentUser.email, // Pastikan email ikut tersimpan untuk keamanan
+                    sapaan, 
+                    nama, 
+                    alamat, 
+                    tanggal_lahir 
                 }, { merge: true });
+                
                 window.showToast("Profil berhasil disimpan!");
-            } catch (e) { window.showToast("Gagal menyimpan profil. Pastikan Rules Anda sudah diupdate.", "error"); }
+            } catch (e) { 
+                window.showToast("Gagal menyimpan profil. Pastikan Rules Firebase Anda sudah diupdate.", "error"); 
+            }
         };
 
         window.ubahSandi = async function() {
             if (!currentUser) return window.showToast("Anda harus login!", "error");
-            const newPass = document.getElementById('new-password').value;
+            const newPass = document.getElementById('new-password')?.value;
             
-            if(newPass.length < 6) return window.showToast("Password minimal 6 karakter!", "error");
+            if(!newPass || newPass.length < 6) return window.showToast("Password minimal 6 karakter!", "error");
 
             try {
                 await updatePassword(currentUser, newPass);
                 window.showToast("Kata sandi berhasil diubah!");
-                document.getElementById('new-password').value = '';
+                if(document.getElementById('new-password')) document.getElementById('new-password').value = '';
             } catch (error) {
                 if(error.code === 'auth/requires-recent-login') {
                     window.showToast("Sistem keamanan memblokir ini. Silakan Logout dan Login kembali, lalu coba lagi.", "error");
@@ -443,167 +721,383 @@
             }
         };
 
-        let deferredPrompt; const installCard = document.getElementById('pwa-install-card'); const btnInstallPwa = document.getElementById('btn-install-pwa');
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; if(installCard) { installCard.classList.remove('hidden'); installCard.classList.add('flex'); } });
-        if(btnInstallPwa) { btnInstallPwa.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if(outcome === 'accepted') { installCard.classList.add('hidden'); } deferredPrompt = null; } }); }
-        if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.protocol === 'http:')) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').then(reg => { reg.addEventListener('updatefound', () => { const newWorker = reg.installing; newWorker.addEventListener('statechange', () => { if (newWorker.state === 'installed' && navigator.serviceWorker.controller) { window.showToast("Pembaruan aplikasi tersedia! Memuat ulang...", "success"); setTimeout(() => window.location.reload(), 2000); } }); }); }).catch(err => console.warn('Pendaftaran ServiceWorker dilewati:', err)); }); }
+        // --- PWA & UI Utilities ---
+        let deferredPrompt; 
+        const installCard = document.getElementById('pwa-install-card'); 
+        const btnInstallPwa = document.getElementById('btn-install-pwa');
+        
+        window.addEventListener('beforeinstallprompt', (e) => { 
+            e.preventDefault(); 
+            deferredPrompt = e; 
+            if(installCard) { installCard.classList.remove('hidden'); installCard.classList.add('flex'); } 
+        });
+        
+        if(btnInstallPwa) { 
+            btnInstallPwa.addEventListener('click', async () => { 
+                if (deferredPrompt) { 
+                    deferredPrompt.prompt(); 
+                    const { outcome } = await deferredPrompt.userChoice; 
+                    if(outcome === 'accepted' && installCard) { installCard.classList.add('hidden'); } 
+                    deferredPrompt = null; 
+                } 
+            }); 
+        }
+        
+        if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.protocol === 'http:')) { 
+            window.addEventListener('load', () => { 
+                navigator.serviceWorker.register('./sw.js').then(reg => { 
+                    reg.addEventListener('updatefound', () => { 
+                        const newWorker = reg.installing; 
+                        newWorker.addEventListener('statechange', () => { 
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) { 
+                                window.showToast("Pembaruan aplikasi tersedia! Memuat ulang...", "success"); 
+                                setTimeout(() => window.location.reload(), 2000); 
+                            } 
+                        }); 
+                    }); 
+                }).catch(err => console.warn('Pendaftaran ServiceWorker dilewati:', err)); 
+            }); 
+        }
 
         window.showToast = function(msg, type="success") {
-            const toast = document.getElementById('toast'); const toastIconBg = document.getElementById('toast-icon-bg'); const toastIcon = document.getElementById('toast-icon');
-            document.getElementById('toast-message').innerText = msg;
-            if(type === "error") { toastIconBg.className = 'w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center shrink-0'; toastIcon.className = 'fas fa-exclamation text-white text-sm'; } 
-            else { toastIconBg.className = 'w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center shrink-0'; toastIcon.className = 'fas fa-check text-white text-sm'; }
-            toast.classList.remove('-translate-y-[200%]', 'opacity-0'); setTimeout(() => { toast.classList.add('-translate-y-[200%]', 'opacity-0'); }, 3000);
+            const toast = document.getElementById('toast'); 
+            const toastIconBg = document.getElementById('toast-icon-bg'); 
+            const toastIcon = document.getElementById('toast-icon');
+            if(!toast || !toastIconBg || !toastIcon) return;
+            
+            const toastMsg = document.getElementById('toast-message');
+            if (toastMsg) toastMsg.innerText = msg;
+            
+            if(type === "error") { 
+                toastIconBg.className = 'w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center shrink-0'; 
+                toastIcon.className = 'fas fa-exclamation text-white text-sm'; 
+            } else { 
+                toastIconBg.className = 'w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center shrink-0'; 
+                toastIcon.className = 'fas fa-check text-white text-sm'; 
+            }
+            
+            toast.classList.remove('-translate-y-[200%]', 'opacity-0'); 
+            setTimeout(() => { toast.classList.add('-translate-y-[200%]', 'opacity-0'); }, 3000);
         };
 
         function getZoomButtonHTML(sched, customClasses = "") {
-            const now = new Date(); const start = new Date(`${sched.date}T${sched.time}:00`); const end = sched.timeEnd ? new Date(`${sched.date}T${sched.timeEnd}:00`) : new Date(start.getTime() + 2 * 60 * 60 * 1000); 
+            const now = new Date(); 
+            const start = new Date(`${sched.date}T${sched.time}:00`); 
+            const end = sched.timeEnd ? new Date(`${sched.date}T${sched.timeEnd}:00`) : new Date(start.getTime() + 2 * 60 * 60 * 1000); 
             const diffStartMins = (start - now) / 60000;
-            if (now > end) return `<button disabled class="mt-4 block w-full text-center bg-slate-200 text-slate-500 py-3 rounded-xl text-sm font-bold border border-slate-300 cursor-not-allowed ${customClasses}"><i class="fas fa-calendar-check mr-1"></i> Sesi Berakhir</button>`;
-            else if (diffStartMins <= 15) return `<a href="${sched.link}" target="_blank" class="mt-4 block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-sm font-bold transition shadow-lg shadow-blue-500/30 ${customClasses}"><i class="fas fa-video mr-1"></i> Gabung Ruang Zoom</a>`;
-            else return `<button disabled class="mt-4 block w-full text-center bg-slate-100 text-slate-400 py-3 rounded-xl text-sm font-bold border border-slate-200 cursor-not-allowed ${customClasses}"><i class="fas fa-lock mr-1"></i> Buka 15 mnt sebelum mulai</button>`;
+            
+            if (now > end) {
+                return `<button disabled class="mt-4 block w-full text-center bg-slate-200 text-slate-500 py-3 rounded-xl text-sm font-bold border border-slate-300 cursor-not-allowed ${customClasses}"><i class="fas fa-calendar-check mr-1"></i> Sesi Berakhir</button>`;
+            } else if (diffStartMins <= 15) {
+                return `<a href="${sched.link}" target="_blank" class="mt-4 block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-sm font-bold transition shadow-lg shadow-blue-500/30 ${customClasses}"><i class="fas fa-video mr-1"></i> Gabung Ruang Zoom</a>`;
+            } else {
+                return `<button disabled class="mt-4 block w-full text-center bg-slate-100 text-slate-400 py-3 rounded-xl text-sm font-bold border border-slate-200 cursor-not-allowed ${customClasses}"><i class="fas fa-lock mr-1"></i> Buka 15 mnt sebelum mulai</button>`;
+            }
         }
 
         let currentDate = new Date();
         window.renderCalendar = function() {
-            const monthYearEl = document.getElementById('calendar-month-year'); const gridEl = document.getElementById('calendar-grid'); if(!monthYearEl || !gridEl) return;
-            const year = currentDate.getFullYear(); const month = currentDate.getMonth(); const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-            monthYearEl.innerText = `${monthNames[month]} ${year}`; gridEl.innerHTML = '';
-            const firstDay = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
-            for (let i = 0; i < firstDay; i++) gridEl.innerHTML += `<div></div>`;
+            const monthYearEl = document.getElementById('calendar-month-year'); 
+            const gridEl = document.getElementById('calendar-grid'); 
+            if(!monthYearEl || !gridEl) return;
+            
+            const year = currentDate.getFullYear(); 
+            const month = currentDate.getMonth(); 
+            const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            
+            monthYearEl.innerText = `${monthNames[month]} ${year}`; 
+            gridEl.innerHTML = '';
+            
+            const firstDay = new Date(year, month, 1).getDay(); 
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            for (let i = 0; i < firstDay; i++) { gridEl.innerHTML += `<div></div>`; }
+            
             for (let i = 1; i <= daysInMonth; i++) {
-                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`; const hasSchedule = state.schedules.some(s => s.date === dateStr); const isToday = new Date().toDateString() === new Date(year, month, i).toDateString();
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`; 
+                const hasSchedule = state.schedules.some(s => s.date === dateStr); 
+                const isToday = new Date().toDateString() === new Date(year, month, i).toDateString();
+                
                 let classes = "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center mx-auto rounded-full cursor-pointer transition-all duration-300 select-none ";
-                if (isToday) classes += "bg-primary text-white font-bold shadow-md shadow-primary/40 hover:scale-105"; else if (hasSchedule) classes += "bg-blue-50 text-blue-700 font-bold border border-blue-100 hover:bg-blue-100"; else classes += "text-slate-600 hover:bg-slate-100";
+                if (isToday) classes += "bg-primary text-white font-bold shadow-md shadow-primary/40 hover:scale-105"; 
+                else if (hasSchedule) classes += "bg-blue-50 text-blue-700 font-bold border border-blue-100 hover:bg-blue-100"; 
+                else classes += "text-slate-600 hover:bg-slate-100";
+                
                 gridEl.innerHTML += `<div class="py-1"><div onclick="openScheduleModal('${dateStr}')" class="${classes}">${i}</div></div>`;
             }
         };
 
         window.changeMonth = function(dir) { currentDate.setMonth(currentDate.getMonth() + dir); renderCalendar(); };
-        window.searchDate = function(inputEl) { if(inputEl.value) { const date = new Date(inputEl.value); currentDate = new Date(date.getFullYear(), date.getMonth(), 1); renderCalendar(); window.openScheduleModal(inputEl.value); } };
+        window.searchDate = function(inputEl) { 
+            if(inputEl.value) { 
+                const date = new Date(inputEl.value); 
+                currentDate = new Date(date.getFullYear(), date.getMonth(), 1); 
+                renderCalendar(); 
+                window.openScheduleModal(inputEl.value); 
+            } 
+        };
 
         window.openScheduleModal = function(dateStr) {
-            const modal = document.getElementById('schedule-modal'); const panel = document.getElementById('modal-panel'); const content = document.getElementById('modal-content'); const title = document.getElementById('modal-date-title');
-            const d = new Date(dateStr); title.innerText = d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            const modal = document.getElementById('schedule-modal'); 
+            const panel = document.getElementById('modal-panel'); 
+            const content = document.getElementById('modal-content'); 
+            const title = document.getElementById('modal-date-title');
+            
+            if(title) title.innerText = new Date(dateStr).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            
             const daySchedules = state.schedules.filter(s => s.date === dateStr);
-            if(daySchedules.length === 0) content.innerHTML = `<div class="flex flex-col items-center justify-center py-10 text-slate-400"><div class="bg-slate-50 w-20 h-20 rounded-full flex items-center justify-center mb-4"><i class="fas fa-calendar-times text-4xl text-slate-300"></i></div><p class="font-medium text-center px-4">Alhamdulillah, tidak ada jadwal untuk tanggal ini.</p></div>`;
-            else content.innerHTML = daySchedules.map(sched => `<div class="border border-slate-100 rounded-3xl overflow-hidden shadow-sm flex flex-col bg-white shrink-0"><img src="${sched.pamflet || 'https://brdsg.com/img/400/bq6rjfudbq7gvxva2d_1/LRa1FGRf9e5xfLcLRalHIayeLQhE5rRDMJEs7Knab8Q.webp'}" class="w-full max-h-48 object-cover bg-slate-100" alt="Pamflet"><div class="p-5 relative"><span class="absolute -top-3 left-5 px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-md ${sched.type === 'Kajian' ? 'bg-blue-500 shadow-blue-500/30' : 'bg-primary shadow-primary/30'}">${sched.type}</span><h4 class="font-bold text-slate-800 text-lg mt-2 leading-tight">${sched.title}</h4><div class="flex items-center gap-2 mt-3 text-sm text-slate-500 bg-slate-50 p-2 rounded-xl border border-slate-100 w-fit"><i class="far fa-clock text-primary"></i> <span class="font-semibold">${sched.time} ${sched.timeEnd ? '- ' + sched.timeEnd : ''} WIB</span></div>${getZoomButtonHTML(sched)}</div></div>`).join('');
-            modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); panel.classList.remove('scale-95'); }, 10);
+            if(content) {
+                if(daySchedules.length === 0) {
+                    content.innerHTML = `<div class="flex flex-col items-center justify-center py-10 text-slate-400"><div class="bg-slate-50 w-20 h-20 rounded-full flex items-center justify-center mb-4"><i class="fas fa-calendar-times text-4xl text-slate-300"></i></div><p class="font-medium text-center px-4">Alhamdulillah, tidak ada jadwal untuk tanggal ini.</p></div>`;
+                } else {
+                    content.innerHTML = daySchedules.map(sched => `<div class="border border-slate-100 rounded-3xl overflow-hidden shadow-sm flex flex-col bg-white shrink-0"><img src="${sched.pamflet || 'https://brdsg.com/img/400/bq6rjfudbq7gvxva2d_1/LRa1FGRf9e5xfLcLRalHIayeLQhE5rRDMJEs7Knab8Q.webp'}" class="w-full max-h-48 object-cover bg-slate-100" alt="Pamflet"><div class="p-5 relative"><span class="absolute -top-3 left-5 px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-md ${sched.type === 'Kajian' ? 'bg-blue-500 shadow-blue-500/30' : 'bg-primary shadow-primary/30'}">${sched.type}</span><h4 class="font-bold text-slate-800 text-lg mt-2 leading-tight">${sched.title}</h4><div class="flex items-center gap-2 mt-3 text-sm text-slate-500 bg-slate-50 p-2 rounded-xl border border-slate-100 w-fit"><i class="far fa-clock text-primary"></i> <span class="font-semibold">${sched.time} ${sched.timeEnd ? '- ' + sched.timeEnd : ''} WIB</span></div>${getZoomButtonHTML(sched)}</div></div>`).join('');
+                }
+            }
+            if(modal && panel) { 
+                modal.classList.remove('hidden'); 
+                setTimeout(() => { modal.classList.remove('opacity-0'); panel.classList.remove('scale-95'); }, 10); 
+            }
         };
         
-        window.closeModal = function() { const modal = document.getElementById('schedule-modal'); const panel = document.getElementById('modal-panel'); modal.classList.add('opacity-0'); panel.classList.add('scale-95'); setTimeout(() => { modal.classList.add('hidden'); }, 300); };
-        document.getElementById('schedule-modal').addEventListener('click', function(e) { if(e.target === this) window.closeModal(); });
+        window.closeModal = function() { 
+            const modal = document.getElementById('schedule-modal'); const panel = document.getElementById('modal-panel'); 
+            if(modal && panel) { 
+                modal.classList.add('opacity-0'); 
+                panel.classList.add('scale-95'); 
+                setTimeout(() => { modal.classList.add('hidden'); }, 300); 
+            }
+        };
+        document.getElementById('schedule-modal')?.addEventListener('click', function(e) { if(e.target === this) window.closeModal(); });
 
         window.openVideoModal = function(url, title) {
             const modal = document.getElementById('video-modal'); const panel = document.getElementById('video-modal-panel'); const content = document.getElementById('video-modal-content'); const titleEl = document.getElementById('video-modal-title');
-            titleEl.innerText = title || "Kajian"; let embedUrl = url; const ytRegExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/; const ytMatch = url.match(ytRegExp);
-            if (ytMatch && ytMatch[2].length === 11) embedUrl = `https://www.youtube.com/embed/${ytMatch[2]}?autoplay=1&rel=0`; else if (url.includes('drive.google.com')) embedUrl = url.replace(/\/view.*$/, '/preview');
-            content.innerHTML = `<iframe class="w-full h-full" src="${embedUrl}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-            modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); panel.classList.remove('scale-95'); }, 10);
+            if(titleEl) titleEl.innerText = title || "Kajian"; 
+            
+            let embedUrl = url; 
+            const ytRegExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/; 
+            const ytMatch = url.match(ytRegExp);
+            
+            if (ytMatch && ytMatch[2].length === 11) {
+                embedUrl = `https://www.youtube.com/embed/${ytMatch[2]}?autoplay=1&rel=0`; 
+            } else if (url.includes('drive.google.com')) {
+                embedUrl = url.replace(/\/view.*$/, '/preview');
+            }
+            
+            if(content) content.innerHTML = `<iframe class="w-full h-full" src="${embedUrl}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            if(modal && panel) { modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); panel.classList.remove('scale-95'); }, 10); }
         };
-        window.closeVideoModal = function() { const modal = document.getElementById('video-modal'); const panel = document.getElementById('video-modal-panel'); const content = document.getElementById('video-modal-content'); modal.classList.add('opacity-0'); panel.classList.add('scale-95'); setTimeout(() => { modal.classList.add('hidden'); content.innerHTML = ''; }, 300); };
-        document.getElementById('video-modal').addEventListener('click', function(e) { if(e.target === this) window.closeVideoModal(); });
+        window.closeVideoModal = function() { 
+            const modal = document.getElementById('video-modal'); const panel = document.getElementById('video-modal-panel'); const content = document.getElementById('video-modal-content'); 
+            if(modal && panel) { modal.classList.add('opacity-0'); panel.classList.add('scale-95'); setTimeout(() => { modal.classList.add('hidden'); if(content) content.innerHTML = ''; }, 300); }
+        };
+        document.getElementById('video-modal')?.addEventListener('click', function(e) { if(e.target === this) window.closeVideoModal(); });
 
         let currentVideoCategory = 'Semua';
         window.setVideoCategory = function(cat) {
             currentVideoCategory = cat;
-            document.querySelectorAll('.cat-btn').forEach(btn => { if(btn.innerText === cat) { btn.className = "cat-btn active px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition bg-slate-800 text-white shadow-md"; } else { btn.className = "cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition bg-white text-slate-500 border border-slate-200 hover:bg-slate-50"; } });
+            document.querySelectorAll('.cat-btn').forEach(btn => { 
+                if(btn.innerText === cat) { 
+                    btn.className = "cat-btn active px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition bg-slate-800 text-white shadow-md"; 
+                } else { 
+                    btn.className = "cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition bg-white text-slate-500 border border-slate-200 hover:bg-slate-50"; 
+                } 
+            });
             renderVideos();
         };
         window.handleVideoFilter = function() { renderVideos(); };
 
         function renderVideos() {
-            const container = document.getElementById('video-container'); const searchInput = document.getElementById('video-search') ? document.getElementById('video-search').value.toLowerCase() : '';
-            const filteredVideos = state.videos.filter(v => { const matchCategory = currentVideoCategory === 'Semua' || (v.kategori && v.kategori === currentVideoCategory); const matchSearch = v.title.toLowerCase().includes(searchInput); return matchCategory && matchSearch; }).sort((a,b) => new Date(b.tanggal || 0) - new Date(a.tanggal || 0));
-            if(filteredVideos.length === 0) { container.innerHTML = `<div class="p-8 text-center text-slate-400 bg-white rounded-3xl shadow-sm border border-slate-100 mt-4"><i class="fas fa-search text-4xl text-slate-200 mb-3 block"></i><span class="font-medium">Video tidak ditemukan.</span></div>`; return; }
+            const container = document.getElementById('video-container'); 
+            const searchEl = document.getElementById('video-search'); 
+            const searchInput = searchEl ? searchEl.value.toLowerCase() : '';
+            if(!container) return;
+            
+            const filteredVideos = state.videos.filter(v => { 
+                const matchCategory = currentVideoCategory === 'Semua' || (v.kategori && v.kategori === currentVideoCategory); 
+                const matchSearch = v.title.toLowerCase().includes(searchInput); 
+                return matchCategory && matchSearch; 
+            }).sort((a,b) => new Date(b.tanggal || 0) - new Date(a.tanggal || 0));
+            
+            if(filteredVideos.length === 0) { 
+                container.innerHTML = `<div class="p-8 text-center text-slate-400 bg-white rounded-3xl shadow-sm border border-slate-100 mt-4"><i class="fas fa-search text-4xl text-slate-200 mb-3 block"></i><span class="font-medium">Video tidak ditemukan.</span></div>`; 
+                return; 
+            }
+            
             container.innerHTML = filteredVideos.map(vid => {
-                let badgeColor = 'bg-slate-600'; if(vid.kategori === 'Tahfidz') badgeColor = 'bg-emerald-500'; if(vid.kategori === 'Tahsin') badgeColor = 'bg-blue-500'; if(vid.kategori === 'Kajian') badgeColor = 'bg-primary';
-                let thumbUrl = vid.thumbnail; if (!thumbUrl && vid.url) { const ytMatch = vid.url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/); if (ytMatch && ytMatch[2].length === 11) thumbUrl = `https://img.youtube.com/vi/${ytMatch[2]}/hqdefault.jpg`; }
+                let badgeColor = 'bg-slate-600'; 
+                if(vid.kategori === 'Tahfidz') badgeColor = 'bg-emerald-500'; 
+                if(vid.kategori === 'Tahsin') badgeColor = 'bg-blue-500'; 
+                if(vid.kategori === 'Kajian') badgeColor = 'bg-primary';
+                
+                let thumbUrl = vid.thumbnail; 
+                if (!thumbUrl && vid.url) { 
+                    const ytMatch = vid.url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/); 
+                    if (ytMatch && ytMatch[2].length === 11) thumbUrl = `https://img.youtube.com/vi/${ytMatch[2]}/hqdefault.jpg`; 
+                }
                 const finalThumb = thumbUrl || 'https://images.unsplash.com/photo-1609599006353-e629aaab31f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                
                 return `<div onclick="openVideoModal('${vid.url}', '${vid.title.replace(/'/g, "\\'")}')" class="block bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition group cursor-pointer"><div class="h-44 w-full relative bg-slate-100 overflow-hidden"><img src="${finalThumb}" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-700"><div class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition"></div><div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"><div class="w-12 h-12 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white pl-1 border border-white/40 shadow-lg"><i class="fas fa-play text-xl"></i></div></div><span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-md ${badgeColor}">${vid.kategori || 'Kajian'}</span><div class="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-lg">${vid.durasi || '00:00'}</div></div><div class="p-4"><h3 class="font-bold text-slate-800 leading-snug line-clamp-2">${vid.title}</h3><p class="text-xs text-slate-500 mt-2 font-medium flex items-center gap-1.5"><i class="far fa-calendar-alt"></i> Ditambahkan: ${vid.tanggal ? new Date(vid.tanggal).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}) : '-'}</p></div></div>`;
             }).join('');
         }
 
         function renderNextSchedule() {
-            const container = document.getElementById('next-schedule-container'); const now = new Date();
-            const upcoming = state.schedules.filter(s => { const end = s.timeEnd ? new Date(`${s.date}T${s.timeEnd}:00`) : new Date(new Date(`${s.date}T${s.time}:00`).getTime() + 2*3600*1000); return end >= now; }).sort((a,b) => new Date(`${a.date}T${a.time}:00`) - new Date(`${b.date}T${b.time}:00`));
+            const container = document.getElementById('next-schedule-container'); 
+            const now = new Date();
+            if(!container) return;
+            
+            const upcoming = state.schedules.filter(s => { 
+                const end = s.timeEnd ? new Date(`${s.date}T${s.timeEnd}:00`) : new Date(new Date(`${s.date}T${s.time}:00`).getTime() + 2*3600*1000); 
+                return end >= now; 
+            }).sort((a,b) => new Date(`${a.date}T${a.time}:00`) - new Date(`${b.date}T${b.time}:00`));
+            
             if(upcoming.length === 0) { container.innerHTML = ''; return; }
-            const next = upcoming[0]; const btnHtml = getZoomButtonHTML(next, "bg-white/10 border-white/20 text-white/90 shadow-none hover:bg-white hover:text-primary relative z-10");
+            const next = upcoming[0]; 
+            const btnHtml = getZoomButtonHTML(next, "bg-white/10 border-white/20 text-white/90 shadow-none hover:bg-white hover:text-primary relative z-10");
+            
             container.innerHTML = `<div class="rounded-3xl shadow-lg shadow-slate-300/50 relative overflow-hidden group"><img src="${next.pamflet || 'https://brdsg.com/img/400/bq6rjfudbq7gvxva2d_1/LRa1FGRf9e5xfLcLRalHIayeLQhE5rRDMJEs7Knab8Q.webp'}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"><div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/60 to-slate-900/30"></div><div class="relative z-10 p-5 text-white"><div class="flex justify-between items-start mb-2"><span class="bg-white/20 px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-wider backdrop-blur-md border border-white/20">Jadwal Terdekat</span><span class="text-[10px] font-bold text-white px-2 py-1 rounded-lg backdrop-blur-md border border-white/10 ${next.type === 'Kajian' ? 'bg-blue-500/80' : 'bg-primary/80'}">${next.type}</span></div><h3 class="text-xl font-bold mt-2 leading-tight">${next.title}</h3><p class="text-sm text-slate-200 mt-2 font-medium flex items-center gap-2"><i class="far fa-calendar-alt"></i> ${new Date(next.date).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}</p><p class="text-sm text-slate-200 font-medium flex items-center gap-2 mt-1 mb-4"><i class="far fa-clock"></i> ${next.time} ${next.timeEnd ? '- ' + next.timeEnd : ''} WIB</p>${btnHtml}</div></div>`;
         }
 
         function renderProgressHafalan() {
             const container = document.getElementById('progress-hafalan-container');
+            if(!container || !currentUser) return;
             
-            // Perbaikan: Filter setoran khusus untuk peserta yang sedang login dilakukan di sini
             const mySetoran = state.setoran.filter(s => s.user === currentUser.email && s.status === 'Diterima'); 
             
-            let ayatTersimpan = {}; daftarSurah.forEach(s => ayatTersimpan[s.nama] = new Set());
+            let ayatTersimpan = {}; 
+            daftarSurah.forEach(s => ayatTersimpan[s.nama] = new Set());
+            
             mySetoran.forEach(setoran => {
                 const match = setoran.surah.match(/Surah (.+) Ayat (\d+)-(\d+)/);
-                if(match) { const namaSurah = match[1]; const start = parseInt(match[2]); const end = parseInt(match[3]); if(ayatTersimpan[namaSurah]) { for(let i = start; i <= end; i++) ayatTersimpan[namaSurah].add(i); } }
+                if(match) { 
+                    const namaSurah = match[1]; 
+                    const start = parseInt(match[2]); 
+                    const end = parseInt(match[3]); 
+                    if(ayatTersimpan[namaSurah]) { 
+                        for(let i = start; i <= end; i++) ayatTersimpan[namaSurah].add(i); 
+                    } 
+                }
             });
 
             let totalAyatSelesai = 0; let totalSurahSelesai = 0;
-            daftarSurah.forEach(s => { const count = ayatTersimpan[s.nama].size; totalAyatSelesai += count; if(count === s.ayat && s.ayat > 0) totalSurahSelesai++; });
+            daftarSurah.forEach(s => { 
+                const count = ayatTersimpan[s.nama].size; 
+                totalAyatSelesai += count; 
+                if(count === s.ayat && s.ayat > 0) totalSurahSelesai++; 
+            });
             const persentase = ((totalAyatSelesai / 6236) * 100).toFixed(2);
+            
             container.innerHTML = `<div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden"><i class="fas fa-quran absolute -right-4 -bottom-4 text-[8rem] opacity-5"></i><div class="flex justify-between items-end mb-6 relative z-10"><div><p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Total Progres</p><div class="flex items-baseline gap-1"><h3 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">${persentase}</h3><span class="text-xl font-bold text-emerald-400">%</span></div></div><div class="bg-white/10 border border-white/10 backdrop-blur-md p-2 rounded-2xl"><svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg></div></div><div class="grid grid-cols-2 gap-4 relative z-10"><div class="bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm"><p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider mb-1">Ayat Disetor</p><p class="text-xl font-bold text-white">${totalAyatSelesai} <span class="text-xs text-slate-500 font-medium">/ 6236</span></p></div><div class="bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm"><p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider mb-1">Surah Tuntas</p><p class="text-xl font-bold text-white">${totalSurahSelesai} <span class="text-xs text-slate-500 font-medium">/ 114</span></p></div></div><div class="w-full bg-slate-700/50 rounded-full h-1.5 mt-5 relative z-10"><div class="bg-gradient-to-r from-emerald-400 to-teal-400 h-1.5 rounded-full" style="width: ${persentase}%"></div></div><button onclick="openHafalanModal()" class="w-full mt-5 bg-white/10 hover:bg-white/20 text-white py-2.5 rounded-xl text-xs font-bold transition border border-white/10 backdrop-blur-sm relative z-10"><i class="fas fa-list-ul mr-1"></i> Lihat Detail Surah & Ayat</button></div>`;
         }
 
         window.openHafalanModal = function() {
             const modal = document.getElementById('hafalan-modal'); const panel = document.getElementById('hafalan-modal-panel');
-            document.getElementById('hafalan-search').value = ''; renderHafalanDetailList();
-            modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); panel.classList.remove('scale-95'); }, 10);
+            if(document.getElementById('hafalan-search')) document.getElementById('hafalan-search').value = ''; 
+            renderHafalanDetailList();
+            if(modal && panel) { 
+                modal.classList.remove('hidden'); 
+                setTimeout(() => { modal.classList.remove('opacity-0'); panel.classList.remove('scale-95'); }, 10); 
+            }
         };
-        window.closeHafalanModal = function() { const modal = document.getElementById('hafalan-modal'); const panel = document.getElementById('hafalan-modal-panel'); modal.classList.add('opacity-0'); panel.classList.add('scale-95'); setTimeout(() => { modal.classList.add('hidden'); }, 300); };
-        document.getElementById('hafalan-modal').addEventListener('click', function(e) { if(e.target === this) window.closeHafalanModal(); });
+        window.closeHafalanModal = function() { 
+            const modal = document.getElementById('hafalan-modal'); const panel = document.getElementById('hafalan-modal-panel'); 
+            if(modal && panel) { 
+                modal.classList.add('opacity-0'); 
+                panel.classList.add('scale-95'); 
+                setTimeout(() => { modal.classList.add('hidden'); }, 300); 
+            }
+        };
+        document.getElementById('hafalan-modal')?.addEventListener('click', function(e) { if(e.target === this) window.closeHafalanModal(); });
 
         window.renderHafalanDetailList = function() {
-            const container = document.getElementById('hafalan-modal-content'); const searchTerm = document.getElementById('hafalan-search').value.toLowerCase();
+            const container = document.getElementById('hafalan-modal-content'); 
+            const searchEl = document.getElementById('hafalan-search'); 
+            const searchTerm = searchEl ? searchEl.value.toLowerCase() : '';
+            if(!container || !currentUser) return;
             
-            // Perbaikan: Filter khusus email yang sedang login
             const mySetoran = state.setoran.filter(s => s.user === currentUser.email && s.status === 'Diterima');
             
-            let ayatTersimpan = {}; daftarSurah.forEach(s => ayatTersimpan[s.nama] = new Set());
+            let ayatTersimpan = {}; 
+            daftarSurah.forEach(s => ayatTersimpan[s.nama] = new Set());
+            
             mySetoran.forEach(setoran => {
                 const match = setoran.surah.match(/Surah (.+) Ayat (\d+)-(\d+)/);
-                if(match) { const namaSurah = match[1]; const start = parseInt(match[2]); const end = parseInt(match[3]); if(ayatTersimpan[namaSurah]) { for(let i = start; i <= end; i++) ayatTersimpan[namaSurah].add(i); } }
+                if(match) { 
+                    const namaSurah = match[1]; 
+                    const start = parseInt(match[2]); 
+                    const end = parseInt(match[3]); 
+                    if(ayatTersimpan[namaSurah]) { 
+                        for(let i = start; i <= end; i++) ayatTersimpan[namaSurah].add(i); 
+                    } 
+                }
             });
 
             const formatRanges = (numbers) => {
-                if (numbers.length === 0) return "-"; numbers.sort((a, b) => a - b);
+                if (numbers.length === 0) return "-"; 
+                numbers.sort((a, b) => a - b);
                 let ranges = []; let start = numbers[0]; let prev = numbers[0];
                 for (let i = 1; i <= numbers.length; i++) {
-                    if (numbers[i] === prev + 1) { prev = numbers[i]; } else { if (start === prev) ranges.push(`${start}`); else ranges.push(`${start}-${prev}`); start = numbers[i]; prev = numbers[i]; }
-                } return ranges.join(", ");
+                    if (numbers[i] === prev + 1) { prev = numbers[i]; } 
+                    else { 
+                        if (start === prev) ranges.push(`${start}`); 
+                        else ranges.push(`${start}-${prev}`); 
+                        start = numbers[i]; prev = numbers[i]; 
+                    }
+                } 
+                return ranges.join(", ");
             };
 
             const htmlList = daftarSurah.filter(s => s.nama.toLowerCase().includes(searchTerm)).map((s, index) => {
                 const disetorSet = ayatTersimpan[s.nama]; const disetorArr = Array.from(disetorSet); const total = s.ayat; const count = disetorArr.length;
                 const isSelesai = count === total && total > 0; const isBelum = count === 0;
                 let statusHtml = ''; let bgCard = 'bg-white'; let borderCard = 'border-slate-100';
-                if (isSelesai) { bgCard = 'bg-emerald-50'; borderCard = 'border-emerald-200'; statusHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500 text-white">Tuntas</span>`; } else if (isBelum) { statusHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-500">Belum</span>`; } else { statusHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-600">Progres</span>`; }
+                
+                if (isSelesai) { 
+                    bgCard = 'bg-emerald-50'; borderCard = 'border-emerald-200'; statusHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500 text-white">Tuntas</span>`; 
+                } else if (isBelum) { 
+                    statusHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-500">Belum</span>`; 
+                } else { 
+                    statusHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-600">Progres</span>`; 
+                }
+                
                 let detailHtml = '';
-                if (isSelesai) { detailHtml = `<p class="text-[11px] text-emerald-600 mt-2 font-medium"><i class="fas fa-check-circle mr-1"></i> Semua ayat (${total}) telah disetor.</p>`; } else if (isBelum) { detailHtml = `<p class="text-[11px] text-slate-400 mt-2 font-medium"><i class="fas fa-minus-circle mr-1"></i> Belum ada ayat yang disetor.</p>`; } else {
+                if (isSelesai) { 
+                    detailHtml = `<p class="text-[11px] text-emerald-600 mt-2 font-medium"><i class="fas fa-check-circle mr-1"></i> Semua ayat (${total}) telah disetor.</p>`; 
+                } else if (isBelum) { 
+                    detailHtml = `<p class="text-[11px] text-slate-400 mt-2 font-medium"><i class="fas fa-minus-circle mr-1"></i> Belum ada ayat yang disetor.</p>`; 
+                } else {
                     let belumArr = []; for(let i=1; i<=total; i++) { if(!disetorSet.has(i)) belumArr.push(i); }
                     detailHtml = `<div class="mt-3 space-y-1.5 p-2.5 bg-white/60 rounded-lg border border-slate-100"><p class="text-[11px] text-slate-600 leading-relaxed"><span class="font-bold text-emerald-600">Disetor:</span> Ayat ${formatRanges(disetorArr)}</p><p class="text-[11px] text-slate-600 leading-relaxed"><span class="font-bold text-rose-500">Belum:</span> Ayat ${formatRanges(belumArr)}</p></div>`;
                 }
                 const percent = total > 0 ? Math.round((count / total) * 100) : 0;
                 return `<div class="${bgCard} p-4 rounded-2xl shadow-sm border ${borderCard}"><div class="flex justify-between items-center mb-2"><div class="flex items-center gap-2"><span class="text-xs font-bold text-slate-400 w-5">${daftarSurah.findIndex(ds => ds.nama === s.nama) + 1}.</span><h4 class="font-bold text-slate-800">${s.nama}</h4></div>${statusHtml}</div><div class="flex items-center gap-3"><div class="flex-1 bg-slate-200 rounded-full h-1.5"><div class="bg-gradient-to-r from-emerald-400 to-teal-500 h-1.5 rounded-full" style="width: ${percent}%"></div></div><span class="text-[10px] font-bold text-slate-500 w-8 text-right">${percent}%</span></div>${detailHtml}</div>`;
             }).join('');
+            
             container.innerHTML = htmlList || `<div class="text-center py-5 text-slate-400 text-sm">Surah tidak ditemukan</div>`;
         };
 
         window.handleRiwayatFilter = function() { renderRiwayat(); };
 
         function renderRiwayat() {
-            const container = document.getElementById('riwayat-container'); const searchTerm = (document.getElementById('riwayat-search') ? document.getElementById('riwayat-search').value.toLowerCase() : ''); const statusFilter = (document.getElementById('riwayat-status') ? document.getElementById('riwayat-status').value : 'Semua');
+            const container = document.getElementById('riwayat-container'); 
+            const searchEl = document.getElementById('riwayat-search'); 
+            const statusEl = document.getElementById('riwayat-status');
+            const searchTerm = searchEl ? searchEl.value.toLowerCase() : ''; 
+            const statusFilter = statusEl ? statusEl.value : 'Semua';
             
-            // Perbaikan: Filter berdasarkan email terlebih dahulu
+            if(!container || !currentUser) return;
+            
             let mySetoran = state.setoran.filter(s => s.user === currentUser.email);
+            mySetoran = mySetoran.filter(s => { 
+                const matchSearch = s.surah.toLowerCase().includes(searchTerm); 
+                const matchStatus = statusFilter === 'Semua' || s.status === statusFilter; 
+                return matchSearch && matchStatus; 
+            }).sort((a,b) => Number(b.id) - Number(a.id));
             
-            mySetoran = mySetoran.filter(s => { const matchSearch = s.surah.toLowerCase().includes(searchTerm); const matchStatus = statusFilter === 'Semua' || s.status === statusFilter; return matchSearch && matchStatus; }).sort((a,b) => Number(b.id) - Number(a.id));
-            if(mySetoran.length === 0) { container.innerHTML = `<div class="p-6 text-center text-slate-400 bg-white rounded-3xl shadow-sm border border-slate-100"><i class="fas fa-history text-3xl text-slate-200 mb-2 block"></i><span class="text-sm font-medium">Tidak ada riwayat.</span></div>`; return; }
+            if(mySetoran.length === 0) { 
+                container.innerHTML = `<div class="p-6 text-center text-slate-400 bg-white rounded-3xl shadow-sm border border-slate-100"><i class="fas fa-history text-3xl text-slate-200 mb-2 block"></i><span class="text-sm font-medium">Tidak ada riwayat.</span></div>`; 
+                return; 
+            }
+            
             container.innerHTML = mySetoran.map(s => {
                 const catatanHtml = s.catatan ? `<div class="mt-3 bg-slate-50 p-3 rounded-xl text-xs text-slate-600 border border-slate-100"><span class="font-bold text-slate-700">Catatan Pembimbing:</span><br>${s.catatan}</div>` : '';
                 return `<div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col gap-4"><div class="flex justify-between items-start"><div><h4 class="font-bold text-slate-800 leading-tight text-lg">${s.surah}</h4><p class="text-xs text-slate-400 mt-1 font-medium"><i class="far fa-calendar-alt"></i> ${s.date}</p></div><span class="px-2.5 py-1 rounded-lg text-[10px] uppercase font-bold tracking-wider text-white shadow-sm shrink-0 ${s.status === 'Menunggu Review' ? 'bg-yellow-500' : s.status === 'Diterima' ? 'bg-primary' : 'bg-rose-500'}">${s.status === 'Perlu Perbaikan' ? 'Revisi' : s.status}</span></div><div class="bg-slate-50 p-2 rounded-2xl border border-slate-100"><audio src="${s.audioBase64}" controls class="h-10 w-full rounded-full"></audio></div>${catatanHtml}</div>`;
@@ -613,41 +1107,81 @@
         let mediaRecorder; let audioChunks = []; let isRecording = false; let currentAudioBase64 = null; let timerInterval; let seconds = 0;
         
         window.toggleRecording = async function() {
-            const btn = document.getElementById('record-btn'); const icon = document.getElementById('record-icon'); const status = document.getElementById('record-status'); const timer = document.getElementById('record-timer'); const previewContainer = document.getElementById('audio-preview-container');
+            const btn = document.getElementById('record-btn'); 
+            const icon = document.getElementById('record-icon'); 
+            const status = document.getElementById('record-status'); 
+            const timer = document.getElementById('record-timer'); 
+            const previewContainer = document.getElementById('audio-preview-container');
+            
             if (!isRecording) {
                 try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true }); mediaRecorder = new MediaRecorder(stream); audioChunks = [];
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true }); 
+                    mediaRecorder = new MediaRecorder(stream); audioChunks = [];
                     mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
-                    mediaRecorder.onstop = async () => { const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' }); const reader = new FileReader(); reader.readAsDataURL(audioBlob); reader.onloadend = () => { currentAudioBase64 = reader.result; document.getElementById('audio-preview').src = currentAudioBase64; previewContainer.classList.remove('hidden'); }; };
+                    mediaRecorder.onstop = async () => { 
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' }); 
+                        const reader = new FileReader(); 
+                        reader.readAsDataURL(audioBlob); 
+                        reader.onloadend = () => { 
+                            currentAudioBase64 = reader.result; 
+                            if(document.getElementById('audio-preview')) document.getElementById('audio-preview').src = currentAudioBase64; 
+                            if(previewContainer) previewContainer.classList.remove('hidden'); 
+                        }; 
+                    };
                     mediaRecorder.start(); isRecording = true;
-                    btn.classList.add('recording-pulse'); btn.classList.replace('bg-rose-500', 'bg-rose-600'); icon.classList.replace('fa-microphone', 'fa-stop'); status.innerText = "Sedang merekam suara..."; status.classList.replace('text-slate-500', 'text-rose-500');
-                    seconds = 0; timer.innerText = "00:00"; timer.classList.remove('hidden');
-                    timerInterval = setInterval(() => { seconds++; const m = Math.floor(seconds / 60).toString().padStart(2, '0'); const s = (seconds % 60).toString().padStart(2, '0'); timer.innerText = `${m}:${s}`; }, 1000);
+                    if(btn) { btn.classList.add('recording-pulse'); btn.classList.replace('bg-rose-500', 'bg-rose-600'); }
+                    if(icon) { icon.classList.replace('fa-microphone', 'fa-stop'); }
+                    if(status) { status.innerText = "Sedang merekam suara..."; status.classList.replace('text-slate-500', 'text-rose-500'); }
+                    seconds = 0; 
+                    if(timer) { timer.innerText = "00:00"; timer.classList.remove('hidden'); }
+                    timerInterval = setInterval(() => { 
+                        seconds++; 
+                        const m = Math.floor(seconds / 60).toString().padStart(2, '0'); const s = (seconds % 60).toString().padStart(2, '0'); 
+                        if(timer) timer.innerText = `${m}:${s}`; 
+                    }, 1000);
                 } catch (err) { alert("Akses mikrofon ditolak atau tidak didukung di browser ini."); }
             } else {
                 mediaRecorder.stop(); isRecording = false; mediaRecorder.stream.getTracks().forEach(track => track.stop());
-                btn.classList.remove('recording-pulse'); btn.classList.replace('bg-rose-600', 'bg-rose-500'); icon.classList.replace('fa-stop', 'fa-microphone'); status.innerText = "Rekaman selesai. Cek di bawah."; status.classList.replace('text-rose-500', 'text-slate-500');
-                clearInterval(timerInterval); timer.classList.add('hidden');
+                if(btn) { btn.classList.remove('recording-pulse'); btn.classList.replace('bg-rose-600', 'bg-rose-500'); }
+                if(icon) { icon.classList.replace('fa-stop', 'fa-microphone'); }
+                if(status) { status.innerText = "Rekaman selesai. Cek di bawah."; status.classList.replace('text-rose-500', 'text-slate-500'); }
+                clearInterval(timerInterval); 
+                if(timer) timer.classList.add('hidden');
             }
         };
 
         window.hapusRekaman = function() {
-            currentAudioBase64 = null; document.getElementById('audio-preview').src = ""; document.getElementById('audio-preview-container').classList.add('hidden');
-            document.getElementById('record-status').innerText = "Sentuh mic untuk merekam"; document.getElementById('record-status').classList.replace('text-rose-500', 'text-slate-500');
+            currentAudioBase64 = null; 
+            if(document.getElementById('audio-preview')) document.getElementById('audio-preview').src = ""; 
+            if(document.getElementById('audio-preview-container')) document.getElementById('audio-preview-container').classList.add('hidden');
+            const recStatus = document.getElementById('record-status');
+            if(recStatus) { recStatus.innerText = "Sentuh mic untuk merekam"; recStatus.classList.replace('text-rose-500', 'text-slate-500'); }
             window.showToast("Rekaman dibatalkan", "success");
         };
 
         window.submitSetoran = async function() {
             if (!currentUser) return window.showToast("Anda harus login!", "error");
-            const surahIndex = document.getElementById('surah-select').value; const ayatStart = document.getElementById('ayat-start').value; const ayatEnd = document.getElementById('ayat-end').value;
-            if(surahIndex === "") return window.showToast("Silakan pilih Surah!", "error"); if(!ayatStart || !ayatEnd) return window.showToast("Isi rentang ayat!", "error"); if(parseInt(ayatStart) > parseInt(ayatEnd)) return window.showToast("Ayat akhir tidak valid!", "error"); if(!currentAudioBase64) return window.showToast("Rekam hafalan dulu!", "error");
-            const surah = daftarSurah[surahIndex].nama; const setoranLengkap = `Surah ${surah} Ayat ${ayatStart}-${ayatEnd}`;
+            const surahIndex = document.getElementById('surah-select')?.value; const ayatStart = document.getElementById('ayat-start')?.value; const ayatEnd = document.getElementById('ayat-end')?.value;
+            
+            if(!surahIndex || surahIndex === "") return window.showToast("Silakan pilih Surah!", "error"); 
+            if(!ayatStart || !ayatEnd) return window.showToast("Isi rentang ayat!", "error"); 
+            if(parseInt(ayatStart) > parseInt(ayatEnd)) return window.showToast("Ayat akhir tidak valid!", "error"); 
+            if(!currentAudioBase64) return window.showToast("Rekam hafalan dulu!", "error");
+            
+            const surah = daftarSurah[surahIndex].nama; 
+            const setoranLengkap = `Surah ${surah} Ayat ${ayatStart}-${ayatEnd}`;
             if(currentAudioBase64.length > 1000000) return window.showToast("Rekaman terlalu panjang!", "error");
 
             try {
-                const id = Date.now().toString(); const newSetoran = { user: currentUser.email, surah: setoranLengkap, audioBase64: currentAudioBase64, status: 'Menunggu Review', date: new Date().toLocaleString('id-ID') };
-                await setDoc(doc(db, 'artifacts', appIdGlobal, 'public', 'data', 'setoran', id), newSetoran); window.showToast("Alhamdulillah, setoran berhasil dikirim!");
-                document.getElementById('surah-select').value = ''; document.getElementById('ayat-start').innerHTML = '<option value="">-</option>'; document.getElementById('ayat-end').innerHTML = '<option value="">-</option>'; document.getElementById('ayat-start').disabled = true; document.getElementById('ayat-end').disabled = true; window.hapusRekaman();
+                const id = Date.now().toString(); 
+                const newSetoran = { user: currentUser.email, surah: setoranLengkap, audioBase64: currentAudioBase64, status: 'Menunggu Review', date: new Date().toLocaleString('id-ID') };
+                await setDoc(doc(db, 'artifacts', appIdGlobal, 'public', 'data', 'setoran', id), newSetoran); 
+                window.showToast("Alhamdulillah, setoran berhasil dikirim!");
+                
+                if(document.getElementById('surah-select')) document.getElementById('surah-select').value = ''; 
+                if(document.getElementById('ayat-start')) { document.getElementById('ayat-start').innerHTML = '<option value="">-</option>'; document.getElementById('ayat-start').disabled = true; }
+                if(document.getElementById('ayat-end')) { document.getElementById('ayat-end').innerHTML = '<option value="">-</option>'; document.getElementById('ayat-end').disabled = true; }
+                window.hapusRekaman();
             } catch (e) { window.showToast("Gagal mengirim data.", "error"); }
         };
     </script>
