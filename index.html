@@ -50,7 +50,7 @@
         <!-- ============================================== -->
         <div id="auth-page" class="absolute inset-0 z-[200] bg-surface flex flex-col justify-center px-8 transition-transform duration-500 overflow-y-auto hide-scrollbar">
             
-            <!-- Notifikasi Install Aplikasi (Otomatis Muncul Jika Didukung) -->
+            <!-- Notifikasi Install Aplikasi -->
             <div id="pwa-install-card" class="hidden bg-gradient-to-r from-sky-500 to-blue-600 rounded-2xl p-4 text-white shadow-lg mb-6 mt-6 items-center justify-between border border-white/20 shrink-0">
                 <div class="flex items-center gap-3">
                     <div class="bg-white text-primary w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-md"><i class="fas fa-download"></i></div>
@@ -67,7 +67,7 @@
                     <i class="fas fa-book-quran"></i>
                 </div>
                 <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">GEMAR</h1>
-                <p class="text-xs text-primary font-bold tracking-wide mt-1 uppercase">Generasi Menyayangi Al-Quran</p>
+                <p class="text-[10px] text-primary font-bold tracking-wide mt-1 uppercase">Generasi Menyayangi Al-Quran</p>
                 <p id="auth-subtitle" class="text-slate-500 text-xs mt-3 font-medium">Masuk untuk melanjutkan setoran hafalanmu.</p>
             </div>
 
@@ -86,6 +86,7 @@
                 </button>
             </div>
 
+            <!-- Form Pendaftaran via WA -->
             <div id="form-register" class="hidden space-y-3 bg-white p-6 rounded-3xl shadow-sm border border-slate-100 shrink-0">
                 <div class="flex gap-2">
                     <div class="w-1/3">
@@ -107,7 +108,7 @@
                     <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Doa / Niat Mengikuti Program</label>
                     <textarea id="reg-niat" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50" rows="3" placeholder="Semoga istiqomah..."></textarea>
                 </div>
-                <button onclick="handleRegisterWA()" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg mt-2 flex items-center justify-center gap-2">
+                <button onclick="handleRegisterWA()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg mt-2 flex items-center justify-center gap-2">
                     <i class="fab fa-whatsapp text-lg"></i> Kirim Data ke Admin
                 </button>
                 <p class="text-[10px] text-center text-slate-400 mt-2 leading-tight">Admin akan membuatkan akun dan mengirimkan akses Email & Password Anda via WhatsApp.</p>
@@ -117,7 +118,7 @@
                 <p id="auth-toggle-text" class="text-sm text-slate-500">Belum punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Daftar di sini</button></p>
             </div>
 
-            <!-- Tombol WA & Keterangan Masjid Ashqaf -->
+            <!-- Tombol WA & Keterangan -->
             <div class="mt-2 flex flex-col gap-2 items-center justify-center shrink-0 w-full max-w-[280px] mx-auto pb-8">
                 <button onclick="hubungiAdmin()" class="w-full bg-sky-50 text-sky-600 hover:bg-sky-100 font-bold py-2.5 rounded-xl transition shadow-sm flex items-center justify-center gap-2 border border-sky-200 text-xs">
                     <i class="fab fa-whatsapp text-base"></i> Hubungi Mudabbir
@@ -129,10 +130,9 @@
 
 
         <!-- ============================================== -->
-        <!-- HALAMAN UTAMA APLIKASI (Disembunyikan jika belum login) -->
+        <!-- HALAMAN UTAMA APLIKASI -->
         <!-- ============================================== -->
         <div id="app-content" class="hidden flex-col h-full w-full relative">
-            <!-- Header -->
             <header class="bg-gradient-to-r from-sky-500 to-secondary text-white shadow-lg sticky top-0 z-50 rounded-b-[2rem]">
                 <div class="px-6 py-4 flex justify-between items-center w-full">
                     <div class="flex items-center gap-3">
@@ -142,7 +142,6 @@
                 </div>
             </header>
 
-            <!-- Main Menu -->
             <main class="flex-1 p-5 overflow-y-auto hide-scrollbar pb-28">
                 
                 <!-- Tab: Dashboard -->
@@ -150,16 +149,11 @@
                     <div>
                         <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Dashboard</h2>
                         <p class="text-sm text-slate-500 mt-1 flex items-center gap-2" id="user-greeting">
-                            <i class="fas fa-spinner fa-spin text-primary"></i> Memuat profil...
+                            Selamat datang.
                         </p>
                     </div>
                     
-                    <div id="next-schedule-container" class="animate-fade-in">
-                        <div class="flex flex-col items-center justify-center py-8 gap-3 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                            <i class="fas fa-spinner fa-spin text-3xl text-primary"></i>
-                            <span class="text-xs text-slate-400 font-medium">Memuat jadwal terdekat...</span>
-                        </div>
-                    </div>
+                    <div id="next-schedule-container" class="animate-fade-in"></div>
                     
                     <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5">
                         <div class="flex flex-col sm:flex-row justify-between items-center mb-5 gap-4">
@@ -214,9 +208,10 @@
 
                         <div id="audio-preview-container" class="hidden mt-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
                             <audio id="audio-preview" controls class="w-full h-10 rounded-full mb-4"></audio>
-                            <button onclick="submitSetoran()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
-                                <i class="fas fa-paper-plane"></i> Kirim Setoran Sekarang
-                            </button>
+                            <div class="flex gap-2">
+                                <button onclick="hapusRekaman()" class="w-14 bg-red-50 hover:bg-red-100 text-red-500 font-bold py-3.5 rounded-xl transition-all shadow-sm flex items-center justify-center border border-red-100 shrink-0"><i class="fas fa-trash"></i></button>
+                                <button onclick="submitSetoran()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2"><i class="fas fa-paper-plane"></i> Kirim Setoran Sekarang</button>
+                            </div>
                         </div>
                     </div>
 
@@ -310,11 +305,11 @@
                     </div>
 
                     <!-- Hubungi Mudabbir -->
-                    <div class="bg-gradient-to-br from-sky-500 to-blue-600 rounded-3xl shadow-md p-6 text-white text-center">
+                    <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl shadow-md p-6 text-white text-center">
                         <i class="fab fa-whatsapp text-4xl mb-3"></i>
                         <h3 class="text-lg font-bold mb-1">Butuh Bantuan?</h3>
-                        <p class="text-xs text-sky-50 mb-5 leading-relaxed">Silakan hubungi Mudabbir atau Admin jika Anda mengalami kendala teknis maupun ingin bertanya seputar setoran.</p>
-                        <button onclick="hubungiAdmin()" class="w-full bg-white text-sky-600 hover:bg-sky-50 font-bold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                        <p class="text-xs text-green-50 mb-5 leading-relaxed">Silakan hubungi Mudabbir atau Admin jika Anda mengalami kendala teknis maupun ingin bertanya seputar setoran.</p>
+                        <button onclick="hubungiAdmin()" class="w-full bg-white text-green-600 hover:bg-green-50 font-bold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
                             Chat Admin Sekarang
                         </button>
                     </div>
@@ -327,7 +322,7 @@
             </main>
 
             <!-- Bottom Navigation -->
-            <nav class="absolute bottom-0 w-full bg-white/90 backdrop-blur-xl border-t border-slate-100 flex justify-around items-end pb-safe z-50 rounded-t-[2rem] px-4 pt-3 pb-3 shadow-[0_-10px_40px_rgba(0,0,0,0.06)]">
+            <nav class="fixed bottom-0 w-full max-w-md left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-xl border-t border-slate-100 flex justify-around items-end pb-safe z-50 rounded-t-[2rem] px-4 pt-3 pb-3 shadow-[0_-10px_40px_rgba(0,0,0,0.06)]">
                 <button onclick="switchTab('dashboard')" id="nav-mobile-dashboard" class="flex flex-col items-center justify-end p-2 text-primary w-20 transition-all">
                     <div class="bg-sky-50 text-primary w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-dashboard"><i class="fas fa-calendar-alt text-lg"></i></div>
                     <span class="text-[10px] font-bold tracking-wide">Jadwal</span>
@@ -357,6 +352,7 @@
             <h2 class="text-xl font-extrabold text-slate-800 tracking-tight">GEMAR</h2>
             <p id="loader-text" class="text-xs text-slate-500 mt-2 font-medium animate-pulse">Menyiapkan ruang hafalanmu...</p>
         </div>
+
     </div>
 
     <!-- Modals & Toasts -->
@@ -480,8 +476,6 @@
                 setTimeout(() => { 
                     if(authPage) authPage.classList.remove('-translate-x-full'); 
                 }, 10);
-                
-                // Sembunyikan loader jika tidak ada user yang ter-autentikasi (tampilkan menu login)
                 hideFullScreenLoader();
             }
         });
@@ -644,7 +638,6 @@
                     if(document.getElementById('profile-tgl-lahir')) document.getElementById('profile-tgl-lahir').value = myProfile.tanggal_lahir || '';
                     if(greeting) greeting.innerText = `Selamat datang, ${myProfile.sapaan || ''} ${myProfile.nama || ''}`;
                 } else {
-                    // Fallback: Jika data profil belum ada sama sekali
                     userProfileId = null;
                     if(document.getElementById('profile-sapaan')) document.getElementById('profile-sapaan').value = 'Kak';
                     if(document.getElementById('profile-nama')) document.getElementById('profile-nama').value = '';
@@ -652,8 +645,6 @@
                     if(document.getElementById('profile-tgl-lahir')) document.getElementById('profile-tgl-lahir').value = '';
                     if(greeting) greeting.innerText = `Selamat datang, ${currentUser.email}`;
                 }
-                
-                // Menutup layar loading ketika data profil selesai dimuat
                 hideFullScreenLoader();
             }, (error) => {
                 console.error("Error Load Peserta:", error.message);
@@ -713,11 +704,10 @@
             if(!nama) return window.showToast("Nama tidak boleh kosong!", "error");
 
             try {
-                // Gunakan id lama jika ada, atau buat yang baru
                 const docId = userProfileId || Date.now().toString();
                 
                 await setDoc(doc(db, 'artifacts', appIdGlobal, 'public', 'data', 'peserta', docId), { 
-                    email: currentUser.email, // Pastikan email ikut tersimpan untuk keamanan
+                    email: currentUser.email, 
                     sapaan, 
                     nama, 
                     alamat, 
@@ -897,16 +887,24 @@
         };
         document.getElementById('schedule-modal')?.addEventListener('click', function(e) { if(e.target === this) window.closeModal(); });
 
+        // Fungsi pendeteksi ID YouTube yang tangguh untuk semua format URL (Shorts, Mobile, dll)
+        function getYoutubeId(url) {
+            if (!url) return null;
+            const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
         window.openVideoModal = function(url, title) {
             const modal = document.getElementById('video-modal'); const panel = document.getElementById('video-modal-panel'); const content = document.getElementById('video-modal-content'); const titleEl = document.getElementById('video-modal-title');
             if(titleEl) titleEl.innerText = title || "Kajian"; 
             
             let embedUrl = url; 
-            const ytRegExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/; 
-            const ytMatch = url.match(ytRegExp);
+            const ytId = getYoutubeId(url);
             
-            if (ytMatch && ytMatch[2].length === 11) {
-                embedUrl = `https://www.youtube.com/embed/${ytMatch[2]}?autoplay=1&rel=0`; 
+            if (ytId) {
+                // Konversi link otomatis ke mode pemutar (embed) yang diizinkan oleh YouTube
+                embedUrl = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`; 
             } else if (url.includes('drive.google.com')) {
                 embedUrl = url.replace(/\/view.*$/, '/preview');
             }
@@ -959,8 +957,8 @@
                 
                 let thumbUrl = vid.thumbnail; 
                 if (!thumbUrl && vid.url) { 
-                    const ytMatch = vid.url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/); 
-                    if (ytMatch && ytMatch[2].length === 11) thumbUrl = `https://img.youtube.com/vi/${ytMatch[2]}/hqdefault.jpg`; 
+                    const ytId = getYoutubeId(vid.url);
+                    if (ytId) thumbUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`; 
                 }
                 const finalThumb = thumbUrl || 'https://images.unsplash.com/photo-1609599006353-e629aaab31f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
                 
