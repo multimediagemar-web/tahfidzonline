@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Setoran Hafalan - Peserta</title>
     
+    <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#10b981">
     <link rel="apple-touch-icon" href="icon-192x192.png">
@@ -36,251 +37,179 @@
 
     <div class="w-full max-w-md bg-surface min-h-screen relative shadow-2xl flex flex-col sm:border-x border-gray-200 overflow-hidden">
 
-        <div id="auth-page" class="absolute inset-0 z-[200] bg-surface flex flex-col justify-center px-8 transition-transform duration-500">
+        <!-- HALAMAN DEPAN : LOGIN & PENGIRIMAN WA -->
+        <div id="auth-page" class="absolute inset-0 z-[200] bg-surface flex flex-col justify-center px-8 transition-transform duration-500 overflow-y-auto hide-scrollbar">
             
-            <div id="pwa-install-card" class="hidden bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl p-4 text-white shadow-lg mb-8 items-center justify-between border border-white/20">
+            <div id="pwa-install-card" class="hidden bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl p-4 text-white shadow-lg mb-6 mt-6 items-center justify-between border border-white/20 shrink-0">
                 <div class="flex items-center gap-3">
                     <div class="bg-white text-primary w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-md"><i class="fas fa-download"></i></div>
-                    <div>
-                        <h4 class="font-bold text-sm">Install Aplikasi</h4>
-                        <p class="text-[10px] text-emerald-50">Pasang di layar utama HP</p>
-                    </div>
+                    <div><h4 class="font-bold text-sm">Install Aplikasi</h4><p class="text-[10px] text-emerald-50">Pasang di layar utama HP</p></div>
                 </div>
                 <button id="btn-install-pwa" class="bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-xl text-xs font-bold transition shadow-md">Install</button>
             </div>
 
-            <div class="text-center mb-8">
-                <div class="bg-emerald-100 text-primary w-20 h-20 rounded-[2rem] flex items-center justify-center text-4xl mx-auto mb-4 shadow-inner border border-emerald-200">
-                    <i class="fas fa-book-quran"></i>
-                </div>
-                <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">Ruang Hafalan</h1>
-                <p class="text-slate-500 text-sm mt-2 font-medium">Masuk untuk melanjutkan setoran hafalanmu.</p>
+            <div class="text-center mb-6 shrink-0 mt-6">
+                <div class="bg-emerald-100 text-primary w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-inner border border-emerald-200"><i class="fas fa-book-quran"></i></div>
+                <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight">Ruang Hafalan</h1>
+                <p id="auth-subtitle" class="text-slate-500 text-xs mt-2 font-medium">Masuk untuk melanjutkan setoran hafalanmu.</p>
             </div>
 
-            <div class="space-y-4 bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+            <!-- Form Login -->
+            <div id="form-login" class="space-y-4 bg-white p-6 rounded-3xl shadow-sm border border-slate-100 shrink-0">
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email</label>
-                    <input type="email" id="auth-email" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition" placeholder="email@contoh.com">
+                    <input type="email" id="auth-email" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="email@contoh.com">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Password</label>
-                    <input type="password" id="auth-password" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition" placeholder="********">
+                    <input type="password" id="auth-password" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="********">
                 </div>
-                
-                <button id="btn-login" onclick="handleLogin()" class="w-full bg-primary hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-primary/30 mt-2">
-                    Masuk Sekarang
-                </button>
-                <button id="btn-register" onclick="handleRegister()" class="hidden w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3.5 rounded-xl transition shadow-lg mt-2">
-                    Daftar Akun Baru
-                </button>
+                <button onclick="handleLogin()" class="w-full bg-primary hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-primary/30 mt-2">Masuk Sekarang</button>
             </div>
 
-            <div class="mt-6 text-center">
+            <!-- Form Pendaftaran via WA -->
+            <div id="form-register" class="hidden space-y-3 bg-white p-6 rounded-3xl shadow-sm border border-slate-100 shrink-0">
+                <div class="flex gap-2">
+                    <div class="w-1/3">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Sapaan</label>
+                        <select id="reg-sapaan" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50">
+                            <option value="Kak">Kak</option><option value="Pak">Pak</option><option value="Bu">Bu</option>
+                        </select>
+                    </div>
+                    <div class="w-2/3">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Nama Lengkap</label>
+                        <input type="text" id="reg-nama" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="Fulan">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">No. WhatsApp Aktif</label>
+                    <input type="number" id="reg-wa" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="08123456789">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Doa / Niat Mengikuti Program</label>
+                    <textarea id="reg-niat" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50" rows="3" placeholder="Semoga istiqomah..."></textarea>
+                </div>
+                <button onclick="handleRegisterWA()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg mt-2 flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp text-lg"></i> Kirim Data ke Admin
+                </button>
+                <p class="text-[10px] text-center text-slate-400 mt-2 leading-tight">Admin akan membuatkan akun dan mengirimkan akses Email & Password Anda via WhatsApp.</p>
+            </div>
+
+            <div class="mt-6 text-center pb-6 shrink-0">
                 <p id="auth-toggle-text" class="text-sm text-slate-500">Belum punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Daftar di sini</button></p>
             </div>
         </div>
 
+        <!-- HALAMAN UTAMA APLIKASI -->
         <div id="app-content" class="hidden flex-col h-full w-full relative">
             <header class="bg-gradient-to-r from-emerald-500 to-secondary text-white shadow-lg sticky top-0 z-50 rounded-b-[2rem]">
-                <div class="px-6 py-5 flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-white/20 p-2 rounded-xl backdrop-blur-sm"><i class="fas fa-book-open text-xl"></i></div>
-                        <h1 class="text-xl font-bold tracking-tight">Ruang Hafalan</h1>
+                <div class="px-5 py-4 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <div class="bg-white/20 p-1.5 rounded-xl backdrop-blur-sm"><i class="fas fa-book-open text-lg"></i></div>
+                        <h1 class="text-lg font-bold tracking-tight truncate max-w-[150px]">Ruang Hafalan</h1>
                     </div>
-                    <button onclick="handleLogout()" class="flex items-center gap-2 bg-rose-500 hover:bg-rose-600 px-3 py-1.5 rounded-full text-xs font-bold shadow-md transition">
-                        <i class="fas fa-sign-out-alt"></i> Keluar
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button onclick="hubungiAdmin()" class="bg-green-500 hover:bg-green-600 w-8 h-8 rounded-full text-white shadow-md transition flex items-center justify-center">
+                            <i class="fab fa-whatsapp"></i>
+                        </button>
+                        <button onclick="handleLogout()" class="bg-rose-500 hover:bg-rose-600 w-8 h-8 rounded-full text-white shadow-md transition flex items-center justify-center">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
                 </div>
             </header>
 
             <main class="flex-1 p-5 overflow-y-auto hide-scrollbar pb-28">
+                <!-- Tab: Dashboard -->
                 <section id="tab-dashboard" class="block animate-fade-in space-y-6">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Dashboard</h2>
-                        <p class="text-sm text-slate-500 mt-1" id="user-greeting">Selamat datang.</p>
-                    </div>
-                    
+                    <div><h2 class="text-2xl font-bold text-slate-800 tracking-tight">Dashboard</h2><p class="text-sm text-slate-500 mt-1" id="user-greeting">Selamat datang.</p></div>
                     <div id="next-schedule-container" class="animate-fade-in"></div>
-                    
                     <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5">
-                        <div class="flex flex-col sm:flex-row justify-between items-center mb-5 gap-4">
-                            <div class="flex items-center gap-4 w-full justify-between">
-                                <button onclick="changeMonth(-1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-400"><i class="fas fa-chevron-left"></i></button>
-                                <h3 id="calendar-month-year" class="font-bold text-lg text-slate-700 text-center min-w-[120px]">Bulan Tahun</h3>
-                                <button onclick="changeMonth(1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-400"><i class="fas fa-chevron-right"></i></button>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-slate-400 mb-3 uppercase">
-                            <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
-                        </div>
+                        <div class="flex flex-col sm:flex-row justify-between items-center mb-5 gap-4"><div class="flex items-center gap-4 w-full justify-between"><button onclick="changeMonth(-1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-400"><i class="fas fa-chevron-left"></i></button><h3 id="calendar-month-year" class="font-bold text-lg text-slate-700 text-center min-w-[120px]">Bulan Tahun</h3><button onclick="changeMonth(1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-400"><i class="fas fa-chevron-right"></i></button></div></div>
+                        <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-slate-400 mb-3 uppercase"><div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div></div>
                         <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-sm font-medium"></div>
                     </div>
-
-                    <div>
-                        <h3 class="text-lg font-bold mb-4 text-slate-800 flex items-center gap-2"><i class="fas fa-chart-pie text-primary"></i> Hafalan Saya</h3>
-                        <div id="progress-hafalan-container"></div>
-                    </div>
+                    <div><h3 class="text-lg font-bold mb-4 text-slate-800 flex items-center gap-2"><i class="fas fa-chart-pie text-primary"></i> Hafalan Saya</h3><div id="progress-hafalan-container"></div></div>
                 </section>
 
+                <!-- Tab: Setoran -->
                 <section id="tab-setoran" class="hidden animate-fade-in space-y-6">
                     <div><h2 class="text-2xl font-bold text-slate-800 tracking-tight">Setor Hafalan</h2></div>
                     <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 text-center">
                         <div class="mb-8 text-left space-y-5">
                             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Pilih Surah</label>
-                                <select id="surah-select" onchange="handleSurahChange()" class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none outline-none cursor-pointer appearance-none">
-                                    <option value="">-- Pilih Surah --</option>
-                                </select>
+                                <select id="surah-select" onchange="handleSurahChange()" class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none outline-none cursor-pointer appearance-none"><option value="">-- Pilih Surah --</option></select>
                             </div>
                             <div class="flex gap-4 items-center">
-                                <div class="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dari Ayat</label>
-                                    <select id="ayat-start" onchange="updateAyatEnd()" disabled class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none cursor-pointer appearance-none disabled:opacity-50"><option value="">-</option></select>
-                                </div>
+                                <div class="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-100"><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dari Ayat</label><select id="ayat-start" onchange="updateAyatEnd()" disabled class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none cursor-pointer appearance-none disabled:opacity-50"><option value="">-</option></select></div>
                                 <div class="text-slate-300 font-bold"><i class="fas fa-arrow-right"></i></div>
-                                <div class="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Sampai</label>
-                                    <select id="ayat-end" disabled class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none cursor-pointer appearance-none disabled:opacity-50"><option value="">-</option></select>
-                                </div>
+                                <div class="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-100"><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Sampai</label><select id="ayat-end" disabled class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none cursor-pointer appearance-none disabled:opacity-50"><option value="">-</option></select></div>
                             </div>
                         </div>
-
                         <div class="py-6 flex flex-col items-center">
                             <div class="relative w-28 h-28 flex items-center justify-center">
-                                <div class="absolute inset-0 bg-rose-100 rounded-full scale-110"></div>
-                                <div class="absolute inset-2 bg-rose-200 rounded-full"></div>
-                                <button id="record-btn" onclick="toggleRecording()" class="relative z-10 w-20 h-20 rounded-full bg-rose-500 text-white shadow-xl shadow-rose-500/40 flex items-center justify-center transition-transform transform hover:scale-105">
-                                    <i id="record-icon" class="fas fa-microphone text-3xl"></i>
-                                </button>
+                                <div class="absolute inset-0 bg-rose-100 rounded-full scale-110"></div><div class="absolute inset-2 bg-rose-200 rounded-full"></div>
+                                <button id="record-btn" onclick="toggleRecording()" class="relative z-10 w-20 h-20 rounded-full bg-rose-500 text-white shadow-xl shadow-rose-500/40 flex items-center justify-center transition-transform transform hover:scale-105"><i id="record-icon" class="fas fa-microphone text-3xl"></i></button>
                             </div>
                             <p id="record-status" class="mt-6 text-sm text-slate-500 font-medium">Sentuh mic untuk merekam</p>
                             <p id="record-timer" class="text-3xl font-bold text-rose-500 hidden mt-2 tracking-tight">00:00</p>
                         </div>
-
                         <div id="audio-preview-container" class="hidden mt-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
                             <audio id="audio-preview" controls class="w-full h-10 rounded-full mb-4"></audio>
                             <div class="flex gap-2">
-                                <button onclick="hapusRekaman()" class="w-14 bg-red-50 hover:bg-red-100 text-red-500 font-bold py-3.5 rounded-xl transition-all shadow-sm flex items-center justify-center border border-red-100 shrink-0">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                                <button onclick="submitSetoran()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
-                                    <i class="fas fa-paper-plane"></i> Kirim Setoran
-                                </button>
+                                <button onclick="hapusRekaman()" class="w-14 bg-red-50 hover:bg-red-100 text-red-500 font-bold py-3.5 rounded-xl transition-all shadow-sm flex items-center justify-center border border-red-100 shrink-0"><i class="fas fa-trash"></i></button>
+                                <button onclick="submitSetoran()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2"><i class="fas fa-paper-plane"></i> Kirim Setoran</button>
                             </div>
                         </div>
                     </div>
-
                     <div>
                         <h3 class="text-lg font-bold mb-4 text-slate-800 flex items-center gap-2"><i class="fas fa-history text-primary"></i> Riwayat Saya</h3>
                         <div class="flex gap-2 mb-4">
-                            <div class="relative flex-1">
-                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs"></i>
-                                <input type="text" id="riwayat-search" onkeyup="handleRiwayatFilter()" placeholder="Cari surah..." class="w-full bg-white border border-slate-100 rounded-xl py-2.5 pl-8 pr-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm">
-                            </div>
-                            <select id="riwayat-status" onchange="handleRiwayatFilter()" class="bg-white border border-slate-100 rounded-xl py-2 px-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm text-slate-600">
-                                <option value="Semua">Semua Status</option>
-                                <option value="Menunggu Review">Menunggu</option>
-                                <option value="Diterima">Diterima</option>
-                                <option value="Perlu Perbaikan">Revisi</option>
-                            </select>
+                            <div class="relative flex-1"><i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs"></i><input type="text" id="riwayat-search" onkeyup="handleRiwayatFilter()" placeholder="Cari surah..." class="w-full bg-white border border-slate-100 rounded-xl py-2.5 pl-8 pr-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm"></div>
+                            <select id="riwayat-status" onchange="handleRiwayatFilter()" class="bg-white border border-slate-100 rounded-xl py-2 px-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm text-slate-600"><option value="Semua">Semua Status</option><option value="Menunggu Review">Menunggu</option><option value="Diterima">Diterima</option><option value="Perlu Perbaikan">Revisi</option></select>
                         </div>
                         <div id="riwayat-container" class="space-y-3"></div>
                     </div>
                 </section>
 
+                <!-- Tab: Kajian -->
                 <section id="tab-kajian" class="hidden animate-fade-in space-y-6">
                     <div><h2 class="text-2xl font-bold text-slate-800 tracking-tight">Pustaka Video</h2></div>
                     <div class="space-y-3">
-                        <div class="relative">
-                            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
-                            <input type="text" id="video-search" onkeyup="handleVideoFilter()" placeholder="Cari judul video..." class="w-full bg-white border border-slate-100 rounded-2xl py-3 pl-11 pr-4 text-sm outline-none focus:ring-1 focus:ring-primary shadow-sm">
-                        </div>
-                        <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1 pt-1" id="video-categories">
-                            <button onclick="setVideoCategory('Semua')" class="cat-btn active px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-slate-800 text-white shadow-md">Semua</button>
-                            <button onclick="setVideoCategory('Tahfidz')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Tahfidz</button>
-                            <button onclick="setVideoCategory('Tahsin')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Tahsin</button>
-                            <button onclick="setVideoCategory('Kajian')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Kajian</button>
-                            <button onclick="setVideoCategory('Lainnya')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Lainnya</button>
-                        </div>
+                        <div class="relative"><i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i><input type="text" id="video-search" onkeyup="handleVideoFilter()" placeholder="Cari judul video..." class="w-full bg-white border border-slate-100 rounded-2xl py-3 pl-11 pr-4 text-sm outline-none focus:ring-1 focus:ring-primary shadow-sm"></div>
+                        <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1 pt-1" id="video-categories"><button onclick="setVideoCategory('Semua')" class="cat-btn active px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-slate-800 text-white shadow-md">Semua</button><button onclick="setVideoCategory('Tahfidz')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Tahfidz</button><button onclick="setVideoCategory('Tahsin')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Tahsin</button><button onclick="setVideoCategory('Kajian')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Kajian</button><button onclick="setVideoCategory('Lainnya')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Lainnya</button></div>
                     </div>
                     <div id="video-container" class="space-y-4"></div>
                 </section>
             </main>
 
+            <!-- Bottom Navigation -->
             <nav class="fixed bottom-0 w-full max-w-md left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-xl border-t border-slate-100 flex justify-around items-end pb-safe z-50 rounded-t-[2rem] px-4 pt-3 pb-3 shadow-[0_-10px_40px_rgba(0,0,0,0.06)]">
-                <button onclick="switchTab('dashboard')" id="nav-mobile-dashboard" class="flex flex-col items-center justify-end p-2 text-primary w-20 transition-all">
-                    <div class="bg-emerald-50 text-primary w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-dashboard"><i class="fas fa-calendar-alt text-lg"></i></div>
-                    <span class="text-[10px] font-bold tracking-wide">Jadwal</span>
-                </button>
-                <button onclick="switchTab('setoran')" id="nav-mobile-setoran" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-20 transition relative">
-                    <div class="absolute bottom-6 bg-gradient-to-br from-emerald-400 to-primary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 border-[3px] border-white transform hover:scale-105 transition-transform z-10" id="fab-setor"><i class="fas fa-microphone-alt text-xl"></i></div>
-                    <span class="text-[10px] font-bold tracking-wide">Setor</span>
-                </button>
-                <button onclick="switchTab('kajian')" id="nav-mobile-kajian" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-20 transition-all">
-                    <div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-kajian"><i class="fas fa-play-circle text-lg"></i></div>
-                    <span class="text-[10px] font-bold tracking-wide">Kajian</span>
-                </button>
+                <button onclick="switchTab('dashboard')" id="nav-mobile-dashboard" class="flex flex-col items-center justify-end p-2 text-primary w-20 transition-all"><div class="bg-emerald-50 text-primary w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-dashboard"><i class="fas fa-calendar-alt text-lg"></i></div><span class="text-[10px] font-bold tracking-wide">Jadwal</span></button>
+                <button onclick="switchTab('setoran')" id="nav-mobile-setoran" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-20 transition relative"><div class="absolute bottom-6 bg-gradient-to-br from-emerald-400 to-primary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 border-[3px] border-white transform hover:scale-105 transition-transform z-10" id="fab-setor"><i class="fas fa-microphone-alt text-xl"></i></div><span class="text-[10px] font-bold tracking-wide">Setor</span></button>
+                <button onclick="switchTab('kajian')" id="nav-mobile-kajian" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-20 transition-all"><div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-kajian"><i class="fas fa-play-circle text-lg"></i></div><span class="text-[10px] font-bold tracking-wide">Kajian</span></button>
             </nav>
         </div>
     </div>
 
-    <div id="toast" class="fixed top-12 left-1/2 transform -translate-x-1/2 w-[85%] max-w-[350px] bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl transition-all duration-400 -translate-y-[200%] opacity-0 z-[300] flex items-center gap-3">
-        <div id="toast-icon-bg" class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center shrink-0"><i id="toast-icon" class="fas fa-check text-white text-sm"></i></div>
-        <span id="toast-message" class="font-medium text-sm leading-tight flex-1">Notifikasi</span>
-    </div>
-
-    <div id="schedule-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity">
-        <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col transform scale-95 transition-all" id="modal-panel">
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center">
-                <h3 class="font-bold text-lg text-slate-800" id="modal-date-title">Jadwal Kajian</h3>
-                <button onclick="closeModal()" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-600 transition shrink-0"><i class="fas fa-times"></i></button>
-            </div>
-            <div id="modal-content" class="p-5 overflow-y-auto space-y-4 hide-scrollbar flex-1"></div>
-        </div>
-    </div>
-
-    <div id="video-modal" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity">
-        <div class="w-full max-w-md relative transform scale-95 transition-all" id="video-modal-panel">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="font-bold text-white text-sm" id="video-modal-title">Memutar Video...</h3>
-                <button onclick="closeVideoModal()" class="w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center hover:bg-white/40 transition backdrop-blur-sm"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="bg-black w-full rounded-2xl overflow-hidden shadow-2xl aspect-video relative">
-                <div id="video-modal-content" class="absolute inset-0 w-full h-full"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="hafalan-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity">
-        <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col transform scale-95 transition-all" id="hafalan-modal-panel">
-            <div class="p-6 border-b border-slate-100 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-t-[2rem] text-white flex justify-between items-center">
-                <h3 class="font-bold text-lg"><i class="fas fa-chart-pie mr-2"></i>Rincian Hafalan</h3>
-                <button onclick="closeHafalanModal()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition shrink-0"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="p-4 border-b border-slate-100 bg-slate-50">
-                <div class="relative">
-                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs"></i>
-                    <input type="text" id="hafalan-search" onkeyup="renderHafalanDetailList()" placeholder="Cari nama surah..." class="w-full bg-white border border-slate-200 rounded-xl py-2 pl-8 pr-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm">
-                </div>
-            </div>
-            <div id="hafalan-modal-content" class="p-5 overflow-y-auto space-y-3 hide-scrollbar flex-1 bg-slate-50"></div>
-        </div>
-    </div>
+    <!-- Modals & Toasts -->
+    <div id="toast" class="fixed top-12 left-1/2 transform -translate-x-1/2 w-[85%] max-w-[350px] bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl transition-all duration-400 -translate-y-[200%] opacity-0 z-[300] flex items-center gap-3"><div id="toast-icon-bg" class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center shrink-0"><i id="toast-icon" class="fas fa-check text-white text-sm"></i></div><span id="toast-message" class="font-medium text-sm leading-tight flex-1">Notifikasi</span></div>
+    <div id="schedule-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity"><div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col transform scale-95 transition-all" id="modal-panel"><div class="p-6 border-b border-slate-100 flex justify-between items-center"><h3 class="font-bold text-lg text-slate-800" id="modal-date-title">Jadwal Kajian</h3><button onclick="closeModal()" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-600 transition shrink-0"><i class="fas fa-times"></i></button></div><div id="modal-content" class="p-5 overflow-y-auto space-y-4 hide-scrollbar flex-1"></div></div></div>
+    <div id="video-modal" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity"><div class="w-full max-w-md relative transform scale-95 transition-all" id="video-modal-panel"><div class="flex justify-between items-center mb-3"><h3 class="font-bold text-white text-sm" id="video-modal-title">Memutar Video...</h3><button onclick="closeVideoModal()" class="w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center hover:bg-white/40 transition backdrop-blur-sm"><i class="fas fa-times"></i></button></div><div class="bg-black w-full rounded-2xl overflow-hidden shadow-2xl aspect-video relative"><div id="video-modal-content" class="absolute inset-0 w-full h-full"></div></div></div></div>
+    <div id="hafalan-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity"><div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col transform scale-95 transition-all" id="hafalan-modal-panel"><div class="p-6 border-b border-slate-100 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-t-[2rem] text-white flex justify-between items-center"><h3 class="font-bold text-lg"><i class="fas fa-chart-pie mr-2"></i>Rincian Hafalan</h3><button onclick="closeHafalanModal()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition shrink-0"><i class="fas fa-times"></i></button></div><div class="p-4 border-b border-slate-100 bg-slate-50"><div class="relative"><i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs"></i><input type="text" id="hafalan-search" onkeyup="renderHafalanDetailList()" placeholder="Cari nama surah..." class="w-full bg-white border border-slate-200 rounded-xl py-2 pl-8 pr-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm"></div></div><div id="hafalan-modal-content" class="p-5 overflow-y-auto space-y-3 hide-scrollbar flex-1 bg-slate-50"></div></div></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, doc, setDoc, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        // REMOVED query and where
+        import { getFirestore, collection, onSnapshot, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyBgcwQR00n6uHSv1yypRqrpP6I7b1YwjIk",
-            authDomain: "tahfidzonline-4d5bc.firebaseapp.com",
-            projectId: "tahfidzonline-4d5bc",
-            storageBucket: "tahfidzonline-4d5bc.firebasestorage.app",
-            messagingSenderId: "752501441915",
-            appId: "1:752501441915:web:5fd129d1d2661c31db69de"
+            apiKey: "AIzaSyBgcwQR00n6uHSv1yypRqrpP6I7b1YwjIk", authDomain: "tahfidzonline-4d5bc.firebaseapp.com", projectId: "tahfidzonline-4d5bc",
+            storageBucket: "tahfidzonline-4d5bc.firebasestorage.app", messagingSenderId: "752501441915", appId: "1:752501441915:web:5fd129d1d2661c31db69de"
         };
-        const appId = 'tahfidz-app-global-v1';
+        const appIdGlobal = 'tahfidz-app-global-v1';
         
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -289,6 +218,16 @@
         let currentUser = null;
         let state = { setoran: [], schedules: [], videos: [] };
         let isLoginMode = true;
+        let adminWaNumber = "6281234567890"; // Fallback number
+
+        // Ambil pengaturan nomor WA admin dari Firestore
+        onSnapshot(doc(db, 'artifacts', appIdGlobal, 'public', 'data', 'settings', 'admin_profile'), (docSnap) => {
+            if(docSnap.exists() && docSnap.data().wa_number) {
+                adminWaNumber = docSnap.data().wa_number;
+            }
+        }, (error) => {
+            console.warn("Gagal membaca pengaturan admin dari Firebase. Pastikan Rules Anda sudah benar. Error:", error.message);
+        });
 
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
@@ -312,10 +251,14 @@
         window.toggleAuthMode = function() {
             isLoginMode = !isLoginMode;
             if(isLoginMode) {
-                document.getElementById('btn-login').classList.remove('hidden'); document.getElementById('btn-register').classList.add('hidden');
+                document.getElementById('form-login').classList.remove('hidden'); 
+                document.getElementById('form-register').classList.add('hidden');
+                document.getElementById('auth-subtitle').innerText = "Masuk untuk melanjutkan setoran hafalanmu.";
                 document.getElementById('auth-toggle-text').innerHTML = `Belum punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Daftar di sini</button>`;
             } else {
-                document.getElementById('btn-login').classList.add('hidden'); document.getElementById('btn-register').classList.remove('hidden');
+                document.getElementById('form-login').classList.add('hidden'); 
+                document.getElementById('form-register').classList.remove('hidden');
+                document.getElementById('auth-subtitle').innerText = "Lengkapi data untuk mendaftar via WhatsApp.";
                 document.getElementById('auth-toggle-text').innerHTML = `Sudah punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Masuk di sini</button>`;
             }
         };
@@ -326,11 +269,25 @@
             try { await signInWithEmailAndPassword(auth, email, pass); showToast("Berhasil login!"); } catch(e) { showToast("Gagal login! Periksa email dan password", "error"); }
         };
 
-        window.handleRegister = async function() {
-            const email = document.getElementById('auth-email').value; const pass = document.getElementById('auth-password').value;
-            if(!email || !pass) return showToast("Email dan password wajib diisi", "error");
-            if(pass.length < 6) return showToast("Password minimal 6 karakter", "error");
-            try { await createUserWithEmailAndPassword(auth, email, pass); showToast("Akun berhasil didaftarkan dan masuk!"); } catch(e) { showToast("Gagal mendaftar. Email mungkin sudah digunakan.", "error"); }
+        // Pendaftaran mengarah ke WA
+        window.handleRegisterWA = function() {
+            const sapaan = document.getElementById('reg-sapaan').value;
+            const nama = document.getElementById('reg-nama').value;
+            const wa = document.getElementById('reg-wa').value;
+            const niat = document.getElementById('reg-niat').value;
+
+            if(!nama || !wa || !niat) return showToast("Harap isi semua data formulir pendaftaran!", "error");
+
+            const pesan = `Assalamu'alaikum Admin/Mudabbir,\nSaya ingin mendaftar program Ruang Hafalan.\n\n*DATA PENDAFTAR:*\n- Sapaan: ${sapaan}\n- Nama Lengkap: ${nama}\n- No. WhatsApp: ${wa}\n- Doa/Niat: ${niat}\n\nMohon bantuannya untuk dibuatkan akun dan informasi detail (Email & Sandi) agar bisa masuk ke dalam aplikasi. Terima kasih.`;
+            
+            const linkWa = `https://wa.me/${adminWaNumber}?text=${encodeURIComponent(pesan)}`;
+            window.open(linkWa, '_blank');
+        };
+
+        window.hubungiAdmin = function() {
+            const pesan = `Assalamu'alaikum Admin/Mudabbir, saya butuh bantuan terkait aplikasi Ruang Hafalan...`;
+            const linkWa = `https://wa.me/${adminWaNumber}?text=${encodeURIComponent(pesan)}`;
+            window.open(linkWa, '_blank');
         };
 
         window.handleLogout = async function() {
@@ -356,22 +313,24 @@
 
         function setupListeners() {
             if (!currentUser) return;
-            const qSetoran = query(collection(db, 'artifacts', appId, 'public', 'data', 'setoran'), where("user", "==", currentUser.email));
-            onSnapshot(qSetoran, (snap) => {
+            
+            // Perbaikan: Hapus 'query' dan 'where' karena diblokir oleh strict rule dari sistem/Firebase
+            // Mengambil semua data dari koleksi, lalu difilter di dalam aplikasi (di bawah)
+            onSnapshot(collection(db, 'artifacts', appIdGlobal, 'public', 'data', 'setoran'), (snap) => {
                 state.setoran = snap.docs.map(d => ({id: d.id, ...d.data()}));
                 if(!document.getElementById('tab-setoran').classList.contains('hidden')) renderRiwayat();
                 if(!document.getElementById('tab-dashboard').classList.contains('hidden')) renderProgressHafalan();
-            }, (e) => console.error("Error Load Setoran:", e));
+            }, (error) => console.error("Error Load Setoran:", error.message));
 
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'schedules'), (snap) => {
+            onSnapshot(collection(db, 'artifacts', appIdGlobal, 'public', 'data', 'schedules'), (snap) => {
                 state.schedules = snap.docs.map(d => ({id: d.id, ...d.data()}));
                 if(!document.getElementById('tab-dashboard').classList.contains('hidden')) { renderNextSchedule(); renderCalendar(); }
-            });
+            }, (error) => console.error("Error Load Schedules:", error.message));
 
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'videos'), (snap) => {
+            onSnapshot(collection(db, 'artifacts', appIdGlobal, 'public', 'data', 'videos'), (snap) => {
                 state.videos = snap.docs.map(d => ({id: d.id, ...d.data()}));
                 if(!document.getElementById('tab-kajian').classList.contains('hidden')) renderVideos();
-            });
+            }, (error) => console.error("Error Load Videos:", error.message));
         }
 
         setInterval(() => { if(!document.getElementById('tab-dashboard').classList.contains('hidden')) renderNextSchedule(); }, 60000);
@@ -390,8 +349,8 @@
         };
 
         let deferredPrompt; const installCard = document.getElementById('pwa-install-card'); const btnInstallPwa = document.getElementById('btn-install-pwa');
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installCard.classList.remove('hidden'); installCard.classList.add('flex'); });
-        btnInstallPwa.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if(outcome === 'accepted') { installCard.classList.add('hidden'); } deferredPrompt = null; } });
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; if(installCard) { installCard.classList.remove('hidden'); installCard.classList.add('flex'); } });
+        if(btnInstallPwa) { btnInstallPwa.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if(outcome === 'accepted') { installCard.classList.add('hidden'); } deferredPrompt = null; } }); }
         if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.protocol === 'http:')) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').then(reg => { reg.addEventListener('updatefound', () => { const newWorker = reg.installing; newWorker.addEventListener('statechange', () => { if (newWorker.state === 'installed' && navigator.serviceWorker.controller) { window.showToast("Pembaruan aplikasi tersedia! Memuat ulang...", "success"); setTimeout(() => window.location.reload(), 2000); } }); }); }).catch(err => console.warn('Pendaftaran ServiceWorker dilewati:', err)); }); }
 
         window.showToast = function(msg, type="success") {
@@ -412,15 +371,13 @@
 
         let currentDate = new Date();
         window.renderCalendar = function() {
-            const monthYearEl = document.getElementById('calendar-month-year'); const gridEl = document.getElementById('calendar-grid');
-            if(!monthYearEl || !gridEl) return;
+            const monthYearEl = document.getElementById('calendar-month-year'); const gridEl = document.getElementById('calendar-grid'); if(!monthYearEl || !gridEl) return;
             const year = currentDate.getFullYear(); const month = currentDate.getMonth(); const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
             monthYearEl.innerText = `${monthNames[month]} ${year}`; gridEl.innerHTML = '';
             const firstDay = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
             for (let i = 0; i < firstDay; i++) gridEl.innerHTML += `<div></div>`;
             for (let i = 1; i <= daysInMonth; i++) {
-                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-                const hasSchedule = state.schedules.some(s => s.date === dateStr); const isToday = new Date().toDateString() === new Date(year, month, i).toDateString();
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`; const hasSchedule = state.schedules.some(s => s.date === dateStr); const isToday = new Date().toDateString() === new Date(year, month, i).toDateString();
                 let classes = "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center mx-auto rounded-full cursor-pointer transition-all duration-300 select-none ";
                 if (isToday) classes += "bg-primary text-white font-bold shadow-md shadow-primary/40 hover:scale-105"; else if (hasSchedule) classes += "bg-blue-50 text-blue-700 font-bold border border-blue-100 hover:bg-blue-100"; else classes += "text-slate-600 hover:bg-slate-100";
                 gridEl.innerHTML += `<div class="py-1"><div onclick="openScheduleModal('${dateStr}')" class="${classes}">${i}</div></div>`;
@@ -466,8 +423,7 @@
             if(filteredVideos.length === 0) { container.innerHTML = `<div class="p-8 text-center text-slate-400 bg-white rounded-3xl shadow-sm border border-slate-100 mt-4"><i class="fas fa-search text-4xl text-slate-200 mb-3 block"></i><span class="font-medium">Video tidak ditemukan.</span></div>`; return; }
             container.innerHTML = filteredVideos.map(vid => {
                 let badgeColor = 'bg-slate-600'; if(vid.kategori === 'Tahfidz') badgeColor = 'bg-emerald-500'; if(vid.kategori === 'Tahsin') badgeColor = 'bg-blue-500'; if(vid.kategori === 'Kajian') badgeColor = 'bg-primary';
-                let thumbUrl = vid.thumbnail;
-                if (!thumbUrl && vid.url) { const ytMatch = vid.url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/); if (ytMatch && ytMatch[2].length === 11) thumbUrl = `https://img.youtube.com/vi/${ytMatch[2]}/hqdefault.jpg`; }
+                let thumbUrl = vid.thumbnail; if (!thumbUrl && vid.url) { const ytMatch = vid.url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/); if (ytMatch && ytMatch[2].length === 11) thumbUrl = `https://img.youtube.com/vi/${ytMatch[2]}/hqdefault.jpg`; }
                 const finalThumb = thumbUrl || 'https://images.unsplash.com/photo-1609599006353-e629aaab31f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
                 return `<div onclick="openVideoModal('${vid.url}', '${vid.title.replace(/'/g, "\\'")}')" class="block bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition group cursor-pointer"><div class="h-44 w-full relative bg-slate-100 overflow-hidden"><img src="${finalThumb}" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-700"><div class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition"></div><div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"><div class="w-12 h-12 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white pl-1 border border-white/40 shadow-lg"><i class="fas fa-play text-xl"></i></div></div><span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-md ${badgeColor}">${vid.kategori || 'Kajian'}</span><div class="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-lg">${vid.durasi || '00:00'}</div></div><div class="p-4"><h3 class="font-bold text-slate-800 leading-snug line-clamp-2">${vid.title}</h3><p class="text-xs text-slate-500 mt-2 font-medium flex items-center gap-1.5"><i class="far fa-calendar-alt"></i> Ditambahkan: ${vid.tanggal ? new Date(vid.tanggal).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}) : '-'}</p></div></div>`;
             }).join('');
@@ -483,7 +439,9 @@
 
         function renderProgressHafalan() {
             const container = document.getElementById('progress-hafalan-container');
-            const mySetoran = state.setoran.filter(s => s.status === 'Diterima'); 
+            
+            // Perbaikan: Filter setoran khusus untuk peserta yang sedang login dilakukan di sini
+            const mySetoran = state.setoran.filter(s => s.user === currentUser.email && s.status === 'Diterima'); 
             
             let ayatTersimpan = {}; daftarSurah.forEach(s => ayatTersimpan[s.nama] = new Set());
             mySetoran.forEach(setoran => {
@@ -507,7 +465,10 @@
 
         window.renderHafalanDetailList = function() {
             const container = document.getElementById('hafalan-modal-content'); const searchTerm = document.getElementById('hafalan-search').value.toLowerCase();
-            const mySetoran = state.setoran.filter(s => s.status === 'Diterima');
+            
+            // Perbaikan: Filter khusus email yang sedang login
+            const mySetoran = state.setoran.filter(s => s.user === currentUser.email && s.status === 'Diterima');
+            
             let ayatTersimpan = {}; daftarSurah.forEach(s => ayatTersimpan[s.nama] = new Set());
             mySetoran.forEach(setoran => {
                 const match = setoran.surah.match(/Surah (.+) Ayat (\d+)-(\d+)/);
@@ -542,7 +503,11 @@
 
         function renderRiwayat() {
             const container = document.getElementById('riwayat-container'); const searchTerm = (document.getElementById('riwayat-search') ? document.getElementById('riwayat-search').value.toLowerCase() : ''); const statusFilter = (document.getElementById('riwayat-status') ? document.getElementById('riwayat-status').value : 'Semua');
-            let mySetoran = state.setoran.filter(s => { const matchSearch = s.surah.toLowerCase().includes(searchTerm); const matchStatus = statusFilter === 'Semua' || s.status === statusFilter; return matchSearch && matchStatus; }).sort((a,b) => Number(b.id) - Number(a.id));
+            
+            // Perbaikan: Filter berdasarkan email terlebih dahulu
+            let mySetoran = state.setoran.filter(s => s.user === currentUser.email);
+            
+            mySetoran = mySetoran.filter(s => { const matchSearch = s.surah.toLowerCase().includes(searchTerm); const matchStatus = statusFilter === 'Semua' || s.status === statusFilter; return matchSearch && matchStatus; }).sort((a,b) => Number(b.id) - Number(a.id));
             if(mySetoran.length === 0) { container.innerHTML = `<div class="p-6 text-center text-slate-400 bg-white rounded-3xl shadow-sm border border-slate-100"><i class="fas fa-history text-3xl text-slate-200 mb-2 block"></i><span class="text-sm font-medium">Tidak ada riwayat.</span></div>`; return; }
             container.innerHTML = mySetoran.map(s => {
                 const catatanHtml = s.catatan ? `<div class="mt-3 bg-slate-50 p-3 rounded-xl text-xs text-slate-600 border border-slate-100"><span class="font-bold text-slate-700">Catatan Pembimbing:</span><br>${s.catatan}</div>` : '';
@@ -586,7 +551,7 @@
 
             try {
                 const id = Date.now().toString(); const newSetoran = { user: currentUser.email, surah: setoranLengkap, audioBase64: currentAudioBase64, status: 'Menunggu Review', date: new Date().toLocaleString('id-ID') };
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'setoran', id), newSetoran); window.showToast("Alhamdulillah, setoran berhasil dikirim!");
+                await setDoc(doc(db, 'artifacts', appIdGlobal, 'public', 'data', 'setoran', id), newSetoran); window.showToast("Alhamdulillah, setoran berhasil dikirim!");
                 document.getElementById('surah-select').value = ''; document.getElementById('ayat-start').innerHTML = '<option value="">-</option>'; document.getElementById('ayat-end').innerHTML = '<option value="">-</option>'; document.getElementById('ayat-start').disabled = true; document.getElementById('ayat-end').disabled = true; window.hapusRekaman();
             } catch (e) { window.showToast("Gagal mengirim data.", "error"); }
         };
