@@ -887,12 +887,13 @@
         };
         document.getElementById('schedule-modal')?.addEventListener('click', function(e) { if(e.target === this) window.closeModal(); });
 
-        // Fungsi pendeteksi ID YouTube yang tangguh untuk semua format URL (Shorts, Mobile, dll)
+        // Fungsi pendeteksi ID YouTube yang tangguh untuk semua format URL (Shorts, Mobile, Live Streaming dll)
         function getYoutubeId(url) {
             if (!url) return null;
-            const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+            // Ditambahkan |live\/ untuk mendeteksi link rekaman live streaming
+            const regExp = /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))([\w-]{11})/;
             const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : null;
+            return (match && match[1]) ? match[1] : null;
         }
 
         window.openVideoModal = function(url, title) {
@@ -912,6 +913,7 @@
             if(content) content.innerHTML = `<iframe class="w-full h-full" src="${embedUrl}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
             if(modal && panel) { modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); panel.classList.remove('scale-95'); }, 10); }
         };
+        
         window.closeVideoModal = function() { 
             const modal = document.getElementById('video-modal'); const panel = document.getElementById('video-modal-panel'); const content = document.getElementById('video-modal-content'); 
             if(modal && panel) { modal.classList.add('opacity-0'); panel.classList.add('scale-95'); setTimeout(() => { modal.classList.add('hidden'); if(content) content.innerHTML = ''; }, 300); }
