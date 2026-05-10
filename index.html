@@ -109,9 +109,6 @@
                         <h1 class="text-lg font-bold tracking-tight truncate max-w-[150px]">Ruang Hafalan</h1>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button onclick="hubungiAdmin()" class="bg-green-500 hover:bg-green-600 w-8 h-8 rounded-full text-white shadow-md transition flex items-center justify-center">
-                            <i class="fab fa-whatsapp"></i>
-                        </button>
                         <button onclick="handleLogout()" class="bg-rose-500 hover:bg-rose-600 w-8 h-8 rounded-full text-white shadow-md transition flex items-center justify-center">
                             <i class="fas fa-sign-out-alt"></i>
                         </button>
@@ -129,7 +126,6 @@
                         <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-slate-400 mb-3 uppercase"><div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div></div>
                         <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-sm font-medium"></div>
                     </div>
-                    <div><h3 class="text-lg font-bold mb-4 text-slate-800 flex items-center gap-2"><i class="fas fa-chart-pie text-primary"></i> Hafalan Saya</h3><div id="progress-hafalan-container"></div></div>
                 </section>
 
                 <!-- Tab: Setoran -->
@@ -182,13 +178,77 @@
                     </div>
                     <div id="video-container" class="space-y-4"></div>
                 </section>
+
+                <!-- Tab: Akun -->
+                <section id="tab-akun" class="hidden animate-fade-in space-y-6">
+                    <div><h2 class="text-2xl font-bold text-slate-800 tracking-tight">Akun Saya</h2></div>
+
+                    <div>
+                        <h3 class="text-lg font-bold mb-4 text-slate-800 flex items-center gap-2"><i class="fas fa-chart-pie text-primary"></i> Hafalan Saya</h3>
+                        <div id="progress-hafalan-container"></div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 text-center">
+                        <h3 class="text-lg font-bold mb-4 text-slate-800 text-left"><i class="fas fa-user-edit text-primary mr-2"></i> Lengkapi Profil</h3>
+                        <div class="space-y-4 text-left">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Email Akun (Tetap)</label>
+                                <input type="email" id="profile-email" disabled class="w-full bg-slate-100 border border-slate-200 rounded-xl py-3 px-4 text-sm font-medium text-slate-500 outline-none cursor-not-allowed">
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="w-1/3">
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Sapaan</label>
+                                    <select id="profile-sapaan" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50">
+                                        <option value="Kak">Kak</option><option value="Pak">Pak</option><option value="Bu">Bu</option>
+                                    </select>
+                                </div>
+                                <div class="w-2/3">
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                                    <input type="text" id="profile-nama" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="Nama Anda">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Tanggal Lahir</label>
+                                <input type="date" id="profile-tgl-lahir" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Alamat Lengkap</label>
+                                <textarea id="profile-alamat" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50" rows="3" placeholder="Alamat rumah..."></textarea>
+                            </div>
+                            <button onclick="saveProfile()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition shadow-lg mt-2 flex items-center justify-center gap-2">
+                                <i class="fas fa-save"></i> Simpan Profil
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Keamanan Akun -->
+                    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
+                        <h3 class="text-lg font-bold mb-2 text-slate-800 flex items-center gap-2"><i class="fas fa-lock text-primary"></i> Keamanan</h3>
+                        <p class="text-xs text-slate-500 mb-4 leading-relaxed">Ubah kata sandi akun Anda di sini. Disarankan minimal 6 karakter.</p>
+                        <div class="flex gap-2">
+                            <input type="password" id="new-password" placeholder="Ketik sandi baru..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50">
+                            <button onclick="ubahSandi()" class="bg-primary hover:bg-emerald-600 text-white font-bold px-5 rounded-xl transition text-sm shadow-md">Update</button>
+                        </div>
+                    </div>
+
+                    <!-- Hubungi Mudabbir -->
+                    <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl shadow-md p-6 text-white text-center">
+                        <i class="fab fa-whatsapp text-4xl mb-3"></i>
+                        <h3 class="text-lg font-bold mb-1">Butuh Bantuan?</h3>
+                        <p class="text-xs text-green-50 mb-5 leading-relaxed">Silakan hubungi Mudabbir atau Admin jika Anda mengalami kendala teknis maupun ingin bertanya seputar setoran.</p>
+                        <button onclick="hubungiAdmin()" class="w-full bg-white text-green-600 hover:bg-green-50 font-bold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                            Chat Admin Sekarang
+                        </button>
+                    </div>
+                </section>
             </main>
 
             <!-- Bottom Navigation -->
-            <nav class="fixed bottom-0 w-full max-w-md left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-xl border-t border-slate-100 flex justify-around items-end pb-safe z-50 rounded-t-[2rem] px-4 pt-3 pb-3 shadow-[0_-10px_40px_rgba(0,0,0,0.06)]">
-                <button onclick="switchTab('dashboard')" id="nav-mobile-dashboard" class="flex flex-col items-center justify-end p-2 text-primary w-20 transition-all"><div class="bg-emerald-50 text-primary w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-dashboard"><i class="fas fa-calendar-alt text-lg"></i></div><span class="text-[10px] font-bold tracking-wide">Jadwal</span></button>
-                <button onclick="switchTab('setoran')" id="nav-mobile-setoran" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-20 transition relative"><div class="absolute bottom-6 bg-gradient-to-br from-emerald-400 to-primary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 border-[3px] border-white transform hover:scale-105 transition-transform z-10" id="fab-setor"><i class="fas fa-microphone-alt text-xl"></i></div><span class="text-[10px] font-bold tracking-wide">Setor</span></button>
-                <button onclick="switchTab('kajian')" id="nav-mobile-kajian" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-20 transition-all"><div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-kajian"><i class="fas fa-play-circle text-lg"></i></div><span class="text-[10px] font-bold tracking-wide">Kajian</span></button>
+            <nav class="fixed bottom-0 w-full max-w-md left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-xl border-t border-slate-100 flex justify-around items-end pb-safe z-50 rounded-t-[2rem] px-2 pt-3 pb-3 shadow-[0_-10px_40px_rgba(0,0,0,0.06)]">
+                <button onclick="switchTab('dashboard')" id="nav-mobile-dashboard" class="flex flex-col items-center justify-end p-2 text-primary w-1/4 transition-all"><div class="bg-emerald-50 text-primary w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-dashboard"><i class="fas fa-calendar-alt text-lg"></i></div><span class="text-[10px] font-bold tracking-wide">Jadwal</span></button>
+                <button onclick="switchTab('setoran')" id="nav-mobile-setoran" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition relative"><div class="absolute bottom-6 bg-gradient-to-br from-emerald-400 to-primary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 border-[3px] border-white transform hover:scale-105 transition-transform z-10" id="fab-setor"><i class="fas fa-microphone-alt text-xl"></i></div><span class="text-[10px] font-bold tracking-wide">Setor</span></button>
+                <button onclick="switchTab('kajian')" id="nav-mobile-kajian" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition-all"><div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-kajian"><i class="fas fa-play-circle text-lg"></i></div><span class="text-[10px] font-bold tracking-wide">Kajian</span></button>
+                <button onclick="switchTab('akun')" id="nav-mobile-akun" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition-all"><div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-akun"><i class="fas fa-user text-lg"></i></div><span class="text-[10px] font-bold tracking-wide">Akun</span></button>
             </nav>
         </div>
     </div>
@@ -201,8 +261,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        // REMOVED query and where
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, updatePassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -216,18 +275,14 @@
         const db = getFirestore(app);
 
         let currentUser = null;
-        let state = { setoran: [], schedules: [], videos: [] };
+        let userProfileId = null; 
+        let state = { setoran: [], schedules: [], videos: [], peserta: [] };
         let isLoginMode = true;
-        let adminWaNumber = "6281234567890"; // Fallback number
+        let adminWaNumber = "6281234567890"; 
 
-        // Ambil pengaturan nomor WA admin dari Firestore
         onSnapshot(doc(db, 'artifacts', appIdGlobal, 'public', 'data', 'settings', 'admin_profile'), (docSnap) => {
-            if(docSnap.exists() && docSnap.data().wa_number) {
-                adminWaNumber = docSnap.data().wa_number;
-            }
-        }, (error) => {
-            console.warn("Gagal membaca pengaturan admin dari Firebase. Pastikan Rules Anda sudah benar. Error:", error.message);
-        });
+            if(docSnap.exists() && docSnap.data().wa_number) { adminWaNumber = docSnap.data().wa_number; }
+        }, (error) => { console.warn("Gagal membaca pengaturan admin.", error.message); });
 
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
@@ -237,7 +292,8 @@
                     document.getElementById('auth-page').classList.add('hidden');
                     document.getElementById('app-content').classList.remove('hidden');
                     document.getElementById('app-content').classList.add('flex');
-                    document.getElementById('user-greeting').innerText = `Email: ${user.email}`;
+                    document.getElementById('user-greeting').innerText = `Memuat data profil...`;
+                    document.getElementById('profile-email').value = user.email; // Set default disabled email
                 }, 500);
                 setupListeners();
             } else {
@@ -251,13 +307,11 @@
         window.toggleAuthMode = function() {
             isLoginMode = !isLoginMode;
             if(isLoginMode) {
-                document.getElementById('form-login').classList.remove('hidden'); 
-                document.getElementById('form-register').classList.add('hidden');
+                document.getElementById('form-login').classList.remove('hidden'); document.getElementById('form-register').classList.add('hidden');
                 document.getElementById('auth-subtitle').innerText = "Masuk untuk melanjutkan setoran hafalanmu.";
                 document.getElementById('auth-toggle-text').innerHTML = `Belum punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Daftar di sini</button>`;
             } else {
-                document.getElementById('form-login').classList.add('hidden'); 
-                document.getElementById('form-register').classList.remove('hidden');
+                document.getElementById('form-login').classList.add('hidden'); document.getElementById('form-register').classList.remove('hidden');
                 document.getElementById('auth-subtitle').innerText = "Lengkapi data untuk mendaftar via WhatsApp.";
                 document.getElementById('auth-toggle-text').innerHTML = `Sudah punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Masuk di sini</button>`;
             }
@@ -269,30 +323,18 @@
             try { await signInWithEmailAndPassword(auth, email, pass); showToast("Berhasil login!"); } catch(e) { showToast("Gagal login! Periksa email dan password", "error"); }
         };
 
-        // Pendaftaran mengarah ke WA
         window.handleRegisterWA = function() {
-            const sapaan = document.getElementById('reg-sapaan').value;
-            const nama = document.getElementById('reg-nama').value;
-            const wa = document.getElementById('reg-wa').value;
-            const niat = document.getElementById('reg-niat').value;
-
+            const sapaan = document.getElementById('reg-sapaan').value; const nama = document.getElementById('reg-nama').value; const wa = document.getElementById('reg-wa').value; const niat = document.getElementById('reg-niat').value;
             if(!nama || !wa || !niat) return showToast("Harap isi semua data formulir pendaftaran!", "error");
-
             const pesan = `Assalamu'alaikum Admin/Mudabbir,\nSaya ingin mendaftar program Ruang Hafalan.\n\n*DATA PENDAFTAR:*\n- Sapaan: ${sapaan}\n- Nama Lengkap: ${nama}\n- No. WhatsApp: ${wa}\n- Doa/Niat: ${niat}\n\nMohon bantuannya untuk dibuatkan akun dan informasi detail (Email & Sandi) agar bisa masuk ke dalam aplikasi. Terima kasih.`;
-            
-            const linkWa = `https://wa.me/${adminWaNumber}?text=${encodeURIComponent(pesan)}`;
-            window.open(linkWa, '_blank');
+            window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent(pesan)}`, '_blank');
         };
 
         window.hubungiAdmin = function() {
-            const pesan = `Assalamu'alaikum Admin/Mudabbir, saya butuh bantuan terkait aplikasi Ruang Hafalan...`;
-            const linkWa = `https://wa.me/${adminWaNumber}?text=${encodeURIComponent(pesan)}`;
-            window.open(linkWa, '_blank');
+            window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent("Assalamu'alaikum Admin/Mudabbir, saya butuh bantuan terkait aplikasi Ruang Hafalan...")}`, '_blank');
         };
 
-        window.handleLogout = async function() {
-            try { await signOut(auth); document.getElementById('auth-email').value = ''; document.getElementById('auth-password').value = ''; showToast("Berhasil keluar."); } catch(e) {}
-        };
+        window.handleLogout = async function() { try { await signOut(auth); document.getElementById('auth-email').value = ''; document.getElementById('auth-password').value = ''; showToast("Berhasil keluar."); } catch(e) {} };
 
         const daftarSurah = [{nama:"Al-Fatihah",ayat:7},{nama:"Al-Baqarah",ayat:286},{nama:"Ali 'Imran",ayat:200},{nama:"An-Nisa'",ayat:176},{nama:"Al-Ma'idah",ayat:120},{nama:"Al-An'am",ayat:165},{nama:"Al-A'raf",ayat:206},{nama:"Al-Anfal",ayat:75},{nama:"At-Taubah",ayat:129},{nama:"Yunus",ayat:109},{nama:"Hud",ayat:123},{nama:"Yusuf",ayat:111},{nama:"Ar-Ra'd",ayat:43},{nama:"Ibrahim",ayat:52},{nama:"Al-Hijr",ayat:99},{nama:"An-Nahl",ayat:128},{nama:"Al-Isra'",ayat:111},{nama:"Al-Kahf",ayat:110},{nama:"Maryam",ayat:98},{nama:"Taha",ayat:135},{nama:"Al-Anbiya'",ayat:112},{nama:"Al-Hajj",ayat:78},{nama:"Al-Mu'minun",ayat:118},{nama:"An-Nur",ayat:64},{nama:"Al-Furqan",ayat:77},{nama:"Asy-Syu'ara'",ayat:227},{nama:"An-Naml",ayat:93},{nama:"Al-Qasas",ayat:88},{nama:"Al-'Ankabut",ayat:69},{nama:"Ar-Rum",ayat:60},{nama:"Luqman",ayat:34},{nama:"As-Sajdah",ayat:30},{nama:"Al-Ahzab",ayat:73},{nama:"Saba'",ayat:54},{nama:"Fatir",ayat:45},{nama:"Yasin",ayat:83},{nama:"As-Saffat",ayat:182},{nama:"Sad",ayat:88},{nama:"Az-Zumar",ayat:75},{nama:"Gafir",ayat:85},{nama:"Fussilat",ayat:54},{nama:"Asy-Syura",ayat:53},{nama:"Az-Zukhruf",ayat:89},{nama:"Ad-Dukhan",ayat:59},{nama:"Al-Jasiyah",ayat:37},{nama:"Al-Ahqaf",ayat:35},{nama:"Muhammad",ayat:38},{nama:"Al-Fath",ayat:29},{nama:"Al-Hujurat",ayat:18},{nama:"Qaf",ayat:45},{nama:"Az-Zariyat",ayat:60},{nama:"At-Tur",ayat:49},{nama:"An-Najm",ayat:62},{nama:"Al-Qamar",ayat:55},{nama:"Ar-Rahman",ayat:78},{nama:"Al-Waqi'ah",ayat:96},{nama:"Al-Hadid",ayat:29},{nama:"Al-Mujadilah",ayat:22},{nama:"Al-Hasyr",ayat:24},{nama:"Al-Mumtahanah",ayat:13},{nama:"As-Saff",ayat:14},{nama:"Al-Jumu'ah",ayat:11},{nama:"Al-Munafiqun",ayat:11},{nama:"At-Tagabun",ayat:18},{nama:"At-Talaq",ayat:12},{nama:"At-Tahrim",ayat:12},{nama:"Al-Mulk",ayat:30},{nama:"Al-Qalam",ayat:52},{nama:"Al-Haqqah",ayat:52},{nama:"Al-Ma'arij",ayat:44},{nama:"Nuh",ayat:28},{nama:"Al-Jinn",ayat:28},{nama:"Al-Muzzammil",ayat:20},{nama:"Al-Muddassir",ayat:56},{nama:"Al-Qiyamah",ayat:40},{nama:"Al-Insan",ayat:31},{nama:"Al-Mursalat",ayat:50},{nama:"An-Naba'",ayat:40},{nama:"An-Nazi'at",ayat:46},{nama:"'Abasa",ayat:42},{nama:"At-Takwir",ayat:29},{nama:"Al-Infitar",ayat:19},{nama:"Al-Mutaffifin",ayat:36},{nama:"Al-Insyiqaq",ayat:25},{nama:"Al-Buruj",ayat:22},{nama:"At-Tariq",ayat:17},{nama:"Al-A'la",ayat:19},{nama:"Al-Gasyiyah",ayat:26},{nama:"Al-Fajr",ayat:30},{nama:"Al-Balad",ayat:20},{nama:"Asy-Syams",ayat:15},{nama:"Al-Lail",ayat:21},{nama:"Ad-Duha",ayat:11},{nama:"Asy-Syarh",ayat:8},{nama:"At-Tin",ayat:8},{nama:"Al-'Alaq",ayat:19},{nama:"Al-Qadr",ayat:5},{nama:"Al-Bayyinah",ayat:8},{nama:"Az-Zalzalah",ayat:8},{nama:"Al-'Adiyat",ayat:11},{nama:"Al-Qari'ah",ayat:11},{nama:"At-Takasur",ayat:8},{nama:"Al-'Asr",ayat:3},{nama:"Al-Humazah",ayat:9},{nama:"Al-Fil",ayat:5},{nama:"Quraisy",ayat:4},{nama:"Al-Ma'un",ayat:7},{nama:"Al-Kausar",ayat:3},{nama:"Al-Kafirun",ayat:6},{nama:"An-Nasr",ayat:3},{nama:"Al-Lahab",ayat:5},{nama:"Al-Ikhlas",ayat:4},{nama:"Al-Falaq",ayat:5},{nama:"An-Nas",ayat:6}];
 
@@ -314,12 +356,10 @@
         function setupListeners() {
             if (!currentUser) return;
             
-            // Perbaikan: Hapus 'query' dan 'where' karena diblokir oleh strict rule dari sistem/Firebase
-            // Mengambil semua data dari koleksi, lalu difilter di dalam aplikasi (di bawah)
             onSnapshot(collection(db, 'artifacts', appIdGlobal, 'public', 'data', 'setoran'), (snap) => {
                 state.setoran = snap.docs.map(d => ({id: d.id, ...d.data()}));
                 if(!document.getElementById('tab-setoran').classList.contains('hidden')) renderRiwayat();
-                if(!document.getElementById('tab-dashboard').classList.contains('hidden')) renderProgressHafalan();
+                if(!document.getElementById('tab-akun').classList.contains('hidden')) renderProgressHafalan();
             }, (error) => console.error("Error Load Setoran:", error.message));
 
             onSnapshot(collection(db, 'artifacts', appIdGlobal, 'public', 'data', 'schedules'), (snap) => {
@@ -331,6 +371,19 @@
                 state.videos = snap.docs.map(d => ({id: d.id, ...d.data()}));
                 if(!document.getElementById('tab-kajian').classList.contains('hidden')) renderVideos();
             }, (error) => console.error("Error Load Videos:", error.message));
+
+            onSnapshot(collection(db, 'artifacts', appIdGlobal, 'public', 'data', 'peserta'), (snap) => {
+                const allPeserta = snap.docs.map(d => ({id: d.id, ...d.data()}));
+                const myProfile = allPeserta.find(p => p.email === currentUser.email);
+                if(myProfile) {
+                    userProfileId = myProfile.id;
+                    document.getElementById('profile-sapaan').value = myProfile.sapaan || 'Kak';
+                    document.getElementById('profile-nama').value = myProfile.nama || '';
+                    document.getElementById('profile-alamat').value = myProfile.alamat || '';
+                    document.getElementById('profile-tgl-lahir').value = myProfile.tanggal_lahir || '';
+                    document.getElementById('user-greeting').innerText = `Selamat datang, ${myProfile.sapaan || ''} ${myProfile.nama || ''}`;
+                }
+            }, (error) => console.error("Error Load Peserta:", error.message));
         }
 
         setInterval(() => { if(!document.getElementById('tab-dashboard').classList.contains('hidden')) renderNextSchedule(); }, 60000);
@@ -338,14 +391,56 @@
         window.switchTab = function(tabId) {
             document.querySelectorAll('section').forEach(sec => { sec.classList.remove('block'); sec.classList.add('hidden'); });
             document.getElementById(`tab-${tabId}`).classList.remove('hidden'); document.getElementById(`tab-${tabId}`).classList.add('block');
-            ['dashboard', 'setoran', 'kajian'].forEach(nav => {
+            ['dashboard', 'setoran', 'kajian', 'akun'].forEach(nav => {
                 const elBtn = document.getElementById(`nav-mobile-${nav}`); const elBg = document.getElementById(`icon-bg-${nav}`);
                 if(elBtn) {
                     if(nav === tabId) { elBtn.classList.add('text-primary'); elBtn.classList.remove('text-slate-400'); if(elBg) { elBg.classList.add('bg-emerald-50', 'text-primary'); elBg.classList.remove('text-slate-400'); } } 
                     else { elBtn.classList.remove('text-primary'); elBtn.classList.add('text-slate-400'); if(elBg) { elBg.classList.remove('bg-emerald-50', 'text-primary'); elBg.classList.add('text-slate-400'); } }
                 }
             });
-            if(tabId === 'dashboard') { renderNextSchedule(); renderCalendar(); renderProgressHafalan(); } if(tabId === 'kajian') renderVideos(); if(tabId === 'setoran') renderRiwayat();
+            if(tabId === 'dashboard') { renderNextSchedule(); renderCalendar(); } 
+            if(tabId === 'akun') renderProgressHafalan(); 
+            if(tabId === 'kajian') renderVideos(); 
+            if(tabId === 'setoran') renderRiwayat();
+        };
+
+        // --- Profil Update & Security ---
+        window.saveProfile = async function() {
+            if (!currentUser) return window.showToast("Anda harus login!", "error");
+            if (!userProfileId) return window.showToast("Data profil belum termuat. Silakan tunggu atau hubungi Admin.", "error");
+            
+            const sapaan = document.getElementById('profile-sapaan').value;
+            const nama = document.getElementById('profile-nama').value;
+            const alamat = document.getElementById('profile-alamat').value;
+            const tanggal_lahir = document.getElementById('profile-tgl-lahir').value;
+
+            if(!nama) return window.showToast("Nama tidak boleh kosong!", "error");
+
+            try {
+                await setDoc(doc(db, 'artifacts', appIdGlobal, 'public', 'data', 'peserta', userProfileId), { 
+                    sapaan, nama, alamat, tanggal_lahir 
+                }, { merge: true });
+                window.showToast("Profil berhasil disimpan!");
+            } catch (e) { window.showToast("Gagal menyimpan profil. Pastikan Rules Anda sudah diupdate.", "error"); }
+        };
+
+        window.ubahSandi = async function() {
+            if (!currentUser) return window.showToast("Anda harus login!", "error");
+            const newPass = document.getElementById('new-password').value;
+            
+            if(newPass.length < 6) return window.showToast("Password minimal 6 karakter!", "error");
+
+            try {
+                await updatePassword(currentUser, newPass);
+                window.showToast("Kata sandi berhasil diubah!");
+                document.getElementById('new-password').value = '';
+            } catch (error) {
+                if(error.code === 'auth/requires-recent-login') {
+                    window.showToast("Sistem keamanan memblokir ini. Silakan Logout dan Login kembali, lalu coba lagi.", "error");
+                } else {
+                    window.showToast("Gagal mengubah sandi.", "error");
+                }
+            }
         };
 
         let deferredPrompt; const installCard = document.getElementById('pwa-install-card'); const btnInstallPwa = document.getElementById('btn-install-pwa');
