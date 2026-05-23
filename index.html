@@ -12,7 +12,6 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Tambahan font Amiri khusus untuk teks Arab agar lebih indah -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
@@ -46,93 +45,7 @@
 
     <div class="w-full max-w-md bg-surface min-h-screen relative shadow-2xl flex flex-col sm:border-x border-gray-200 overflow-hidden">
 
-        <!-- ============================================== -->
-        <!-- HALAMAN DEPAN : LOGIN & REGISTER & PWA INSTALL -->
-        <!-- ============================================== -->
-        <div id="auth-page" class="absolute inset-0 z-[200] bg-surface flex flex-col justify-center px-8 transition-transform duration-500 overflow-y-auto hide-scrollbar">
-            
-            <div id="pwa-install-card" class="hidden bg-gradient-to-r from-sky-500 to-blue-600 rounded-2xl p-4 text-white shadow-lg mb-6 mt-6 items-center justify-between border border-white/20 shrink-0">
-                <div class="flex items-center gap-3">
-                    <div class="bg-white text-primary w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-md"><i class="fas fa-download"></i></div>
-                    <div>
-                        <h4 class="font-bold text-sm">Install Aplikasi</h4>
-                        <p class="text-[10px] text-sky-50">Pasang di layar utama HP</p>
-                    </div>
-                </div>
-                <button id="btn-install-pwa" class="bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-xl text-xs font-bold transition shadow-md">Install</button>
-            </div>
-
-            <div class="text-center mb-6 shrink-0 mt-6">
-                <div class="bg-sky-100 text-primary w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner border border-sky-200">
-                    <i class="fas fa-book-quran"></i>
-                </div>
-                <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">GEMAR</h1>
-                <p class="text-[10px] text-primary font-bold tracking-wide mt-1 uppercase">Generasi Menyayangi Al-Quran</p>
-                <p id="auth-subtitle" class="text-slate-500 text-xs mt-3 font-medium">Masuk untuk melanjutkan setoran hafalanmu.</p>
-            </div>
-
-            <!-- Form Login -->
-            <div id="form-login" class="space-y-4 bg-white p-6 rounded-3xl shadow-sm border border-slate-100 shrink-0">
-                <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email</label>
-                    <input type="email" id="auth-email" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition" placeholder="email@contoh.com">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Password</label>
-                    <input type="password" id="auth-password" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition" placeholder="********">
-                </div>
-                
-                <button id="btn-login" onclick="handleLogin()" class="w-full bg-primary hover:bg-sky-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-primary/30 mt-2 flex justify-center items-center gap-2">
-                    Masuk Sekarang
-                </button>
-            </div>
-
-            <!-- Form Pendaftaran via WA -->
-            <div id="form-register" class="hidden space-y-3 bg-white p-6 rounded-3xl shadow-sm border border-slate-100 shrink-0">
-                <div class="flex gap-2">
-                    <div class="w-1/3">
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Sapaan</label>
-                        <select id="reg-sapaan" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50">
-                            <option value="Kak">Kak</option><option value="Pak">Pak</option><option value="Bu">Bu</option>
-                        </select>
-                    </div>
-                    <div class="w-2/3">
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Nama Lengkap</label>
-                        <input type="text" id="reg-nama" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="Fulan">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">No. WhatsApp Aktif</label>
-                    <input type="number" id="reg-wa" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="08123456789">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Doa / Niat Mengikuti Program</label>
-                    <textarea id="reg-niat" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50" rows="3" placeholder="Semoga istiqomah..."></textarea>
-                </div>
-                <button onclick="handleRegisterWA()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg mt-2 flex items-center justify-center gap-2">
-                    <i class="fab fa-whatsapp text-lg"></i> Kirim Data ke Admin
-                </button>
-                <p class="text-[10px] text-center text-slate-400 mt-2 leading-tight">Admin akan membuatkan akun dan mengirimkan akses Email & Password Anda via WhatsApp.</p>
-            </div>
-
-            <div class="mt-6 text-center pb-6 shrink-0">
-                <p id="auth-toggle-text" class="text-sm text-slate-500">Belum punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Daftar di sini</button></p>
-            </div>
-
-            <div class="mt-2 flex flex-col gap-2 items-center justify-center shrink-0 w-full max-w-[280px] mx-auto pb-8">
-                <button onclick="hubungiAdmin()" class="w-full bg-sky-50 text-sky-600 hover:bg-sky-100 font-bold py-2.5 rounded-xl transition shadow-sm flex items-center justify-center gap-2 border border-sky-200 text-xs">
-                    <i class="fab fa-whatsapp text-base"></i> Hubungi Mudabbir
-                </button>
-                <p class="text-[10px] text-slate-400 mt-2">Aplikasi ini dibuat untuk <span class="font-bold text-primary">Masjid Ashqaf</span></p>
-            </div>
-            
-        </div>
-
-
-        <!-- ============================================== -->
-        <!-- HALAMAN UTAMA APLIKASI -->
-        <!-- ============================================== -->
-        <div id="app-content" class="hidden flex-col h-full w-full relative">
+        <div id="app-content" class="flex flex-col h-full w-full relative">
             <header class="bg-gradient-to-r from-sky-500 to-secondary text-white shadow-lg sticky top-0 z-50 rounded-b-[2rem]">
                 <div class="px-6 py-4 flex justify-between items-center w-full">
                     <div class="flex items-center gap-3">
@@ -145,207 +58,368 @@
             <main class="flex-1 p-5 overflow-y-auto hide-scrollbar pb-28">
                 
                 <!-- Tab: Dashboard -->
-                <section id="tab-dashboard" class="block animate-fade-in space-y-6">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Dashboard</h2>
-                        <p class="text-sm text-slate-500 mt-1 flex items-center gap-2" id="user-greeting">
-                            Selamat datang.
-                        </p>
+                <section id="tab-dashboard" class="hidden animate-fade-in space-y-6">
+                    <div id="dashboard-unauth" class="hidden flex-col items-center justify-center py-20 text-center px-6">
+                        <div class="bg-sky-100 w-20 h-20 rounded-full flex items-center justify-center text-primary text-3xl mb-4"><i class="fas fa-lock"></i></div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-2">Login Diperlukan</h3>
+                        <p class="text-xs text-slate-500 mb-6 leading-relaxed">Silakan masuk melalui menu Akun untuk melihat jadwal dan progres hafalanmu.</p>
+                        <button onclick="switchTab('akun')" class="bg-primary text-white font-bold py-3 px-6 rounded-xl shadow-lg">Pergi ke Akun</button>
                     </div>
-                    
-                    <div id="next-schedule-container" class="animate-fade-in">
-                        <div class="flex flex-col items-center justify-center py-8 gap-3 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                            <i class="fas fa-spinner fa-spin text-3xl text-primary"></i>
-                            <span class="text-xs text-slate-400 font-medium">Memuat jadwal terdekat...</span>
+
+                    <div id="dashboard-auth" class="space-y-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Dashboard</h2>
+                            <p class="text-sm text-slate-500 mt-1 flex items-center gap-2" id="user-greeting">
+                                Selamat datang.
+                            </p>
                         </div>
-                    </div>
-                    
-                    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5">
-                        <div class="flex flex-col sm:flex-row justify-between items-center mb-5 gap-4">
-                            <div class="flex items-center gap-4 w-full justify-between">
-                                <button onclick="changeMonth(-1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-400"><i class="fas fa-chevron-left"></i></button>
-                                <h3 id="calendar-month-year" class="font-bold text-lg text-slate-700 text-center min-w-[120px]">Bulan Tahun</h3>
-                                <button onclick="changeMonth(1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-400"><i class="fas fa-chevron-right"></i></button>
+                        
+                        <div id="next-schedule-container" class="animate-fade-in">
+                            <div class="flex flex-col items-center justify-center py-8 gap-3 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                                <i class="fas fa-spinner fa-spin text-3xl text-primary"></i>
+                                <span class="text-xs text-slate-400 font-medium">Memuat jadwal terdekat...</span>
                             </div>
                         </div>
-                        <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-slate-400 mb-3 uppercase">
-                            <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+                        
+                        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5">
+                            <div class="flex flex-col sm:flex-row justify-between items-center mb-5 gap-4">
+                                <div class="flex items-center gap-4 w-full justify-between">
+                                    <button onclick="changeMonth(-1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-400"><i class="fas fa-chevron-left"></i></button>
+                                    <h3 id="calendar-month-year" class="font-bold text-lg text-slate-700 text-center min-w-[120px]">Bulan Tahun</h3>
+                                    <button onclick="changeMonth(1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-400"><i class="fas fa-chevron-right"></i></button>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-slate-400 mb-3 uppercase">
+                                <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+                            </div>
+                            <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-sm font-medium"></div>
                         </div>
-                        <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-sm font-medium"></div>
                     </div>
                 </section>
 
                 <!-- Tab: Setoran -->
                 <section id="tab-setoran" class="hidden animate-fade-in space-y-6">
-                    <div><h2 class="text-2xl font-bold text-slate-800 tracking-tight">Setor Hafalan</h2></div>
-                    
-                    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 text-center">
-                        <div class="mb-8 text-left space-y-5">
-                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Pilih Surah</label>
-                                <select id="surah-select" onchange="handleSurahChange()" class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none outline-none cursor-pointer appearance-none">
-                                    <option value="">-- Pilih Surah --</option>
-                                </select>
-                            </div>
-                            <div class="flex gap-4 items-center">
-                                <div class="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dari Ayat</label>
-                                    <select id="ayat-start" onchange="updateAyatEnd()" disabled class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none cursor-pointer appearance-none disabled:opacity-50"><option value="">-</option></select>
-                                </div>
-                                <div class="text-slate-300 font-bold"><i class="fas fa-arrow-right"></i></div>
-                                <div class="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Sampai</label>
-                                    <select id="ayat-end" disabled class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none cursor-pointer appearance-none disabled:opacity-50"><option value="">-</option></select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="py-6 flex flex-col items-center">
-                            <div class="relative w-28 h-28 flex items-center justify-center">
-                                <div class="absolute inset-0 bg-rose-100 rounded-full scale-110"></div>
-                                <div class="absolute inset-2 bg-rose-200 rounded-full"></div>
-                                <button id="record-btn" onclick="toggleRecording()" class="relative z-10 w-20 h-20 rounded-full bg-rose-500 text-white shadow-xl shadow-rose-500/40 flex items-center justify-center transition-transform transform hover:scale-105">
-                                    <i id="record-icon" class="fas fa-microphone text-3xl"></i>
-                                </button>
-                            </div>
-                            <p id="record-status" class="mt-6 text-sm text-slate-500 font-medium">Sentuh mic untuk merekam</p>
-                            <p id="record-timer" class="text-3xl font-bold text-rose-500 hidden mt-2 tracking-tight">00:00</p>
-                        </div>
-
-                        <div id="audio-preview-container" class="hidden mt-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                            <audio id="audio-preview" controls class="w-full h-10 rounded-full mb-4"></audio>
-                            <div class="flex gap-2">
-                                <button onclick="hapusRekaman()" class="w-14 bg-red-50 hover:bg-red-100 text-red-500 font-bold py-3.5 rounded-xl transition-all shadow-sm flex items-center justify-center border border-red-100 shrink-0"><i class="fas fa-trash"></i></button>
-                                <button onclick="submitSetoran()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2"><i class="fas fa-paper-plane"></i> Kirim Setoran Sekarang</button>
-                            </div>
-                        </div>
+                    <div id="setoran-unauth" class="hidden flex-col items-center justify-center py-20 text-center px-6">
+                        <div class="bg-sky-100 w-20 h-20 rounded-full flex items-center justify-center text-primary text-3xl mb-4"><i class="fas fa-microphone-alt-slash"></i></div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-2">Login Diperlukan</h3>
+                        <p class="text-xs text-slate-500 mb-6 leading-relaxed">Fitur setor hafalan dan riwayat audio hanya tersedia bagi peserta yang sudah login.</p>
+                        <button onclick="switchTab('akun')" class="bg-primary text-white font-bold py-3 px-6 rounded-xl shadow-lg">Pergi ke Akun</button>
                     </div>
 
-                    <div>
-                        <h3 class="text-lg font-bold mb-4 text-slate-800 flex items-center gap-2"><i class="fas fa-history text-primary"></i> Riwayat Saya</h3>
-                        <div class="flex gap-2 mb-4">
-                            <div class="relative flex-1">
-                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs"></i>
-                                <input type="text" id="riwayat-search" onkeyup="handleRiwayatFilter()" placeholder="Cari surah..." class="w-full bg-white border border-slate-100 rounded-xl py-2.5 pl-8 pr-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm">
+                    <div id="setoran-auth" class="space-y-6">
+                        <div><h2 class="text-2xl font-bold text-slate-800 tracking-tight">Setor Hafalan</h2></div>
+                        
+                        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 text-center">
+                            <div class="mb-8 text-left space-y-5">
+                                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Pilih Surah</label>
+                                    <select id="surah-select" onchange="handleSurahChange()" class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none outline-none cursor-pointer appearance-none">
+                                        <option value="">-- Pilih Surah --</option>
+                                    </select>
+                                </div>
+                                <div class="flex gap-4 items-center">
+                                    <div class="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dari Ayat</label>
+                                        <select id="ayat-start" onchange="updateAyatEnd()" disabled class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none cursor-pointer appearance-none disabled:opacity-50"><option value="">-</option></select>
+                                    </div>
+                                    <div class="text-slate-300 font-bold"><i class="fas fa-arrow-right"></i></div>
+                                    <div class="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Sampai</label>
+                                        <select id="ayat-end" disabled class="w-full bg-transparent text-slate-800 font-semibold text-lg focus:outline-none cursor-pointer appearance-none disabled:opacity-50"><option value="">-</option></select>
+                                    </div>
+                                </div>
                             </div>
-                            <select id="riwayat-status" onchange="handleRiwayatFilter()" class="bg-white border border-slate-100 rounded-xl py-2 px-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm text-slate-600">
-                                <option value="Semua">Semua Status</option>
-                                <option value="Menunggu Review">Menunggu</option>
-                                <option value="Diterima">Diterima</option>
-                                <option value="Perlu Perbaikan">Revisi</option>
-                            </select>
+
+                            <div class="py-6 flex flex-col items-center">
+                                <div class="relative w-28 h-28 flex items-center justify-center">
+                                    <div class="absolute inset-0 bg-rose-100 rounded-full scale-110"></div>
+                                    <div class="absolute inset-2 bg-rose-200 rounded-full"></div>
+                                    <button id="record-btn" onclick="toggleRecording()" class="relative z-10 w-20 h-20 rounded-full bg-rose-500 text-white shadow-xl shadow-rose-500/40 flex items-center justify-center transition-transform transform hover:scale-105">
+                                        <i id="record-icon" class="fas fa-microphone text-3xl"></i>
+                                    </button>
+                                </div>
+                                <p id="record-status" class="mt-6 text-sm text-slate-500 font-medium">Sentuh mic untuk merekam</p>
+                                <p id="record-timer" class="text-3xl font-bold text-rose-500 hidden mt-2 tracking-tight">00:00</p>
+                            </div>
+
+                            <div id="audio-preview-container" class="hidden mt-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                                <audio id="audio-preview" controls class="w-full h-10 rounded-full mb-4"></audio>
+                                <div class="flex gap-2">
+                                    <button onclick="hapusRekaman()" class="w-14 bg-red-50 hover:bg-red-100 text-red-500 font-bold py-3.5 rounded-xl transition-all shadow-sm flex items-center justify-center border border-red-100 shrink-0"><i class="fas fa-trash"></i></button>
+                                    <button onclick="submitSetoran()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2"><i class="fas fa-paper-plane"></i> Kirim Setoran Sekarang</button>
+                                </div>
+                            </div>
                         </div>
-                        <div id="riwayat-container" class="space-y-3"></div>
+
+                        <div>
+                            <h3 class="text-lg font-bold mb-4 text-slate-800 flex items-center gap-2"><i class="fas fa-history text-primary"></i> Riwayat Saya</h3>
+                            <div class="flex gap-2 mb-4">
+                                <div class="relative flex-1">
+                                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs"></i>
+                                    <input type="text" id="riwayat-search" onkeyup="handleRiwayatFilter()" placeholder="Cari surah..." class="w-full bg-white border border-slate-100 rounded-xl py-2.5 pl-8 pr-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm">
+                                </div>
+                                <select id="riwayat-status" onchange="handleRiwayatFilter()" class="bg-white border border-slate-100 rounded-xl py-2 px-3 text-xs outline-none focus:ring-1 focus:ring-primary shadow-sm text-slate-600">
+                                    <option value="Semua">Semua Status</option>
+                                    <option value="Menunggu Review">Menunggu</option>
+                                    <option value="Diterima">Diterima</option>
+                                    <option value="Perlu Perbaikan">Revisi</option>
+                                </select>
+                            </div>
+                            <div id="riwayat-container" class="space-y-3"></div>
+                        </div>
                     </div>
                 </section>
 
                 <!-- Tab: Al-Quran -->
-                <section id="tab-alquran" class="hidden animate-fade-in space-y-6">
+                <section id="tab-alquran" class="block animate-fade-in space-y-6">
                     <div>
                         <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Baca & Hafal</h2>
-                        <p class="text-sm text-slate-500 mt-1">Hafalkan Al-Quran per ayat dengan mudah.</p>
+                        <p class="text-sm text-slate-500 mt-1">Akses Al-Quran kapanpun dengan mudah.</p>
                     </div>
                     
-                    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5 sticky top-20 z-40">
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Pilih Surah</label>
-                        <div class="relative">
-                            <select id="quran-surah-select" onchange="loadSurahDetail()" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-4 pr-10 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-primary/50 appearance-none cursor-pointer">
-                                <option value="">-- Memuat daftar surah... --</option>
-                            </select>
-                            <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                    <div class="flex bg-slate-200/50 p-1.5 rounded-2xl border border-slate-100">
+                        <button onclick="setQuranMode('surah')" id="btn-mode-surah" class="flex-1 py-2 text-xs font-bold bg-white text-primary rounded-xl shadow-sm transition">Per Surah</button>
+                        <button onclick="setQuranMode('mushaf')" id="btn-mode-mushaf" class="flex-1 py-2 text-xs font-bold text-slate-500 rounded-xl hover:text-slate-700 transition">Mushaf (Juz/Hal)</button>
+                    </div>
+
+                    <!-- Panel Mode Surah -->
+                    <div id="quran-panel-surah" class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5 sticky top-20 z-40 space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Pilih Surah</label>
+                            <div class="relative">
+                                <select id="quran-surah-select" onchange="handleQuranSurahChange()" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-4 pr-10 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-primary/50 appearance-none cursor-pointer">
+                                    <option value="">-- Memuat daftar surah... --</option>
+                                </select>
+                                <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                            </div>
                         </div>
+                        <div class="flex gap-3">
+                            <div class="flex-1">
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Dari Ayat (Opsional)</label>
+                                <div class="relative">
+                                    <select id="quran-ayat-start" onchange="updateQuranAyatEnd()" disabled class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-3 pr-8 text-sm outline-none focus:ring-2 focus:ring-primary/50 appearance-none cursor-pointer disabled:opacity-50">
+                                        <option value="">-</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Sampai Ayat</label>
+                                <div class="relative">
+                                    <select id="quran-ayat-end" disabled class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-3 pr-8 text-sm outline-none focus:ring-2 focus:ring-primary/50 appearance-none cursor-pointer disabled:opacity-50">
+                                        <option value="">-</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="loadSurahDetail()" class="w-full bg-primary hover:bg-sky-600 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                            <i class="fas fa-book-open"></i> Tampilkan Surah
+                        </button>
+                    </div>
+
+                    <!-- Panel Mode Mushaf -->
+                    <div id="quran-panel-mushaf" class="hidden bg-white rounded-3xl shadow-sm border border-slate-100 p-5 sticky top-20 z-40 space-y-4">
+                        <div class="flex gap-3 items-end">
+                            <div class="flex-1 relative">
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Pilih Juz</label>
+                                <div class="relative">
+                                    <select id="quran-juz-select" onchange="document.getElementById('quran-hal-input').value = '';" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-3 pr-8 text-sm font-bold text-slate-700 outline-none cursor-pointer appearance-none">
+                                        <option value="">-- Pilih --</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                                </div>
+                            </div>
+                            <div class="pb-3 text-[10px] font-bold text-slate-400">ATAU</div>
+                            <div class="flex-1 relative">
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Halaman</label>
+                                <input type="number" id="quran-hal-input" oninput="document.getElementById('quran-juz-select').value = '';" min="1" max="604" placeholder="1 - 604" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50">
+                            </div>
+                        </div>
+                        <button onclick="loadMushafDetail()" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                            <i class="fas fa-search"></i> Tampilkan Mushaf
+                        </button>
                     </div>
 
                     <!-- Kontainer Ayat -->
                     <div id="quran-content-container" class="space-y-5 pb-6">
                         <div class="flex flex-col items-center justify-center py-10 text-slate-400">
                             <i class="fas fa-book-open text-5xl mb-4 opacity-30"></i>
-                            <p class="text-sm font-medium">Pilih surah di atas untuk mulai membaca</p>
+                            <p class="text-sm font-medium">Pilih bacaan di atas untuk mulai membaca</p>
                         </div>
                     </div>
                 </section>
 
                 <!-- Tab: Akun -->
                 <section id="tab-akun" class="hidden animate-fade-in space-y-6">
-                    <div><h2 class="text-2xl font-bold text-slate-800 tracking-tight">Akun Saya</h2></div>
+                    
+                    <!-- Kondisi Belum Login -->
+                    <div id="akun-unauth" class="space-y-6">
+                        <div id="pwa-install-card" class="hidden bg-gradient-to-r from-sky-500 to-blue-600 rounded-2xl p-4 text-white shadow-lg items-center justify-between border border-white/20 shrink-0">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-white text-primary w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-md"><i class="fas fa-download"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-sm">Install Aplikasi</h4>
+                                    <p class="text-[10px] text-sky-50">Pasang di layar utama HP</p>
+                                </div>
+                            </div>
+                            <button id="btn-install-pwa" class="bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-xl text-xs font-bold transition shadow-md">Install</button>
+                        </div>
 
-                    <div>
-                        <h3 class="text-lg font-bold mb-4 text-slate-800 flex items-center gap-2"><i class="fas fa-chart-pie text-primary"></i> Hafalan Saya</h3>
-                        <div id="progress-hafalan-container"></div>
-                    </div>
+                        <div class="text-center pt-4">
+                            <div class="bg-sky-100 text-primary w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner border border-sky-200">
+                                <i class="fas fa-book-quran"></i>
+                            </div>
+                            <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">GEMAR</h1>
+                            <p class="text-[10px] text-primary font-bold tracking-wide mt-1 uppercase">Generasi Menyayangi Al-Quran</p>
+                            <p id="auth-subtitle" class="text-slate-500 text-xs mt-3 font-medium">Masuk untuk melanjutkan setoran hafalanmu.</p>
+                        </div>
 
-                    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 text-center">
-                        <h3 class="text-lg font-bold mb-4 text-slate-800 text-left"><i class="fas fa-user-edit text-primary mr-2"></i> Lengkapi Profil</h3>
-                        <div class="space-y-4 text-left">
+                        <!-- Form Login -->
+                        <div id="form-login" class="space-y-4 bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Email Akun (Tetap)</label>
-                                <input type="email" id="profile-email" disabled class="w-full bg-slate-100 border border-slate-200 rounded-xl py-3 px-4 text-sm font-medium text-slate-500 outline-none cursor-not-allowed">
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email</label>
+                                <input type="email" id="auth-email" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition" placeholder="email@contoh.com">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Password</label>
+                                <input type="password" id="auth-password" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition" placeholder="********">
+                            </div>
+                            
+                            <button id="btn-login" onclick="handleLogin()" class="w-full bg-primary hover:bg-sky-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-primary/30 mt-2 flex justify-center items-center gap-2">
+                                Masuk Sekarang
+                            </button>
+                        </div>
+
+                        <!-- Form Pendaftaran Langsung Firebase -->
+                        <div id="form-register" class="hidden space-y-3 bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Email Pendaftaran</label>
+                                <input type="email" id="reg-email" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="email@contoh.com">
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="w-1/2">
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Password</label>
+                                    <input type="password" id="reg-password" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="Min. 6 Karakter">
+                                </div>
+                                <div class="w-1/2">
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Ulangi Password</label>
+                                    <input type="password" id="reg-confirm-password" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="Ulangi Sandi">
+                                </div>
                             </div>
                             <div class="flex gap-2">
                                 <div class="w-1/3">
-                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Sapaan</label>
-                                    <select id="profile-sapaan" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50">
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Sapaan</label>
+                                    <select id="reg-sapaan" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50">
                                         <option value="Kak">Kak</option><option value="Pak">Pak</option><option value="Bu">Bu</option>
                                     </select>
                                 </div>
                                 <div class="w-2/3">
-                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Nama Lengkap</label>
-                                    <input type="text" id="profile-nama" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="Nama Anda">
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Nama Lengkap</label>
+                                    <input type="text" id="reg-nama" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="Fulan">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Tanggal Lahir</label>
-                                <input type="date" id="profile-tgl-lahir" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50">
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">No. WhatsApp Aktif</label>
+                                <input type="number" id="reg-wa" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="08123456789">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Alamat Lengkap</label>
-                                <textarea id="profile-alamat" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50" rows="3" placeholder="Alamat rumah..."></textarea>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Doa / Niat (Opsional)</label>
+                                <textarea id="reg-niat" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm outline-none focus:ring-2 focus:ring-primary/50" rows="2" placeholder="Semoga istiqomah..."></textarea>
                             </div>
-                            <button onclick="saveProfile()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition shadow-lg mt-2 flex items-center justify-center gap-2">
-                                <i class="fas fa-save"></i> Simpan Profil
+                            <button onclick="handleRegisterFirebase()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg mt-2 flex items-center justify-center gap-2">
+                                <i class="fas fa-user-plus text-lg"></i> Daftar & Langsung Masuk
                             </button>
                         </div>
-                    </div>
 
-                    <!-- Keamanan Akun -->
-                    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
-                        <h3 class="text-lg font-bold mb-2 text-slate-800 flex items-center gap-2"><i class="fas fa-lock text-primary"></i> Keamanan</h3>
-                        <p class="text-xs text-slate-500 mb-4 leading-relaxed">Ubah kata sandi akun Anda di sini. Disarankan minimal 6 karakter.</p>
-                        <div class="flex gap-2">
-                            <input type="password" id="new-password" placeholder="Ketik sandi baru..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50">
-                            <button onclick="ubahSandi()" class="bg-primary hover:bg-sky-600 text-white font-bold px-5 rounded-xl transition text-sm shadow-md">Update</button>
+                        <div class="text-center pb-6">
+                            <p id="auth-toggle-text" class="text-sm text-slate-500">Belum punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Daftar di sini</button></p>
                         </div>
                     </div>
 
-                    <!-- Hubungi Mudabbir -->
-                    <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl shadow-md p-6 text-white text-center">
-                        <i class="fab fa-whatsapp text-4xl mb-3"></i>
-                        <h3 class="text-lg font-bold mb-1">Butuh Bantuan?</h3>
-                        <p class="text-xs text-green-50 mb-5 leading-relaxed">Silakan hubungi Mudabbir atau Admin jika Anda mengalami kendala teknis maupun ingin bertanya seputar setoran.</p>
-                        <button onclick="hubungiAdmin()" class="w-full bg-white text-green-600 hover:bg-green-50 font-bold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
-                            Chat Admin Sekarang
+                    <!-- Kondisi Sudah Login -->
+                    <div id="akun-auth" class="hidden space-y-6">
+                        <div><h2 class="text-2xl font-bold text-slate-800 tracking-tight">Akun Saya</h2></div>
+
+                        <div>
+                            <h3 class="text-lg font-bold mb-4 text-slate-800 flex items-center gap-2"><i class="fas fa-chart-pie text-primary"></i> Hafalan Saya</h3>
+                            <div id="progress-hafalan-container"></div>
+                        </div>
+
+                        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 text-center">
+                            <h3 class="text-lg font-bold mb-4 text-slate-800 text-left"><i class="fas fa-user-edit text-primary mr-2"></i> Lengkapi Profil</h3>
+                            <div class="space-y-4 text-left">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Email Akun (Tetap)</label>
+                                    <input type="email" id="profile-email" disabled class="w-full bg-slate-100 border border-slate-200 rounded-xl py-3 px-4 text-sm font-medium text-slate-500 outline-none cursor-not-allowed">
+                                </div>
+                                <div class="flex gap-2">
+                                    <div class="w-1/3">
+                                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Sapaan</label>
+                                        <select id="profile-sapaan" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50">
+                                            <option value="Kak">Kak</option><option value="Pak">Pak</option><option value="Bu">Bu</option>
+                                        </select>
+                                    </div>
+                                    <div class="w-2/3">
+                                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                                        <input type="text" id="profile-nama" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50" placeholder="Nama Anda">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Tanggal Lahir</label>
+                                    <input type="date" id="profile-tgl-lahir" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Alamat Lengkap</label>
+                                    <textarea id="profile-alamat" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50" rows="3" placeholder="Alamat rumah..."></textarea>
+                                </div>
+                                <button onclick="saveProfile()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition shadow-lg mt-2 flex items-center justify-center gap-2">
+                                    <i class="fas fa-save"></i> Simpan Profil
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Keamanan Akun -->
+                        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
+                            <h3 class="text-lg font-bold mb-2 text-slate-800 flex items-center gap-2"><i class="fas fa-lock text-primary"></i> Keamanan</h3>
+                            <p class="text-xs text-slate-500 mb-4 leading-relaxed">Ubah kata sandi akun Anda di sini. Disarankan minimal 6 karakter.</p>
+                            <div class="flex flex-col gap-3">
+                                <input type="password" id="new-password" placeholder="Ketik sandi baru..." class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50">
+                                <input type="password" id="confirm-password" placeholder="Ulangi sandi baru..." class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/50">
+                                <button onclick="ubahSandi()" class="w-full bg-primary hover:bg-sky-600 text-white font-bold py-3 rounded-xl transition text-sm shadow-md">Update Sandi</button>
+                            </div>
+                        </div>
+
+                        <!-- Hubungi Mudabbir -->
+                        <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl shadow-md p-6 text-white text-center">
+                            <i class="fab fa-whatsapp text-4xl mb-3"></i>
+                            <h3 class="text-lg font-bold mb-1">Butuh Bantuan?</h3>
+                            <p class="text-xs text-green-50 mb-5 leading-relaxed">Silakan hubungi Mudabbir atau Admin jika Anda mengalami kendala teknis maupun ingin bertanya seputar setoran.</p>
+                            <button onclick="hubungiAdmin()" class="w-full bg-white text-green-600 hover:bg-green-50 font-bold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                                Chat Admin Sekarang
+                            </button>
+                        </div>
+
+                        <!-- Tombol Keluar -->
+                        <button onclick="handleLogout()" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-4 rounded-2xl transition shadow-lg flex items-center justify-center gap-2 mt-4 border border-rose-600">
+                            <i class="fas fa-sign-out-alt text-lg"></i> Keluar Akun
                         </button>
                     </div>
-
-                    <!-- Tombol Keluar Refresh -->
-                    <button onclick="handleLogout()" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-4 rounded-2xl transition shadow-lg flex items-center justify-center gap-2 mt-4 border border-rose-600">
-                        <i class="fas fa-sign-out-alt text-lg"></i> Keluar Akun
-                    </button>
                 </section>
             </main>
 
             <!-- Bottom Navigation -->
             <nav class="fixed bottom-0 w-full max-w-md left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-xl border-t border-slate-100 flex justify-around items-end pb-safe z-50 rounded-t-[2rem] px-4 pt-3 pb-3 shadow-[0_-10px_40px_rgba(0,0,0,0.06)]">
-                <button onclick="switchTab('dashboard')" id="nav-mobile-dashboard" class="flex flex-col items-center justify-end p-2 text-primary w-1/4 transition-all">
-                    <div class="bg-sky-50 text-primary w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-dashboard"><i class="fas fa-calendar-alt text-lg"></i></div>
+                <button onclick="switchTab('dashboard')" id="nav-mobile-dashboard" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition-all">
+                    <div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-dashboard"><i class="fas fa-calendar-alt text-lg"></i></div>
                     <span class="text-[10px] font-bold tracking-wide">Jadwal</span>
                 </button>
                 <button onclick="switchTab('setoran')" id="nav-mobile-setoran" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition relative">
                     <div class="absolute bottom-6 bg-gradient-to-br from-sky-400 to-primary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 border-[3px] border-white transform hover:scale-105 transition-transform z-10" id="fab-setor"><i class="fas fa-microphone-alt text-xl"></i></div>
                     <span class="text-[10px] font-bold tracking-wide">Setor</span>
                 </button>
-                <button onclick="switchTab('alquran')" id="nav-mobile-alquran" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition-all">
-                    <div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-alquran"><i class="fas fa-book-open text-lg"></i></div>
+                <button onclick="switchTab('alquran')" id="nav-mobile-alquran" class="flex flex-col items-center justify-end p-2 text-primary w-1/4 transition-all">
+                    <div class="bg-sky-50 text-primary w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-alquran"><i class="fas fa-book-open text-lg"></i></div>
                     <span class="text-[10px] font-bold tracking-wide">Al-Quran</span>
                 </button>
                 <button onclick="switchTab('akun')" id="nav-mobile-akun" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition-all">
@@ -355,7 +429,7 @@
             </nav>
         </div>
 
-        <!-- TAMPILAN FULL SCREEN LOADING (Splash Screen) -->
+        <!-- TAMPILAN FULL SCREEN LOADING -->
         <div id="full-screen-loader" class="absolute inset-0 z-[500] bg-surface flex flex-col items-center justify-center transition-opacity duration-500">
             <div class="relative w-20 h-20 mb-4">
                 <div class="absolute inset-0 border-4 border-sky-100 rounded-full"></div>
@@ -402,7 +476,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, updatePassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updatePassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -450,34 +524,39 @@
 
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
-            const authPage = document.getElementById('auth-page');
-            const appContent = document.getElementById('app-content');
+            hideFullScreenLoader();
+            
+            const dashAuth = document.getElementById('dashboard-auth');
+            const dashUnauth = document.getElementById('dashboard-unauth');
+            const setorAuth = document.getElementById('setoran-auth');
+            const setorUnauth = document.getElementById('setoran-unauth');
+            const akunAuth = document.getElementById('akun-auth');
+            const akunUnauth = document.getElementById('akun-unauth');
 
             if(user) {
-                if(authPage) authPage.classList.add('-translate-x-full');
-                setTimeout(() => {
-                    if(authPage) authPage.classList.add('hidden');
-                    if(appContent) { 
-                        appContent.classList.remove('hidden'); 
-                        appContent.classList.add('flex'); 
-                    }
-                    const greeting = document.getElementById('user-greeting');
-                    if(greeting) greeting.innerHTML = `<i class="fas fa-spinner fa-spin text-primary mr-1"></i> Memuat data profil...`;
-                    
-                    const profileEmail = document.getElementById('profile-email');
-                    if(profileEmail) profileEmail.value = user.email;
-                }, 500);
+                if(dashAuth) dashAuth.classList.remove('hidden');
+                if(dashUnauth) dashUnauth.classList.add('hidden');
+                if(setorAuth) setorAuth.classList.remove('hidden');
+                if(setorUnauth) setorUnauth.classList.add('hidden');
+                if(akunAuth) akunAuth.classList.remove('hidden');
+                if(akunUnauth) akunUnauth.classList.add('hidden');
+
+                const greeting = document.getElementById('user-greeting');
+                if(greeting) greeting.innerHTML = `<i class="fas fa-spinner fa-spin text-primary mr-1"></i> Memuat data profil...`;
+                
+                const profileEmail = document.getElementById('profile-email');
+                if(profileEmail) profileEmail.value = user.email;
+                
                 setupListeners();
             } else {
-                if(appContent) { 
-                    appContent.classList.add('hidden'); 
-                    appContent.classList.remove('flex'); 
-                }
-                if(authPage) authPage.classList.remove('hidden');
-                setTimeout(() => { 
-                    if(authPage) authPage.classList.remove('-translate-x-full'); 
-                }, 10);
-                hideFullScreenLoader();
+                if(dashAuth) dashAuth.classList.add('hidden');
+                if(dashUnauth) dashUnauth.classList.remove('hidden', 'flex');
+                if(dashUnauth) dashUnauth.classList.add('flex');
+                if(setorAuth) setorAuth.classList.add('hidden');
+                if(setorUnauth) setorUnauth.classList.remove('hidden', 'flex');
+                if(setorUnauth) setorUnauth.classList.add('flex');
+                if(akunAuth) akunAuth.classList.add('hidden');
+                if(akunUnauth) akunUnauth.classList.remove('hidden');
             }
         });
 
@@ -496,7 +575,7 @@
             } else {
                 if(formLogin) formLogin.classList.add('hidden'); 
                 if(formReg) formReg.classList.remove('hidden');
-                if(authSub) authSub.innerText = "Lengkapi data untuk mendaftar via WhatsApp.";
+                if(authSub) authSub.innerText = "Isi formulir berikut untuk membuat akun.";
                 if(authToggle) authToggle.innerHTML = `Sudah punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Masuk di sini</button>`;
             }
         };
@@ -513,22 +592,51 @@
                 showFullScreenLoader("Memverifikasi kredensial...");
                 await signInWithEmailAndPassword(auth, email, pass); 
                 showToast("Berhasil login!"); 
+                window.switchTab('dashboard'); 
             } catch(e) { 
                 hideFullScreenLoader();
                 showToast("Gagal login! Periksa email dan password", "error"); 
             }
         };
 
-        window.handleRegisterWA = function() {
+        window.handleRegisterFirebase = async function() {
+            const email = document.getElementById('reg-email')?.value || '';
+            const pass = document.getElementById('reg-password')?.value || '';
+            const passConf = document.getElementById('reg-confirm-password')?.value || '';
             const sapaan = document.getElementById('reg-sapaan')?.value || ''; 
             const nama = document.getElementById('reg-nama')?.value || ''; 
             const wa = document.getElementById('reg-wa')?.value || ''; 
             const niat = document.getElementById('reg-niat')?.value || '';
             
-            if(!nama || !wa || !niat) return showToast("Harap isi semua data formulir pendaftaran!", "error");
+            if(!email || !pass || !passConf || !nama || !wa) return showToast("Harap isi Email, Password, Nama, dan WA!", "error");
+            if(pass !== passConf) return showToast("Password dan Ulangi Password tidak sama!", "error");
+            if(pass.length < 6) return showToast("Password minimal 6 karakter!", "error");
             
-            const pesan = `Assalamu'alaikum Admin/Mudabbir,\nSaya ingin mendaftar program GEMAR (Generasi Menyayangi Al-Quran).\n\n*DATA PENDAFTAR:*\n- Sapaan: ${sapaan}\n- Nama Lengkap: ${nama}\n- No. WhatsApp: ${wa}\n- Doa/Niat: ${niat}\n\nMohon bantuannya untuk dibuatkan akun dan informasi detail (Email & Sandi) agar bisa masuk ke dalam aplikasi. Terima kasih.`;
-            window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent(pesan)}`, '_blank');
+            try {
+                showFullScreenLoader("Mendaftarkan akun Anda...");
+                await createUserWithEmailAndPassword(auth, email, pass);
+                
+                const docId = Date.now().toString();
+                await setDoc(doc(db, 'artifacts', appIdGlobal, 'public', 'data', 'peserta', docId), {
+                    email: email,
+                    sapaan: sapaan,
+                    nama: nama,
+                    wa: wa,
+                    niat: niat,
+                    tanggal_daftar: new Date().toISOString()
+                });
+                
+                showToast("Pendaftaran berhasil! Anda langsung masuk.");
+            } catch(error) {
+                hideFullScreenLoader();
+                if (error.code === 'auth/email-already-in-use') {
+                    showToast("Email sudah terdaftar. Silakan login.", "error");
+                } else if (error.code === 'auth/invalid-email') {
+                    showToast("Format email tidak valid.", "error");
+                } else {
+                    showToast("Gagal mendaftar: " + error.message, "error");
+                }
+            }
         };
 
         window.hubungiAdmin = function() {
@@ -537,16 +645,46 @@
 
         window.handleLogout = async function() { 
             try { 
+                showFullScreenLoader("Keluar akun...");
                 await signOut(auth); 
-                window.location.reload(); 
-            } catch(e) {} 
+                
+                currentUser = null;
+                userProfileId = null;
+                state.setoran = [];
+                state.schedules = [];
+                state.peserta = [];
+                
+                if(document.getElementById('auth-email')) document.getElementById('auth-email').value = '';
+                if(document.getElementById('auth-password')) document.getElementById('auth-password').value = '';
+                
+                hideFullScreenLoader();
+                window.switchTab('akun'); 
+                showToast("Berhasil keluar akun.");
+                
+            } catch(e) { 
+                hideFullScreenLoader();
+                console.error("Logout error:", e);
+                showToast("Gagal keluar akun.", "error");
+            } 
         };
 
+        // Daftar 114 Surah (Database Lokal)
         const daftarSurah = [
             {nama:"Al-Fatihah",ayat:7},{nama:"Al-Baqarah",ayat:286},{nama:"Ali 'Imran",ayat:200},{nama:"An-Nisa'",ayat:176},{nama:"Al-Ma'idah",ayat:120},{nama:"Al-An'am",ayat:165},{nama:"Al-A'raf",ayat:206},{nama:"Al-Anfal",ayat:75},{nama:"At-Taubah",ayat:129},{nama:"Yunus",ayat:109},{nama:"Hud",ayat:123},{nama:"Yusuf",ayat:111},{nama:"Ar-Ra'd",ayat:43},{nama:"Ibrahim",ayat:52},{nama:"Al-Hijr",ayat:99},{nama:"An-Nahl",ayat:128},{nama:"Al-Isra'",ayat:111},{nama:"Al-Kahf",ayat:110},{nama:"Maryam",ayat:98},{nama:"Taha",ayat:135},{nama:"Al-Anbiya'",ayat:112},{nama:"Al-Hajj",ayat:78},{nama:"Al-Mu'minun",ayat:118},{nama:"An-Nur",ayat:64},{nama:"Al-Furqan",ayat:77},{nama:"Asy-Syu'ara'",ayat:227},{nama:"An-Naml",ayat:93},{nama:"Al-Qasas",ayat:88},{nama:"Al-'Ankabut",ayat:69},{nama:"Ar-Rum",ayat:60},{nama:"Luqman",ayat:34},{nama:"As-Sajdah",ayat:30},{nama:"Al-Ahzab",ayat:73},{nama:"Saba'",ayat:54},{nama:"Fatir",ayat:45},{nama:"Yasin",ayat:83},{nama:"As-Saffat",ayat:182},{nama:"Sad",ayat:88},{nama:"Az-Zumar",ayat:75},{nama:"Gafir",ayat:85},{nama:"Fussilat",ayat:54},{nama:"Asy-Syura",ayat:53},{nama:"Az-Zukhruf",ayat:89},{nama:"Ad-Dukhan",ayat:59},{nama:"Al-Jasiyah",ayat:37},{nama:"Al-Ahqaf",ayat:35},{nama:"Muhammad",ayat:38},{nama:"Al-Fath",ayat:29},{nama:"Al-Hujurat",ayat:18},{nama:"Qaf",ayat:45},{nama:"Az-Zariyat",ayat:60},{nama:"At-Tur",ayat:49},{nama:"An-Najm",ayat:62},{nama:"Al-Qamar",ayat:55},{nama:"Ar-Rahman",ayat:78},{nama:"Al-Waqi'ah",ayat:96},{nama:"Al-Hadid",ayat:29},{nama:"Al-Mujadilah",ayat:22},{nama:"Al-Hasyr",ayat:24},{nama:"Al-Mumtahanah",ayat:13},{nama:"As-Saff",ayat:14},{nama:"Al-Jumu'ah",ayat:11},{nama:"Al-Munafiqun",ayat:11},{nama:"At-Tagabun",ayat:18},{nama:"At-Talaq",ayat:12},{nama:"At-Tahrim",ayat:12},{nama:"Al-Mulk",ayat:30},{nama:"Al-Qalam",ayat:52},{nama:"Al-Haqqah",ayat:52},{nama:"Al-Ma'arij",ayat:44},{nama:"Nuh",ayat:28},{nama:"Al-Jinn",ayat:28},{nama:"Al-Muzzammil",ayat:20},{nama:"Al-Muddassir",ayat:56},{nama:"Al-Qiyamah",ayat:40},{nama:"Al-Insan",ayat:31},{nama:"Al-Mursalat",ayat:50},{nama:"An-Naba'",ayat:40},{nama:"An-Nazi'at",ayat:46},{nama:"'Abasa",ayat:42},{nama:"At-Takwir",ayat:29},{nama:"Al-Infitar",ayat:19},{nama:"Al-Mutaffifin",ayat:36},{nama:"Al-Insyiqaq",ayat:25},{nama:"Al-Buruj",ayat:22},{nama:"At-Tariq",ayat:17},{nama:"Al-A'la",ayat:19},{nama:"Al-Gasyiyah",ayat:26},{nama:"Al-Fajr",ayat:30},{nama:"Al-Balad",ayat:20},{nama:"Asy-Syams",ayat:15},{nama:"Al-Lail",ayat:21},{nama:"Ad-Duha",ayat:11},{nama:"Asy-Syarh",ayat:8},{nama:"At-Tin",ayat:8},{nama:"Al-'Alaq",ayat:19},{nama:"Al-Qadr",ayat:5},{nama:"Al-Bayyinah",ayat:8},{nama:"Az-Zalzalah",ayat:8},{nama:"Al-'Adiyat",ayat:11},{nama:"Al-Qari'ah",ayat:11},{nama:"At-Takasur",ayat:8},{nama:"Al-'Asr",ayat:3},{nama:"Al-Humazah",ayat:9},{nama:"Al-Fil",ayat:5},{nama:"Quraisy",ayat:4},{nama:"Al-Ma'un",ayat:7},{nama:"Al-Kausar",ayat:3},{nama:"Al-Kafirun",ayat:6},{nama:"An-Nasr",ayat:3},{nama:"Al-Lahab",ayat:5},{nama:"Al-Ikhlas",ayat:4},{nama:"Al-Falaq",ayat:5},{nama:"An-Nas",ayat:6}
         ];
 
-        // Fetch dari API saat fitur dipanggil
+        // Memasukkan Daftar 114 Surah ke Tab Setoran
+        function populateSurahSelectSetoran() {
+            const selectEl = document.getElementById('surah-select');
+            if (!selectEl) return;
+            selectEl.innerHTML = '<option value="">-- Pilih Surah --</option>';
+            daftarSurah.forEach((surah, index) => {
+                selectEl.innerHTML += `<option value="${index}">${index + 1}. ${surah.nama} (${surah.ayat} Ayat)</option>`;
+            });
+        }
+        populateSurahSelectSetoran();
+
+        // Mengambil List Surah untuk Menu Al-Quran dari API
         window.fetchSurahList = async function() {
             try {
                 const res = await fetch('https://equran.id/api/v2/surat');
@@ -564,11 +702,92 @@
             }
         };
 
-        fetchSurahList();
+        window.handleQuranSurahChange = function() {
+            const selectEl = document.getElementById('quran-surah-select'); 
+            const aStart = document.getElementById('quran-ayat-start'); 
+            const aEnd = document.getElementById('quran-ayat-end');
+            
+            if(!selectEl || !aStart || !aEnd) return;
+            const nomor = selectEl.value; 
+            
+            if (nomor === "") { 
+                aStart.innerHTML = '<option value="">-</option>'; 
+                aEnd.innerHTML = '<option value="">-</option>'; 
+                aStart.disabled = true; 
+                aEnd.disabled = true; 
+                return; 
+            }
+            
+            const maxAyat = daftarSurah[nomor - 1].ayat;
+            
+            aStart.innerHTML = ''; 
+            for (let i = 1; i <= maxAyat; i++) {
+                aStart.add(new Option(i, i));
+            }
+            aStart.disabled = false; 
+            window.updateQuranAyatEnd();
+        };
+
+        window.updateQuranAyatEnd = function() {
+            const selectEl = document.getElementById('quran-surah-select'); 
+            const aStart = document.getElementById('quran-ayat-start'); 
+            const aEnd = document.getElementById('quran-ayat-end');
+            
+            if(!selectEl || !aStart || !aEnd) return;
+            const nomor = selectEl.value; 
+            
+            if (nomor === "") return; 
+            const maxAyat = daftarSurah[nomor - 1].ayat;
+            const startVal = parseInt(aStart.value) || 1; 
+            const currentEndVal = parseInt(aEnd.value);
+            
+            aEnd.innerHTML = ''; 
+            for (let i = startVal; i <= maxAyat; i++) {
+                aEnd.add(new Option(i, i));
+            }
+            
+            if (!isNaN(currentEndVal) && currentEndVal >= startVal && currentEndVal <= maxAyat) { 
+                aEnd.value = currentEndVal; 
+            } else { 
+                aEnd.value = maxAyat; 
+            }
+            aEnd.disabled = false;
+        };
+
+        window.setQuranMode = function(mode) {
+            const panelSurah = document.getElementById('quran-panel-surah');
+            const panelMushaf = document.getElementById('quran-panel-mushaf');
+            const btnSurah = document.getElementById('btn-mode-surah');
+            const btnMushaf = document.getElementById('btn-mode-mushaf');
+            const container = document.getElementById('quran-content-container');
+            
+            container.innerHTML = `<div class="flex flex-col items-center justify-center py-10 text-slate-400"><i class="fas fa-book-open text-5xl mb-4 opacity-30"></i><p class="text-sm font-medium">Pilih bacaan di atas untuk memulai</p></div>`;
+
+            if(mode === 'surah') {
+                panelSurah.classList.remove('hidden');
+                panelMushaf.classList.add('hidden');
+                btnSurah.className = "flex-1 py-2 text-xs font-bold bg-white text-primary rounded-xl shadow-sm transition";
+                btnMushaf.className = "flex-1 py-2 text-xs font-bold text-slate-500 rounded-xl hover:text-slate-700 transition";
+            } else {
+                panelSurah.classList.add('hidden');
+                panelMushaf.classList.remove('hidden');
+                btnSurah.className = "flex-1 py-2 text-xs font-bold text-slate-500 rounded-xl hover:text-slate-700 transition";
+                btnMushaf.className = "flex-1 py-2 text-xs font-bold bg-white text-indigo-600 rounded-xl shadow-sm transition";
+                
+                // Isi Dropdown Juz
+                const juzSelect = document.getElementById('quran-juz-select');
+                if(juzSelect && juzSelect.options.length <= 1) {
+                    for(let i=1; i<=30; i++) juzSelect.add(new Option(`Juz ${i}`, i));
+                }
+            }
+        };
 
         window.loadSurahDetail = async function() {
             const select = document.getElementById('quran-surah-select');
             const container = document.getElementById('quran-content-container');
+            const startAyat = parseInt(document.getElementById('quran-ayat-start')?.value) || 1;
+            const endAyatStr = document.getElementById('quran-ayat-end')?.value;
+            
             if (!select || !container) return;
             
             const nomor = select.value;
@@ -583,13 +802,21 @@
                 const res = await fetch(`https://equran.id/api/v2/surat/${nomor}`);
                 const data = await res.json();
                 const surah = data.data;
+                const endAyat = parseInt(endAyatStr) || surah.jumlahAyat;
                 
+                const filteredAyat = surah.ayat.filter(a => a.nomorAyat >= startAyat && a.nomorAyat <= endAyat);
+                
+                if(filteredAyat.length === 0) {
+                    container.innerHTML = `<div class="p-5 bg-red-50 text-red-500 text-center rounded-2xl text-xs font-bold border border-red-100">Rentang ayat tidak ditemukan di surah ini.</div>`;
+                    return;
+                }
+
                 let html = `
                     <div class="bg-gradient-to-br from-sky-500 to-blue-600 rounded-3xl p-6 text-white text-center shadow-lg shadow-sky-500/30 relative overflow-hidden mb-6">
                         <i class="fas fa-quran absolute -left-4 -bottom-4 text-[7rem] opacity-10 transform -rotate-12"></i>
                         <h3 class="text-2xl font-extrabold mb-1 relative z-10">${surah.namaLatin}</h3>
                         <p class="text-xs font-medium opacity-90 relative z-10 uppercase tracking-widest mb-1">${surah.arti}</p>
-                        <p class="text-xs opacity-75 relative z-10">${surah.tempatTurun} • ${surah.jumlahAyat} Ayat</p>
+                        <p class="text-xs opacity-75 relative z-10">Ayat ${startAyat} - ${endAyat} dari ${surah.jumlahAyat}</p>
                         
                         <button onclick="toggleTerjemahan()" id="btn-toggle-terjemah" class="mt-5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold py-2.5 px-5 rounded-xl backdrop-blur-md transition border border-white/20 relative z-10 shadow-sm flex items-center justify-center gap-2 mx-auto">
                             <i class="fas fa-eye-slash"></i> Sembunyikan Terjemahan
@@ -597,8 +824,9 @@
                     </div>
                 `;
 
-                surah.ayat.forEach(ayat => {
-                    const audioSudais = ayat.audio ? ayat.audio["03"] : "";
+                filteredAyat.forEach(ayat => {
+                    // Audio 05 = Mishary Rashid Alafasy, fallback ke 01 jika kosong
+                    const audioAlafasy = ayat.audio ? (ayat.audio["05"] || ayat.audio["01"]) : "";
 
                     html += `
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 relative group">
@@ -607,9 +835,9 @@
                         
                         <div class="mt-5 bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex flex-col gap-1.5">
                             <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider ml-1 flex items-center gap-1">
-                                <i class="fas fa-headphones-alt text-sky-500"></i> Murottal (Syaikh As-Sudais)
+                                <i class="fas fa-headphones-alt text-sky-500"></i> Murottal (Mishary Rashid)
                             </span>
-                            <audio src="${audioSudais}" controls preload="none" class="w-full h-9 rounded-full outline-none"></audio>
+                            <audio src="${audioAlafasy}" controls preload="none" class="w-full h-9 rounded-full outline-none"></audio>
                         </div>
 
                         <div class="terjemahan-container mt-4 pt-4 border-t border-slate-100 transition-all duration-300">
@@ -624,6 +852,76 @@
                 container.innerHTML = html;
             } catch (e) {
                 container.innerHTML = `<div class="p-5 bg-red-50 text-red-500 text-center rounded-2xl text-xs font-bold border border-red-100">Gagal memuat ayat. Pastikan perangkat terhubung dengan internet.</div>`;
+            }
+        };
+
+        window.loadMushafDetail = async function() {
+            const juzVal = document.getElementById('quran-juz-select').value;
+            const halVal = document.getElementById('quran-hal-input').value;
+            const container = document.getElementById('quran-content-container');
+
+            if (!juzVal && !halVal) {
+                window.showToast("Pilih Juz atau masukkan Halaman!", "error");
+                return;
+            }
+
+            container.innerHTML = `<div class="flex flex-col items-center justify-center py-10"><i class="fas fa-spinner fa-spin text-3xl text-indigo-500 mb-3"></i><p class="text-sm text-slate-500">Mengambil data mushaf...</p></div>`;
+
+            try {
+                let apiUrl = '';
+                // ar.alafasy adalah kode audio untuk Mishary Rashid
+                if (halVal) {
+                    apiUrl = `https://api.alquran.cloud/v1/page/${halVal}/editions/quran-uthmani,id.indonesian,ar.alafasy`;
+                } else {
+                    apiUrl = `https://api.alquran.cloud/v1/juz/${juzVal}/editions/quran-uthmani,id.indonesian,ar.alafasy`;
+                }
+
+                const res = await fetch(apiUrl);
+                const data = await res.json();
+
+                if(data.code !== 200) throw new Error("Data tidak ditemukan");
+
+                const textArabData = data.data[0].ayahs;
+                const textIndoData = data.data[1].ayahs;
+                const audioData = data.data[2].ayahs;
+
+                let html = `
+                    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-6 text-white text-center shadow-lg relative overflow-hidden mb-6">
+                        <i class="fas fa-book-open absolute -right-4 -bottom-4 text-[7rem] opacity-10 transform rotate-12"></i>
+                        <h3 class="text-2xl font-extrabold mb-1 relative z-10">${halVal ? 'Halaman ' + halVal : 'Juz ' + juzVal}</h3>
+                        <p class="text-xs opacity-90 relative z-10 mb-3">${textArabData.length} Ayat</p>
+                        
+                        <button onclick="toggleTerjemahan()" id="btn-toggle-terjemah" class="bg-white/20 hover:bg-white/30 text-white text-xs font-bold py-2.5 px-5 rounded-xl backdrop-blur-md transition border border-white/20 relative z-10 shadow-sm flex items-center justify-center gap-2 mx-auto">
+                            <i class="fas fa-eye-slash"></i> Sembunyikan Terjemahan
+                        </button>
+                    </div>
+                `;
+
+                textArabData.forEach((ayat, idx) => {
+                    const indo = textIndoData[idx].text;
+                    const audio = audioData[idx].audio;
+
+                    html += `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 relative group">
+                        <div class="absolute -top-3 left-4 bg-indigo-100 text-indigo-600 text-[10px] font-bold px-3 py-1 rounded-full border border-indigo-200 shadow-sm">${ayat.surah.englishName} : ${ayat.numberInSurah}</div>
+                        <p class="text-right text-3xl leading-[3.5rem] mt-4 text-slate-800" dir="rtl" style="font-family: 'Amiri', serif;">${ayat.text}</p>
+                        
+                        <div class="mt-5 bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex flex-col gap-1.5">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider ml-1 flex items-center gap-1">
+                                <i class="fas fa-headphones-alt text-indigo-500"></i> Murottal (Mishary Rashid)
+                            </span>
+                            <audio src="${audio}" controls preload="none" class="w-full h-9 rounded-full outline-none"></audio>
+                        </div>
+
+                        <div class="terjemahan-container mt-4 pt-4 border-t border-slate-100 transition-all duration-300">
+                            <p class="text-[11px] text-indigo-600 font-bold mb-1.5 uppercase tracking-wide">Terjemahan</p>
+                            <p class="text-xs text-slate-700 leading-relaxed">${indo}</p>
+                        </div>
+                    </div>`;
+                });
+                container.innerHTML = html;
+            } catch(e) {
+                container.innerHTML = `<div class="p-5 bg-red-50 text-red-500 text-center rounded-2xl text-xs font-bold border border-red-100">Gagal memuat mushaf. Halaman maksimal 604, Juz maksimal 30. Pastikan internet menyala.</div>`;
             }
         };
 
@@ -786,7 +1084,6 @@
             if(tabId === 'akun') renderProgressHafalan(); 
             if(tabId === 'setoran') renderRiwayat();
             
-            // Scroll to top
             window.scrollTo({top: 0, behavior: 'smooth'});
         };
 
@@ -819,13 +1116,16 @@
         window.ubahSandi = async function() {
             if (!currentUser) return window.showToast("Anda harus login!", "error");
             const newPass = document.getElementById('new-password')?.value;
+            const confPass = document.getElementById('confirm-password')?.value;
             
             if(!newPass || newPass.length < 6) return window.showToast("Password minimal 6 karakter!", "error");
+            if(newPass !== confPass) return window.showToast("Pengulangan sandi tidak cocok!", "error");
 
             try {
                 await updatePassword(currentUser, newPass);
                 window.showToast("Kata sandi berhasil diubah!");
                 if(document.getElementById('new-password')) document.getElementById('new-password').value = '';
+                if(document.getElementById('confirm-password')) document.getElementById('confirm-password').value = '';
             } catch (error) {
                 if(error.code === 'auth/requires-recent-login') {
                     window.showToast("Sistem keamanan memblokir ini. Silakan Logout dan Login kembali, lalu coba lagi.", "error");
@@ -892,6 +1192,10 @@
             toast.classList.remove('-translate-y-[200%]', 'opacity-0'); 
             setTimeout(() => { toast.classList.add('-translate-y-[200%]', 'opacity-0'); }, 3000);
         };
+        
+        // Atur Tab Default ke Al-Quran dan ambil daftar API saat load agar bisa dibaca offline
+        fetchSurahList();
+        switchTab('alquran');
 
         function getZoomButtonHTML(sched, customClasses = "") {
             const now = new Date(); 
