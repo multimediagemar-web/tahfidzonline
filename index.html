@@ -12,7 +12,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tambahan font Amiri khusus untuk teks Arab agar lebih indah -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
@@ -42,7 +44,6 @@
 </head>
 <body class="bg-gray-100 text-slate-800 font-sans min-h-screen flex justify-center selection:bg-primary selection:text-white">
 
-    <!-- Wrapper Keseluruhan (Maksimal seukuran HP) -->
     <div class="w-full max-w-md bg-surface min-h-screen relative shadow-2xl flex flex-col sm:border-x border-gray-200 overflow-hidden">
 
         <!-- ============================================== -->
@@ -50,7 +51,6 @@
         <!-- ============================================== -->
         <div id="auth-page" class="absolute inset-0 z-[200] bg-surface flex flex-col justify-center px-8 transition-transform duration-500 overflow-y-auto hide-scrollbar">
             
-            <!-- Notifikasi Install Aplikasi -->
             <div id="pwa-install-card" class="hidden bg-gradient-to-r from-sky-500 to-blue-600 rounded-2xl p-4 text-white shadow-lg mb-6 mt-6 items-center justify-between border border-white/20 shrink-0">
                 <div class="flex items-center gap-3">
                     <div class="bg-white text-primary w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-md"><i class="fas fa-download"></i></div>
@@ -71,6 +71,7 @@
                 <p id="auth-subtitle" class="text-slate-500 text-xs mt-3 font-medium">Masuk untuk melanjutkan setoran hafalanmu.</p>
             </div>
 
+            <!-- Form Login -->
             <div id="form-login" class="space-y-4 bg-white p-6 rounded-3xl shadow-sm border border-slate-100 shrink-0">
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email</label>
@@ -118,7 +119,6 @@
                 <p id="auth-toggle-text" class="text-sm text-slate-500">Belum punya akun? <button onclick="toggleAuthMode()" class="text-primary font-bold hover:underline outline-none">Daftar di sini</button></p>
             </div>
 
-            <!-- Tombol WA & Keterangan -->
             <div class="mt-2 flex flex-col gap-2 items-center justify-center shrink-0 w-full max-w-[280px] mx-auto pb-8">
                 <button onclick="hubungiAdmin()" class="w-full bg-sky-50 text-sky-600 hover:bg-sky-100 font-bold py-2.5 rounded-xl transition shadow-sm flex items-center justify-center gap-2 border border-sky-200 text-xs">
                     <i class="fab fa-whatsapp text-base"></i> Hubungi Mudabbir
@@ -153,7 +153,12 @@
                         </p>
                     </div>
                     
-                    <div id="next-schedule-container" class="animate-fade-in"></div>
+                    <div id="next-schedule-container" class="animate-fade-in">
+                        <div class="flex flex-col items-center justify-center py-8 gap-3 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                            <i class="fas fa-spinner fa-spin text-3xl text-primary"></i>
+                            <span class="text-xs text-slate-400 font-medium">Memuat jadwal terdekat...</span>
+                        </div>
+                    </div>
                     
                     <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5">
                         <div class="flex flex-col sm:flex-row justify-between items-center mb-5 gap-4">
@@ -173,6 +178,7 @@
                 <!-- Tab: Setoran -->
                 <section id="tab-setoran" class="hidden animate-fade-in space-y-6">
                     <div><h2 class="text-2xl font-bold text-slate-800 tracking-tight">Setor Hafalan</h2></div>
+                    
                     <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 text-center">
                         <div class="mb-8 text-left space-y-5">
                             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
@@ -233,23 +239,30 @@
                     </div>
                 </section>
 
-                <!-- Tab: Kajian -->
-                <section id="tab-kajian" class="hidden animate-fade-in space-y-6">
-                    <div><h2 class="text-2xl font-bold text-slate-800 tracking-tight">Pustaka Video</h2></div>
-                    <div class="space-y-3">
+                <!-- Tab: Al-Quran -->
+                <section id="tab-alquran" class="hidden animate-fade-in space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Baca & Hafal</h2>
+                        <p class="text-sm text-slate-500 mt-1">Hafalkan Al-Quran per ayat dengan mudah.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5 sticky top-20 z-40">
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Pilih Surah</label>
                         <div class="relative">
-                            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
-                            <input type="text" id="video-search" onkeyup="handleVideoFilter()" placeholder="Cari judul video..." class="w-full bg-white border border-slate-100 rounded-2xl py-3 pl-11 pr-4 text-sm outline-none focus:ring-1 focus:ring-primary shadow-sm">
-                        </div>
-                        <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1 pt-1" id="video-categories">
-                            <button onclick="setVideoCategory('Semua')" class="cat-btn active px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-slate-800 text-white shadow-md">Semua</button>
-                            <button onclick="setVideoCategory('Tahfidz')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Tahfidz</button>
-                            <button onclick="setVideoCategory('Tahsin')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Tahsin</button>
-                            <button onclick="setVideoCategory('Kajian')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Kajian</button>
-                            <button onclick="setVideoCategory('Lainnya')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-slate-500 border border-slate-200">Lainnya</button>
+                            <select id="quran-surah-select" onchange="loadSurahDetail()" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-4 pr-10 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-primary/50 appearance-none cursor-pointer">
+                                <option value="">-- Memuat daftar surah... --</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"></i>
                         </div>
                     </div>
-                    <div id="video-container" class="space-y-4"></div>
+
+                    <!-- Kontainer Ayat -->
+                    <div id="quran-content-container" class="space-y-5 pb-6">
+                        <div class="flex flex-col items-center justify-center py-10 text-slate-400">
+                            <i class="fas fa-book-open text-5xl mb-4 opacity-30"></i>
+                            <p class="text-sm font-medium">Pilih surah di atas untuk mulai membaca</p>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- Tab: Akun -->
@@ -323,19 +336,19 @@
 
             <!-- Bottom Navigation -->
             <nav class="fixed bottom-0 w-full max-w-md left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-xl border-t border-slate-100 flex justify-around items-end pb-safe z-50 rounded-t-[2rem] px-4 pt-3 pb-3 shadow-[0_-10px_40px_rgba(0,0,0,0.06)]">
-                <button onclick="switchTab('dashboard')" id="nav-mobile-dashboard" class="flex flex-col items-center justify-end p-2 text-primary w-20 transition-all">
+                <button onclick="switchTab('dashboard')" id="nav-mobile-dashboard" class="flex flex-col items-center justify-end p-2 text-primary w-1/4 transition-all">
                     <div class="bg-sky-50 text-primary w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-dashboard"><i class="fas fa-calendar-alt text-lg"></i></div>
                     <span class="text-[10px] font-bold tracking-wide">Jadwal</span>
                 </button>
-                <button onclick="switchTab('setoran')" id="nav-mobile-setoran" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-20 transition relative">
+                <button onclick="switchTab('setoran')" id="nav-mobile-setoran" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition relative">
                     <div class="absolute bottom-6 bg-gradient-to-br from-sky-400 to-primary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 border-[3px] border-white transform hover:scale-105 transition-transform z-10" id="fab-setor"><i class="fas fa-microphone-alt text-xl"></i></div>
                     <span class="text-[10px] font-bold tracking-wide">Setor</span>
                 </button>
-                <button onclick="switchTab('kajian')" id="nav-mobile-kajian" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-20 transition-all">
-                    <div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-kajian"><i class="fas fa-play-circle text-lg"></i></div>
-                    <span class="text-[10px] font-bold tracking-wide">Kajian</span>
+                <button onclick="switchTab('alquran')" id="nav-mobile-alquran" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition-all">
+                    <div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-alquran"><i class="fas fa-book-open text-lg"></i></div>
+                    <span class="text-[10px] font-bold tracking-wide">Al-Quran</span>
                 </button>
-                <button onclick="switchTab('akun')" id="nav-mobile-akun" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-20 transition-all">
+                <button onclick="switchTab('akun')" id="nav-mobile-akun" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/4 transition-all">
                     <div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-akun"><i class="fas fa-user text-lg"></i></div>
                     <span class="text-[10px] font-bold tracking-wide">Akun</span>
                 </button>
@@ -368,18 +381,6 @@
                 <button onclick="closeModal()" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-600 transition shrink-0"><i class="fas fa-times"></i></button>
             </div>
             <div id="modal-content" class="p-5 overflow-y-auto space-y-4 hide-scrollbar flex-1"></div>
-        </div>
-    </div>
-
-    <div id="video-modal" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity">
-        <div class="w-full max-w-md relative transform scale-95 transition-all" id="video-modal-panel">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="font-bold text-white text-sm" id="video-modal-title">Memutar Video...</h3>
-                <button onclick="closeVideoModal()" class="w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center hover:bg-white/40 transition backdrop-blur-sm"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="bg-black w-full rounded-2xl overflow-hidden shadow-2xl aspect-video relative">
-                <div id="video-modal-content" class="absolute inset-0 w-full h-full"></div>
-            </div>
         </div>
     </div>
 
@@ -545,13 +546,114 @@
             {nama:"Al-Fatihah",ayat:7},{nama:"Al-Baqarah",ayat:286},{nama:"Ali 'Imran",ayat:200},{nama:"An-Nisa'",ayat:176},{nama:"Al-Ma'idah",ayat:120},{nama:"Al-An'am",ayat:165},{nama:"Al-A'raf",ayat:206},{nama:"Al-Anfal",ayat:75},{nama:"At-Taubah",ayat:129},{nama:"Yunus",ayat:109},{nama:"Hud",ayat:123},{nama:"Yusuf",ayat:111},{nama:"Ar-Ra'd",ayat:43},{nama:"Ibrahim",ayat:52},{nama:"Al-Hijr",ayat:99},{nama:"An-Nahl",ayat:128},{nama:"Al-Isra'",ayat:111},{nama:"Al-Kahf",ayat:110},{nama:"Maryam",ayat:98},{nama:"Taha",ayat:135},{nama:"Al-Anbiya'",ayat:112},{nama:"Al-Hajj",ayat:78},{nama:"Al-Mu'minun",ayat:118},{nama:"An-Nur",ayat:64},{nama:"Al-Furqan",ayat:77},{nama:"Asy-Syu'ara'",ayat:227},{nama:"An-Naml",ayat:93},{nama:"Al-Qasas",ayat:88},{nama:"Al-'Ankabut",ayat:69},{nama:"Ar-Rum",ayat:60},{nama:"Luqman",ayat:34},{nama:"As-Sajdah",ayat:30},{nama:"Al-Ahzab",ayat:73},{nama:"Saba'",ayat:54},{nama:"Fatir",ayat:45},{nama:"Yasin",ayat:83},{nama:"As-Saffat",ayat:182},{nama:"Sad",ayat:88},{nama:"Az-Zumar",ayat:75},{nama:"Gafir",ayat:85},{nama:"Fussilat",ayat:54},{nama:"Asy-Syura",ayat:53},{nama:"Az-Zukhruf",ayat:89},{nama:"Ad-Dukhan",ayat:59},{nama:"Al-Jasiyah",ayat:37},{nama:"Al-Ahqaf",ayat:35},{nama:"Muhammad",ayat:38},{nama:"Al-Fath",ayat:29},{nama:"Al-Hujurat",ayat:18},{nama:"Qaf",ayat:45},{nama:"Az-Zariyat",ayat:60},{nama:"At-Tur",ayat:49},{nama:"An-Najm",ayat:62},{nama:"Al-Qamar",ayat:55},{nama:"Ar-Rahman",ayat:78},{nama:"Al-Waqi'ah",ayat:96},{nama:"Al-Hadid",ayat:29},{nama:"Al-Mujadilah",ayat:22},{nama:"Al-Hasyr",ayat:24},{nama:"Al-Mumtahanah",ayat:13},{nama:"As-Saff",ayat:14},{nama:"Al-Jumu'ah",ayat:11},{nama:"Al-Munafiqun",ayat:11},{nama:"At-Tagabun",ayat:18},{nama:"At-Talaq",ayat:12},{nama:"At-Tahrim",ayat:12},{nama:"Al-Mulk",ayat:30},{nama:"Al-Qalam",ayat:52},{nama:"Al-Haqqah",ayat:52},{nama:"Al-Ma'arij",ayat:44},{nama:"Nuh",ayat:28},{nama:"Al-Jinn",ayat:28},{nama:"Al-Muzzammil",ayat:20},{nama:"Al-Muddassir",ayat:56},{nama:"Al-Qiyamah",ayat:40},{nama:"Al-Insan",ayat:31},{nama:"Al-Mursalat",ayat:50},{nama:"An-Naba'",ayat:40},{nama:"An-Nazi'at",ayat:46},{nama:"'Abasa",ayat:42},{nama:"At-Takwir",ayat:29},{nama:"Al-Infitar",ayat:19},{nama:"Al-Mutaffifin",ayat:36},{nama:"Al-Insyiqaq",ayat:25},{nama:"Al-Buruj",ayat:22},{nama:"At-Tariq",ayat:17},{nama:"Al-A'la",ayat:19},{nama:"Al-Gasyiyah",ayat:26},{nama:"Al-Fajr",ayat:30},{nama:"Al-Balad",ayat:20},{nama:"Asy-Syams",ayat:15},{nama:"Al-Lail",ayat:21},{nama:"Ad-Duha",ayat:11},{nama:"Asy-Syarh",ayat:8},{nama:"At-Tin",ayat:8},{nama:"Al-'Alaq",ayat:19},{nama:"Al-Qadr",ayat:5},{nama:"Al-Bayyinah",ayat:8},{nama:"Az-Zalzalah",ayat:8},{nama:"Al-'Adiyat",ayat:11},{nama:"Al-Qari'ah",ayat:11},{nama:"At-Takasur",ayat:8},{nama:"Al-'Asr",ayat:3},{nama:"Al-Humazah",ayat:9},{nama:"Al-Fil",ayat:5},{nama:"Quraisy",ayat:4},{nama:"Al-Ma'un",ayat:7},{nama:"Al-Kausar",ayat:3},{nama:"Al-Kafirun",ayat:6},{nama:"An-Nasr",ayat:3},{nama:"Al-Lahab",ayat:5},{nama:"Al-Ikhlas",ayat:4},{nama:"Al-Falaq",ayat:5},{nama:"An-Nas",ayat:6}
         ];
 
-        function initSurahDropdown() { 
-            const select = document.getElementById('surah-select'); 
-            if(select) {
-                daftarSurah.forEach((s, i) => select.add(new Option(s.nama, i))); 
+        // Fetch dari API saat fitur dipanggil
+        window.fetchSurahList = async function() {
+            try {
+                const res = await fetch('https://equran.id/api/v2/surat');
+                const data = await res.json();
+                const select = document.getElementById('quran-surah-select');
+                if (!select) return;
+                select.innerHTML = '<option value="">-- Pilih Surah --</option>';
+                data.data.forEach(s => {
+                    select.innerHTML += `<option value="${s.nomor}">${s.nomor}. ${s.namaLatin} (${s.jumlahAyat} Ayat)</option>`;
+                });
+            } catch (e) {
+                console.error("Gagal memuat daftar surah", e);
+                const select = document.getElementById('quran-surah-select');
+                if (select) select.innerHTML = '<option value="">Gagal memuat data, periksa koneksi internet</option>';
             }
-        } 
-        initSurahDropdown(); 
+        };
+
+        fetchSurahList();
+
+        window.loadSurahDetail = async function() {
+            const select = document.getElementById('quran-surah-select');
+            const container = document.getElementById('quran-content-container');
+            if (!select || !container) return;
+            
+            const nomor = select.value;
+            if (!nomor) {
+                container.innerHTML = `<div class="flex flex-col items-center justify-center py-10 text-slate-400"><i class="fas fa-book-open text-5xl mb-4 opacity-30"></i><p class="text-sm font-medium">Pilih surah di atas untuk mulai membaca</p></div>`;
+                return;
+            }
+
+            container.innerHTML = `<div class="flex flex-col items-center justify-center py-10"><i class="fas fa-spinner fa-spin text-3xl text-primary mb-3"></i><p class="text-sm text-slate-500">Membuka lembaran surah...</p></div>`;
+
+            try {
+                const res = await fetch(`https://equran.id/api/v2/surat/${nomor}`);
+                const data = await res.json();
+                const surah = data.data;
+                
+                let html = `
+                    <div class="bg-gradient-to-br from-sky-500 to-blue-600 rounded-3xl p-6 text-white text-center shadow-lg shadow-sky-500/30 relative overflow-hidden mb-6">
+                        <i class="fas fa-quran absolute -left-4 -bottom-4 text-[7rem] opacity-10 transform -rotate-12"></i>
+                        <h3 class="text-2xl font-extrabold mb-1 relative z-10">${surah.namaLatin}</h3>
+                        <p class="text-xs font-medium opacity-90 relative z-10 uppercase tracking-widest mb-1">${surah.arti}</p>
+                        <p class="text-xs opacity-75 relative z-10">${surah.tempatTurun} • ${surah.jumlahAyat} Ayat</p>
+                        
+                        <button onclick="toggleTerjemahan()" id="btn-toggle-terjemah" class="mt-5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold py-2.5 px-5 rounded-xl backdrop-blur-md transition border border-white/20 relative z-10 shadow-sm flex items-center justify-center gap-2 mx-auto">
+                            <i class="fas fa-eye-slash"></i> Sembunyikan Terjemahan
+                        </button>
+                    </div>
+                `;
+
+                surah.ayat.forEach(ayat => {
+                    const audioSudais = ayat.audio ? ayat.audio["03"] : "";
+
+                    html += `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 relative group">
+                        <div class="absolute -top-3 left-4 bg-sky-100 text-sky-600 text-[10px] font-bold px-3 py-1 rounded-full border border-sky-200 shadow-sm">Ayat ${ayat.nomorAyat}</div>
+                        <p class="text-right text-3xl leading-[3.5rem] mt-4 text-slate-800" dir="rtl" style="font-family: 'Amiri', serif;">${ayat.teksArab}</p>
+                        
+                        <div class="mt-5 bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex flex-col gap-1.5">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider ml-1 flex items-center gap-1">
+                                <i class="fas fa-headphones-alt text-sky-500"></i> Murottal (Syaikh As-Sudais)
+                            </span>
+                            <audio src="${audioSudais}" controls preload="none" class="w-full h-9 rounded-full outline-none"></audio>
+                        </div>
+
+                        <div class="terjemahan-container mt-4 pt-4 border-t border-slate-100 transition-all duration-300">
+                            <p class="text-[11px] text-sky-600 font-bold mb-1.5 uppercase tracking-wide">Cara Baca</p>
+                            <p class="text-xs text-slate-600 font-medium mb-4 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100 italic">${ayat.teksLatin}</p>
+                            
+                            <p class="text-[11px] text-sky-600 font-bold mb-1.5 uppercase tracking-wide">Terjemahan</p>
+                            <p class="text-xs text-slate-700 leading-relaxed">${ayat.teksIndonesia}</p>
+                        </div>
+                    </div>`;
+                });
+                container.innerHTML = html;
+            } catch (e) {
+                container.innerHTML = `<div class="p-5 bg-red-50 text-red-500 text-center rounded-2xl text-xs font-bold border border-red-100">Gagal memuat ayat. Pastikan perangkat terhubung dengan internet.</div>`;
+            }
+        };
+
+        window.toggleTerjemahan = function() {
+            const containers = document.querySelectorAll('.terjemahan-container');
+            const btn = document.getElementById('btn-toggle-terjemah');
+            let isHidden = false;
+            
+            containers.forEach(c => {
+                if (c.classList.contains('hidden')) {
+                    c.classList.remove('hidden');
+                    isHidden = false;
+                } else {
+                    c.classList.add('hidden');
+                    isHidden = true;
+                }
+            });
+
+            if (btn) {
+                if (isHidden) {
+                    btn.innerHTML = '<i class="fas fa-eye"></i> Tampilkan Terjemahan';
+                    btn.classList.replace('bg-white/20', 'bg-slate-900');
+                    btn.classList.replace('hover:bg-white/30', 'hover:bg-slate-800');
+                } else {
+                    btn.innerHTML = '<i class="fas fa-eye-slash"></i> Sembunyikan Terjemahan';
+                    btn.classList.replace('bg-slate-900', 'bg-white/20');
+                    btn.classList.replace('hover:bg-slate-800', 'hover:bg-white/30');
+                }
+            }
+        };
 
         window.handleSurahChange = function() {
             const selectEl = document.getElementById('surah-select'); 
@@ -619,12 +721,6 @@
                 if(tDash && !tDash.classList.contains('hidden')) { renderNextSchedule(); renderCalendar(); }
             }, (error) => console.error("Error Load Schedules:", error.message));
 
-            onSnapshot(collection(db, 'artifacts', appIdGlobal, 'public', 'data', 'videos'), (snap) => {
-                state.videos = snap.docs.map(d => ({id: d.id, ...d.data()}));
-                const tKajian = document.getElementById('tab-kajian');
-                if(tKajian && !tKajian.classList.contains('hidden')) renderVideos();
-            }, (error) => console.error("Error Load Videos:", error.message));
-
             onSnapshot(collection(db, 'artifacts', appIdGlobal, 'public', 'data', 'peserta'), (snap) => {
                 const allPeserta = snap.docs.map(d => ({id: d.id, ...d.data()}));
                 const myProfile = allPeserta.find(p => p.email === currentUser.email);
@@ -670,7 +766,7 @@
                 activeTab.classList.add('block'); 
             }
             
-            ['dashboard', 'setoran', 'kajian', 'akun'].forEach(nav => {
+            ['dashboard', 'setoran', 'alquran', 'akun'].forEach(nav => {
                 const elBtn = document.getElementById(`nav-mobile-${nav}`); 
                 const elBg = document.getElementById(`icon-bg-${nav}`);
                 if(elBtn) {
@@ -688,11 +784,12 @@
             
             if(tabId === 'dashboard') { renderNextSchedule(); renderCalendar(); } 
             if(tabId === 'akun') renderProgressHafalan(); 
-            if(tabId === 'kajian') renderVideos(); 
             if(tabId === 'setoran') renderRiwayat();
+            
+            // Scroll to top
+            window.scrollTo({top: 0, behavior: 'smooth'});
         };
 
-        // --- Profil Update ---
         window.saveProfile = async function() {
             if (!currentUser) return window.showToast("Anda harus login!", "error");
             
@@ -705,7 +802,6 @@
 
             try {
                 const docId = userProfileId || Date.now().toString();
-                
                 await setDoc(doc(db, 'artifacts', appIdGlobal, 'public', 'data', 'peserta', docId), { 
                     email: currentUser.email, 
                     sapaan, 
@@ -739,7 +835,6 @@
             }
         };
 
-        // --- PWA & UI Utilities ---
         let deferredPrompt; 
         const installCard = document.getElementById('pwa-install-card'); 
         const btnInstallPwa = document.getElementById('btn-install-pwa');
@@ -886,87 +981,6 @@
             }
         };
         document.getElementById('schedule-modal')?.addEventListener('click', function(e) { if(e.target === this) window.closeModal(); });
-
-        // Fungsi pendeteksi ID YouTube yang tangguh untuk semua format URL (Shorts, Mobile, Live Streaming dll)
-        function getYoutubeId(url) {
-            if (!url) return null;
-            // Ditambahkan |live\/ untuk mendeteksi link rekaman live streaming
-            const regExp = /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))([\w-]{11})/;
-            const match = url.match(regExp);
-            return (match && match[1]) ? match[1] : null;
-        }
-
-        window.openVideoModal = function(url, title) {
-            const modal = document.getElementById('video-modal'); const panel = document.getElementById('video-modal-panel'); const content = document.getElementById('video-modal-content'); const titleEl = document.getElementById('video-modal-title');
-            if(titleEl) titleEl.innerText = title || "Kajian"; 
-            
-            let embedUrl = url; 
-            const ytId = getYoutubeId(url);
-            
-            if (ytId) {
-                // Konversi link otomatis ke mode pemutar (embed) yang diizinkan oleh YouTube
-                embedUrl = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`; 
-            } else if (url.includes('drive.google.com')) {
-                embedUrl = url.replace(/\/view.*$/, '/preview');
-            }
-            
-            if(content) content.innerHTML = `<iframe class="w-full h-full" src="${embedUrl}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-            if(modal && panel) { modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); panel.classList.remove('scale-95'); }, 10); }
-        };
-        
-        window.closeVideoModal = function() { 
-            const modal = document.getElementById('video-modal'); const panel = document.getElementById('video-modal-panel'); const content = document.getElementById('video-modal-content'); 
-            if(modal && panel) { modal.classList.add('opacity-0'); panel.classList.add('scale-95'); setTimeout(() => { modal.classList.add('hidden'); if(content) content.innerHTML = ''; }, 300); }
-        };
-        document.getElementById('video-modal')?.addEventListener('click', function(e) { if(e.target === this) window.closeVideoModal(); });
-
-        let currentVideoCategory = 'Semua';
-        window.setVideoCategory = function(cat) {
-            currentVideoCategory = cat;
-            document.querySelectorAll('.cat-btn').forEach(btn => { 
-                if(btn.innerText === cat) { 
-                    btn.className = "cat-btn active px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition bg-slate-800 text-white shadow-md"; 
-                } else { 
-                    btn.className = "cat-btn px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition bg-white text-slate-500 border border-slate-200 hover:bg-slate-50"; 
-                } 
-            });
-            renderVideos();
-        };
-        window.handleVideoFilter = function() { renderVideos(); };
-
-        function renderVideos() {
-            const container = document.getElementById('video-container'); 
-            const searchEl = document.getElementById('video-search'); 
-            const searchInput = searchEl ? searchEl.value.toLowerCase() : '';
-            if(!container) return;
-            
-            const filteredVideos = state.videos.filter(v => { 
-                const matchCategory = currentVideoCategory === 'Semua' || (v.kategori && v.kategori === currentVideoCategory); 
-                const matchSearch = v.title.toLowerCase().includes(searchInput); 
-                return matchCategory && matchSearch; 
-            }).sort((a,b) => new Date(b.tanggal || 0) - new Date(a.tanggal || 0));
-            
-            if(filteredVideos.length === 0) { 
-                container.innerHTML = `<div class="p-8 text-center text-slate-400 bg-white rounded-3xl shadow-sm border border-slate-100 mt-4"><i class="fas fa-search text-4xl text-slate-200 mb-3 block"></i><span class="font-medium">Video tidak ditemukan.</span></div>`; 
-                return; 
-            }
-            
-            container.innerHTML = filteredVideos.map(vid => {
-                let badgeColor = 'bg-slate-600'; 
-                if(vid.kategori === 'Tahfidz') badgeColor = 'bg-sky-500'; 
-                if(vid.kategori === 'Tahsin') badgeColor = 'bg-indigo-500'; 
-                if(vid.kategori === 'Kajian') badgeColor = 'bg-primary';
-                
-                let thumbUrl = vid.thumbnail; 
-                if (!thumbUrl && vid.url) { 
-                    const ytId = getYoutubeId(vid.url);
-                    if (ytId) thumbUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`; 
-                }
-                const finalThumb = thumbUrl || 'https://images.unsplash.com/photo-1609599006353-e629aaab31f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
-                
-                return `<div onclick="openVideoModal('${vid.url}', '${vid.title.replace(/'/g, "\\'")}')" class="block bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition group cursor-pointer"><div class="h-44 w-full relative bg-slate-100 overflow-hidden"><img src="${finalThumb}" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-700"><div class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition"></div><div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"><div class="w-12 h-12 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white pl-1 border border-white/40 shadow-lg"><i class="fas fa-play text-xl"></i></div></div><span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-md ${badgeColor}">${vid.kategori || 'Kajian'}</span><div class="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-lg">${vid.durasi || '00:00'}</div></div><div class="p-4"><h3 class="font-bold text-slate-800 leading-snug line-clamp-2">${vid.title}</h3><p class="text-xs text-slate-500 mt-2 font-medium flex items-center gap-1.5"><i class="far fa-calendar-alt"></i> Ditambahkan: ${vid.tanggal ? new Date(vid.tanggal).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}) : '-'}</p></div></div>`;
-            }).join('');
-        }
 
         function renderNextSchedule() {
             const container = document.getElementById('next-schedule-container'); 
