@@ -234,6 +234,19 @@
                         <p class="text-xs text-teal-50 mb-2 relative z-10 leading-relaxed">Setiap huruf yang mereka hafal akan mengalirkan pahala untuk Anda.</p>
                     </div>
 
+                    <!-- Pilih Program Donasi -->
+                    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-3">Pilih Program Donasi</h3>
+                        <div class="relative">
+                            <select id="program-donasi" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-4 pr-10 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-teal-500/50 appearance-none cursor-pointer">
+                                <option value="Pembangunan Masjid">🕌 Pembangunan Masjid</option>
+                                <option value="Support Santri Penghafal Al-Quran">📖 Support Santri Penghafal Al-Quran</option>
+                                <option value="Support Guru Ngaji">👳 Support Guru Ngaji</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                        </div>
+                    </div>
+
                     <!-- Scan QRIS -->
                     <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 flex flex-col items-center text-center">
                         <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-3 w-full text-left">Scan QRIS</h3>
@@ -439,17 +452,17 @@
                     <div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-dashboard"><i class="fas fa-calendar-alt text-lg"></i></div>
                     <span class="text-[10px] font-bold tracking-wide">Jadwal</span>
                 </button>
+                <button onclick="switchTab('setoran')" id="nav-mobile-setoran" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/5 transition-all">
+                    <div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-setoran"><i class="fas fa-microphone-alt text-lg"></i></div>
+                    <span class="text-[10px] font-bold tracking-wide">Setor</span>
+                </button>
+                <button onclick="switchTab('donasi')" id="nav-mobile-donasi" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/5 transition relative">
+                    <div class="absolute bottom-6 bg-gradient-to-br from-teal-400 to-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-teal-500/30 border-[3px] border-white transform hover:scale-105 transition-transform z-10"><i class="fas fa-hand-holding-heart text-xl"></i></div>
+                    <span class="text-[10px] font-bold tracking-wide">Donasi</span>
+                </button>
                 <button onclick="switchTab('alquran')" id="nav-mobile-alquran" class="flex flex-col items-center justify-end p-2 text-primary w-1/5 transition-all">
                     <div class="bg-sky-50 text-primary w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-alquran"><i class="fas fa-book-open text-lg"></i></div>
                     <span class="text-[10px] font-bold tracking-wide">Al-Quran</span>
-                </button>
-                <button onclick="switchTab('setoran')" id="nav-mobile-setoran" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/5 transition relative">
-                    <div class="absolute bottom-6 bg-gradient-to-br from-sky-400 to-primary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 border-[3px] border-white transform hover:scale-105 transition-transform z-10" id="fab-setor"><i class="fas fa-microphone-alt text-xl"></i></div>
-                    <span class="text-[10px] font-bold tracking-wide">Setor</span>
-                </button>
-                <button onclick="switchTab('donasi')" id="nav-mobile-donasi" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/5 transition-all">
-                    <div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-donasi"><i class="fas fa-hand-holding-heart text-lg"></i></div>
-                    <span class="text-[10px] font-bold tracking-wide">Donasi</span>
                 </button>
                 <button onclick="switchTab('akun')" id="nav-mobile-akun" class="flex flex-col items-center justify-end p-2 text-slate-400 hover:text-primary w-1/5 transition-all">
                     <div class="text-slate-400 w-12 h-8 rounded-full flex items-center justify-center mb-1.5 transition-colors" id="icon-bg-akun"><i class="fas fa-user text-lg"></i></div>
@@ -1473,7 +1486,8 @@
         };
 
         window.konfirmasiDonasi = function() {
-            const text = encodeURIComponent("Assalamu'alaikum, saya ingin mengkonfirmasi donasi/infaq untuk program Baitulmaal Ashqaf. Berikut adalah bukti transfernya:");
+            const program = document.getElementById('program-donasi') ? document.getElementById('program-donasi').value : 'Baitulmaal Ashqaf';
+            const text = encodeURIComponent(`Assalamu'alaikum, saya ingin mengkonfirmasi donasi/infaq untuk program *${program}*. Berikut adalah bukti transfernya:`);
             window.open(`https://wa.me/${adminWaNumber}?text=${text}`, '_blank');
         };
     </script>
